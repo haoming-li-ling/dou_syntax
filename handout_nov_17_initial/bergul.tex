@@ -1,0 +1,290 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper, margin=1in]{geometry}
+% \usepackage[skip=\baselineskip, tocskip=0pt]{parskip}
+\usepackage{amsmath, amsfonts, amssymb, amsthm, mathtools}
+\usepackage{stmaryrd}
+\usepackage{fontspec}
+\let\latextextsubscript\textsubscript
+\AtBeginDocument{
+  \let\textsubscript\latextextsubscript
+  \newcommand{\sub}[1]{\textsubscript{#1}}
+  \newcommand{\gap}[1]{\rule{1em}{0.4pt}\textsubscript{#1}}
+}
+\let\latextextsuperscript\textsuperscript
+\AtBeginDocument{
+  \let\textsuperscript\latextextsuperscript
+}
+\usepackage[largesc]{newpxtext}
+\usepackage[vvarbb]{newpxmath}
+\usepackage{csquotes}
+\usepackage{markdown}
+
+\usepackage{pifont}
+% \usepackage{txfonts}
+\let\eachwordone=\rmfamily
+\let\eachwordtwo=\rmfamily
+\let\eachwordthree=\rmfamily
+\let\rm=\relax
+% \usepackage{linguex, cgloss}
+\usepackage[linguex]{expex-glossonly}
+\lingset{everygla={\itshape}}
+\renewcommand{\firstrefdash}{}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\crefname{ExNo}{}{}
+\crefname{SubExNo}{}{}
+\renewcommand{\theExNo}{\arabic{ExNo}}
+\renewcommand{\theSubExNo}{\theExNo\alph{SubExNo}}
+\creflabelformat{SubExNo}{(#2#1#3)}
+\creflabelformat{ExNo}{(#2#1#3)}
+\crefrangelabelformat{SubExNo}{(#3#1#4--#5\crefstripprefix{#1}{#2}#6)}
+\crefrangelabelformat{ExNo}{(#3#1#4)--(#5#2#6)}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+\usepackage{xcolor}
+\setlength{\parskip}{1ex}
+\setlength{\parindent}{0pt}
+\setlist[1]{left=0pt}
+% \renewcommand\thesection{\Roman{section}.}
+% \renewcommand\thesubsection{\arabic{subsection}.}
+% \renewcommand\thesubsubsection{\Alph{subsubsection}}
+
+\usepackage[
+  backend=biber,
+  natbib=true,
+  style=unified,
+  maxcitenames=3,
+  maxbibnames=99
+]{biblatex}
+\addbibresource{../Chinese_Modals.bib}
+\AtBeginDocument{
+  % \setlength{\Extopsep}{0\baselineskip}
+  % \setlength{\Exredux}{0\baselineskip}
+  \settowidth{\Exlabelwidth}{(00)}
+  % \setlength{\Exlabelwidth}{.7\Exlabelwidth}
+  % \setlength{\Exlabelsep}{.7\Exlabelsep}
+  % \setlength{\SubExleftmargin}{\SubExleftmargin}
+  % \setlength{\SubSubExleftmargin}{\SubSubExleftmargin}
+}
+
+\newcommand{\II}{\I{[}}
+\newcommand{\A}{\(\overline{\text{A}}\)}
+\usepackage{tikz}
+\usepackage[linguistics]{forest}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{tikzmark}
+\usepackage{tikz-cd}
+\tikzcdset{
+  arrow style=math font,
+  % diagrams={>={Straight Barb[scale=0.8]}}
+}
+
+\tikzset{every label/.style={font=\footnotesize}}
+
+\forestset{
+  default preamble={
+    for tree={
+      inner sep=0pt,
+      % draw,
+    }
+  },
+  great empty nodes/.style={
+    for tree={
+      calign=fixed edge angles,
+      calign primary angle=-60,
+      calign secondary angle=60, 
+    l=7mm},
+    delay={
+      where content={}{
+        shape=coordinate,
+    for current and siblings={anchor=north}}{}}
+  },
+  downroof/.style={
+    for children={
+      if n=1{
+        edge path'={
+          (.parent first) -- (!u.parent anchor) -- (!ul.parent last) -- cycle
+        }
+      }{no edge}
+    }
+  }
+}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\renewcommand\tabularxcolumn[1]{m{#1}}% for vertical centering text in X column
+
+\AtBeginDocument{% to do this after unicode-math has done its work
+  \renewcommand{\setminus}{\mathbin{\backslash}}%
+}
+\title{Arguments for a bi-clausal analysis of Mandarin root modals}
+\author{Haoming Li}
+
+\DeclareMathOperator{\atom}{\textsc{Atom}}
+\DeclareMathOperator{\alt}{\textsc{Alt}}
+\DeclareMathOperator{\xh}{\textsc{Exh}}
+\newcommand{\exh}{\ensuremath{\xh}}
+\newcommand{\Exh}{\ensuremath{\mathcal{E}\mathit{xh}}}
+\newcommand{\Pex}{\ensuremath{\mathcal{P}\mathit{ex}}}
+\newcommand{\F}{\ensuremath{_{\mathrm{F}}}}
+\DeclareMathOperator{\prt}{Part}
+\DeclareMathOperator{\dom}{dom}
+
+\begin{document}
+\section{Contrastive topic}
+\label{sec:contrastive_topic}
+
+\ex. \gll 
+Yuehan yao qu paidui. Mali ne, ta yao hui jia. \\
+John will go party Mary \textsc{ct} \textsc{3sg} will return home \\
+\glt `John will go to the party. As for Mary, she will go home.'
+
+See Constant (2014)
+
+\section{O-marked conditional and FLV}
+\label{sec:o_marked_conditional}
+
+No distinction between O-marked and FLV. Replacing \emph{ruguo} with \emph{yaoshi} could be more FLV-like (\emph{yaoshi} in general skews towards readings that you find in English that are X-marked), but it is still compatible with the O-marked reading.
+\ex. \gll 
+ruguo Mali qu paidui, Yuehan jiu hui gaoxing. \\
+if Mary go party John then will happy \\
+\glt `If Mary goes to the party, John will be happy.'
+
+\section{X-marked conditional}
+\label{sec:x_marked_conditional}
+
+X-marked counterfactual conditionals are usually identical to O-marked conditionals with the antecedent in perfective aspect.
+\ex. \gll 
+ruguo Mali zuotian qu-le paidui, Yuehan jiu hui gaoxing. \\
+if Mary yesterday go-\textsc{pfv} party John then will happy \\
+\a.[i.] `If Mary had come to the party, John would have been happy.'
+\b.[ii.] `If Mary went to the party, John would be happy.'
+
+However, the adverb \emph{benlai} `originally' in the consequent could force a counterfactual reading.
+\ex. \gll 
+ruguo Mali zuotian qu-le paidui, Yuehan \textbf{benlai} hui gaoxing de. \\
+if Mary yesterday go-\textsc{pfv} party John originally will happy \textsc{de}\\
+\a.[i.] `If Mary had come to the party, John would have been happy.'
+\b.[ii.] *`If Mary went to the party, John would be happy.'
+
+\emph{de} glossed \textsc{de} (here or below) is a possessive/modification/relativization marker. 
+It has nothing to do with X-marking/tense/aspect, etc.
+
+\section{Wish clauses}
+\label{sec:wish_clauses}
+
+\ex. \gll 
+wo xiwang Mali lai paidui. \\
+\textsc{1sg} hope Mary come party \\
+\glt `I hope/wish Mary will come/would come to the party.'
+
+
+The counterfactual wishes don't seem to be expressible with \emph{xiwang} or similar attitudes.
+However, a conditional could help express it:
+\ex. \gll 
+yaoshi Mali lai-le paidui jiu hao le!\\
+if.X-inclined Mary come-\textsc{pfv} party then good \textsc{sfp}  \\
+\glt `If only Mary had come to the party!', literally, `If Mary had come to the party, then it would be good!'
+
+\emph{le}, an \textsc{sfp} (sentence-final particle), usually encodes change-of-state.
+
+\section{Correlatives}
+\label{sec:correlatives}
+
+\ex. \gll 
+shei lai paidui, Yuehan jiu gei shei mai liwu. \\
+who come party John then give who buy gift \\
+\glt `Whoever comes to the party, John will buy a gift for them.'
+
+
+
+\ex. \gll 
+shei lai-le paidui, Yuehan jiu gei shei mai-le liwu. \\
+who come-\textsc{pfv} party John then give who buy-\textsc{pfv} gift \\
+\glt `Whoever came to the party, John bought a gift for them.'
+
+\section{Unconditionals}
+\label{sec:unconditionals}
+
+\ex. \gll 
+buguan shei lai paidui, Yuehan dou hui gaoxing. \\
+no.matter who come party John even/all will happy \\
+\glt `No matter who comes to the party, John will be happy.'
+
+\section{Comparative correlatives}
+\label{sec:comparative_correlatives}
+
+No distinction between past and future.
+
+\emph{yue} prefers to be in the clausal spine, and so a relative clause paraphrase is preferred.
+\ex. \gll 
+{\I[RC } lai paidui de] ren yue duo, Yuehan jiu yue gaoxing. \\
+{} come party \textsc{de} person \textsc{yue} many John then \textsc{yue} happy \\
+\a.[i.] `The more people will come to the pary, the happier John will be.'
+\b.[ii.] `The more people came to the pary, the happier John were.'
+
+\ex. \gll 
+{\I[RC } lai paidui de] ren yue shao, Yuehan jiu yue gaoxing. \\
+{} come party \textsc{de} person \textsc{yue} few John then \textsc{yue} happy \\
+\a.[i.] `The fewer people will come to the pary, the happier John will be.'
+\b.[ii.] `The fewer people came to the pary, the happier John were.'
+
+
+\section{Comparative unconditionals}
+\label{sec:comparative_unconditionals}
+
+\ex. \gll 
+buguan duoshao ren lai paidui, Yuehan dou hui dai zai fangjian li. \\
+no.matter how.many person come party John even/all will stay be.at room in \\
+\glt `No matter how many people will come to the party, John will stay in the room.'
+
+\ex. \gll 
+buguan duoshao ren lai-dao-le paidui, Yuehan dou dai zai-le fangjian li. \\
+no.matter how.many person come-arrive-\textsc{pfv} party John even/all stay be.at-\textsc{pfv} room in \\
+\glt `No matter how many people came to the party, John stayed in the room.'
+
+With \emph{how few}, a relative clause is again preferred.
+\ex. \gll 
+buguan {\I[RC } lai paidui de] ren you duo(me) shao, Yuehan dou hui dai zai fangjian li. \\
+no.matter {} come party \textsc{de} person exist how.much few John even/all will stay be.at room in \\
+\glt `No matter how few the people who will come to the party will be, John will stay in the room.'
+
+\ex. \gll 
+buguan {\I[RC } lai paidui de] ren you duo(me) shao, Yuehan dou dai zai-le fangjian li. \\
+no.matter {} come party \textsc{de} person exist how.much few John even/all stay be.at-\textsc{pfv} room in \\
+\glt `No matter how few the people who come to the party were, John stayed in the room.'
+
+
+
+\section{Comparatives}
+\label{sec:comparatives}
+In these cases, nominalization via relativization is strongly preferred.
+\ex. \gll 
+lai Yuehan de paidui de ren bi lai Mali de paidui de ren duo. \\
+come John \textsc{de} party \textsc{de} person than come Mary \textsc{de} party \textsc{de} person many \\
+\glt `More people came to John's party than Mary's party.'
+
+\ex. \gll 
+Yuehan de paidui bi Mali de paidui yongji. \\
+John \textsc{de} party than Mary \textsc{de} party crowded \\
+\glt `John's party was more crowded than Mary's party.'
+
+
+\ex. \gll 
+lai Yuehan de paidui de ren bi lai Mali de paidui de ren shao. \\
+come John \textsc{de} party \textsc{de} person than come Mary \textsc{de} party \textsc{de} person few \\
+\glt `Fewer people came to John's party than Mary's party.'
+
+\ex. \gll 
+Yuehan de paidui meiyou Mali de paidui yongji. \\
+John \textsc{de} party \textsc{neg}.than Mary \textsc{de} party crowded \\
+\glt `John's party was less crowded than Mary's party.'
+
+
+
+
+
+
+\end{document}
+
+

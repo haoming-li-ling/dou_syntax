@@ -1,0 +1,1811 @@
+\documentclass[12pt]{article}
+\usepackage[letterpaper, margin=1in]{geometry}
+% \usepackage[skip=\baselineskip, tocskip=0pt]{parskip}
+\usepackage{amsmath, amsfonts, amssymb, amsthm, mathtools}
+\usepackage{stmaryrd}
+\usepackage{fontspec}
+\let\latextextsubscript\textsubscript
+\AtBeginDocument{
+  \let\textsubscript\latextextsubscript
+  \newcommand{\sub}[1]{\textsubscript{#1}}
+  \newcommand{\gap}[1]{\rule{1em}{0.4pt}\textsubscript{#1}}
+}
+\let\latextextsuperscript\textsuperscript
+\AtBeginDocument{
+  \let\textsuperscript\latextextsuperscript
+}
+\usepackage[largesc]{newpxtext}
+\usepackage[vvarbb]{newpxmath}
+\usepackage{csquotes}
+\usepackage{markdown}
+
+\usepackage{pifont}
+% \usepackage{txfonts}
+\let\eachwordone=\rmfamily
+\let\eachwordtwo=\rmfamily
+\let\eachwordthree=\rmfamily
+\let\rm=\relax
+\usepackage{linguex, cgloss}
+\renewcommand{\firstrefdash}{}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\crefname{ExNo}{}{}
+\crefname{SubExNo}{}{}
+\renewcommand{\theExNo}{\arabic{ExNo}}
+\renewcommand{\theSubExNo}{\theExNo\alph{SubExNo}}
+\creflabelformat{SubExNo}{(#2#1#3)}
+\creflabelformat{ExNo}{(#2#1#3)}
+\crefrangelabelformat{SubExNo}{(#3#1#4--#5\crefstripprefix{#1}{#2}#6)}
+\crefrangelabelformat{ExNo}{(#3#1#4)--(#5#2#6)}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+\usepackage{xcolor}
+% \setlength{\parskip}{1ex}
+% \setlength{\parindent}{0pt}
+\setlist[1]{left=0pt}
+% \renewcommand\thesection{\Roman{section}.}
+% \renewcommand\thesubsection{\arabic{subsection}.}
+% \renewcommand\thesubsubsection{\Alph{subsubsection}}
+
+\usepackage[
+  backend=biber,
+  natbib=true,
+  style=unified,
+  maxcitenames=3,
+  maxbibnames=99
+]{biblatex}
+\addbibresource{../Distributivity.bib}
+\AtBeginDocument{
+  % \setlength{\Extopsep}{0\baselineskip}
+  % \setlength{\Exredux}{0\baselineskip}
+  \settowidth{\Exlabelwidth}{(00)}
+  % \setlength{\Exlabelwidth}{.7\Exlabelwidth}
+  % \setlength{\Exlabelsep}{.7\Exlabelsep}
+  % \setlength{\SubExleftmargin}{\SubExleftmargin}
+  % \setlength{\SubSubExleftmargin}{\SubSubExleftmargin}
+}
+
+\newcommand{\A}{\(\overline{\text{A}}\)}
+\usepackage{tikz}
+\usepackage[linguistics]{forest}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{tikzmark}
+\usepackage{tikz-cd}
+\tikzcdset{
+  arrow style=math font,
+  % diagrams={>={Straight Barb[scale=0.8]}}
+}
+
+\tikzset{every label/.style={font=\footnotesize}}
+
+\forestset{
+  default preamble={
+    for tree={
+      inner sep=0pt,
+      % draw,
+    }
+  },
+  great empty nodes/.style={
+    for tree={
+      calign=fixed edge angles,
+      calign primary angle=-60,
+      calign secondary angle=60, 
+    l=7mm},
+    delay={
+      where content={}{
+        shape=coordinate,
+    for current and siblings={anchor=north}}{}}
+  },
+  downroof/.style={
+    for children={
+      if n=1{
+        edge path'={
+          (.parent first) -- (!u.parent anchor) -- (!ul.parent last) -- cycle
+        }
+      }{no edge}
+    }
+  }
+}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\renewcommand\tabularxcolumn[1]{m{#1}}% for vertical centering text in X column
+
+\AtBeginDocument{% to do this after unicode-math has done its work
+  \renewcommand{\setminus}{\mathbin{\backslash}}%
+}
+\title{Bar-Lev \& Fox (2020)}
+\author{Haoming Li}
+
+\DeclareMathOperator{\atom}{\textsc{Atom}}
+\DeclareMathOperator{\alt}{\textsc{Alt}}
+\DeclareMathOperator{\xh}{\textsc{Exh}}
+\newcommand{\exh}{\ensuremath{\xh}}
+\newcommand{\Exh}{\ensuremath{\mathcal{E}\mathit{xh}}}
+\newcommand{\Pex}{\ensuremath{\mathcal{P}\mathit{ex}}}
+\DeclareMathOperator{\prt}{Part}
+\DeclareMathOperator{\dom}{dom}
+\begin{document}
+%
+\section{Introduction}
+\label{sec:introduction}
+
+
+One of the most studied morphemes in Mandarin Chinese could be \emph{dou}, which displays a wide variety of uses in different contexts.
+First, \emph{dou} has a use that is very similar to English \emph{even}, which takes a focus associate and operates on individual alternatives.
+I call this the \emph{scalar use}.
+\ex. \gll
+Zhangsan\(_F\) \textbf{dou} lai-le. \\
+Z. \textsc{dou} come-\textsc{pfv} \\
+\glt `Even Zhangsan\(_F\) came.'
+
+Second, \emph{dou} licenses a universal quantifier headed by \emph{mei}.
+I call this the \emph{universal use}.
+\ex. \gll
+mei-ge ren *(\textbf{dou}) lai-le. \\
+every-\textsc{cl} person \phantom{*(}\textsc{dou} come-\textsc{pfv} \\
+\glt `Everyone came.'
+
+Third, \emph{dou} licenses the universal free choice reading of NPI indefinites, such as \emph{renhe} `any' and \emph{wh}-indefinites.
+I call this the \emph{FC use}.
+\ex. \gll
+\{ shenme ren / renhe ren \} *(\textbf{dou}) keyi lai. \\
+{}  what person / any person {} \phantom{*(}\textsc{dou} can come \\
+\glt `Anyone can come.'
+
+Lastly, \emph{dou} can be used with a  plural subject and obtains a semantic contribution quite similar to English \emph{all} (or \emph{both}).
+I call this the \emph{distributive use}.
+\ex. \gll
+zhexie xuesheng \textbf{dou} lai-le. \\
+these student \textsc{dou} come-\textsc{pfv} \\
+\glt `These students all came.'
+
+One syntactic curiosity with \emph{dou} is that in all uses except for the scalar, \emph{dou} is only able to associate with an element to its linear left; whatever needs licensing by \emph{dou} in the examples above, when appearing to the right of where \emph{dou} is located, no longer needs licensing by \emph{dou}, and in fact, rejects the presence of \emph{dou}:
+\ex. \emph{Scalar}\\
+\gll
+Zhangsan \textbf{dou} chi-le wu\(_F\)-wan fan le. \\
+Z. \textsc{dou} eat-\textsc{pfv} 5-\textsc{cl} rice \textsc{sp} \\
+\glt `Zhangsan has even eaten 5\(_F\) bowls of rice.'
+
+\ex. \emph{Universal}\\
+\gll
+Zhangsan (*\textbf{dou}) jibai-le mei-ge ren. \\
+Z. \phantom{(*}\textsc{dou} defeat-\textsc{pfv}  every-\textsc{cl} person\\
+\glt `Zhangsan defeated everyone.'
+
+\ex. \emph{FC}\\
+\gll
+Zhangsan (*\textbf{dou}) keyi jibai renhe ren. \\
+Z. \phantom{(*}\textsc{dou} defeat-\textsc{pfv}  any person\\
+\glt `Zhangsan defeated everyone.'
+
+\ex. \emph{Distributive}\\
+\gll
+Zhangsan (*\textbf{dou}) jian-le zhexie xuesheng. \\
+Z. \phantom{(*}\textsc{dou} meet-\textsc{pfv} these student\\
+\glt Intended: `Zhangsan met all these students.'
+
+Notice that the examples above can be made grammatical if we consider \emph{dou} to associate with the subject \emph{Zhangsan} in a scalar use, since \emph{Zhangsan} is in a position that the scalar \emph{dou} can associate with.
+Crucially, without this scalar flavor, these examples are all unacceptable with \emph{dou}.
+
+This paper will first introduce an attempt to give a unified account of the various uses of \emph{dou} in \cref{sec:previous_attempts_at_a_unified_account}, namely \citet{liuVarietiesAlternativesMandarin2017,liuPragmaticExplanationMeidou2021}.
+Liu has united the scalar, universal, and distributive uses of \emph{dou} in suggesting that \emph{dou} has the uniform semantic contribution equivalent to English \emph{even}.
+The main aim of the paper is to discuss (a) extensions of this analysis to the FC use and non-monotonic quantifiers, which are considered as evidence in support of Liu's account (\crefrange{sub:deriving_the_fc_use_npi}{sub:non_monotonic_quantifiers}); and (b) its problems and corresponding amendments (\cref{sec:amendments_to_liu}).
+For (a), I will show that (1) Liu's analysis can be extended to the FC use of \emph{dou} with NPI indefinites with the help of the approach to NPI licensing in \citet{lahiriFocusNegativePolarity1998,crnicNonmonotonicityNPILicensing2014} (\cref{sub:deriving_the_fc_use_npi}); that (2) Liu's analysis can be extended to the FC use of \emph{dou} with \emph{wh}-indefinites, which display several different properties than NPI indefinites in this context, given certain assumptions about the ordinary and focus semantic values of \emph{wh}-phrases (\cref{sub:wh_indefinites}); and that (3) Liu's analysis can be extended to a class of non-monotonic quantifiers, some of which not originally noticed by Liu. 
+For (b), I will argue that (1) Liu's semantics of \emph{dou} can be further simplified by removing a context-supplied variable over orderings over propositions (\cref{sub:eliminating_context_dependency_of_the_ordering_over_propositions}) and that (2) the analysis of of the distributive use of \emph{dou} must be revised to explain its divergence in prosody and syntax from the other uses (\cref{sub:re_examination_of_the_distributive_use_of_dou}).
+It will turn out that a proper re-analysis of the distributive case is a rather substantial task and will involve a prosodic, a syntactic, and a semantic component, which are described in (\cref{sec:analyzing_the_distributive_use_of_dou}).
+The development of these components will motivate investigations of the stress realization of null focused elements, (\cref{sub:deriving_the_stress_on_dou_in_the_distributive_use}), the clausal structure of Mandarin Chinese (\cref{sub:deriving_the_syntactic_behavior_of_dou_across_the_uses}), and a possible integration with the account of homogeneity and non-maximality of plurals in \citet{bar-levImplicatureAccountHomogeneity2021}.
+Finally, I will turn to a discussion of Maximize Presupposition, a principle that Liu relies on to derive the obligatoriness of \emph{dou} in certain contexts. 
+I will show that it does not work as intended despite reasonable modifications and show that an account of the obligatoriness of \emph{dou} in certain contexts without Maximize Presupposition is possible (\cref{sec:maximize_presupposition}).
+% as it can be extended to the FC use with the help of an assumption from \citet{lahiriFocusNegativePolarity1998a,crnicNonmonotonicityNPILicensing2014,crnicNumberNPILicensing2022} that negative polarity items (NPI) are licensed through association with \emph{even}.
+% However, I will show that his account of the distributive is incorrect (\cref{sub:re_examination_of_the_distributive_use_of_dou}) for prosodic, syntactic and conceptual reasons, but can be revised as to still be a part of unified analysis (\cref{sec:analyzing_the_distributive_use_of_dou}).
+
+
+
+\section[Previous attempts at a unified account]{Previous attempts at a unified account: \citet{liuVarietiesAlternativesMandarin2017,liuPragmaticExplanationMeidou2021}}
+\label{sec:previous_attempts_at_a_unified_account}
+
+Originally, scholars gave separate accounts of the uses of \emph{dou} or tried to unify only the universal and the distributive use.
+These include \citet{linDistributivityChineseIts1998,chengDouquantification1995,chengEveryTypeQuantificational2009}.
+Later attempts have been made to give a unified account of the various uses of \emph{dou}, which have been promising.
+A unified analysis, in the sense that a single lexical entry can be posited for \emph{dou}, if not overcomplicated, should be most desirable.
+The only approach that satisfies this criterion is the one in \citet{liuVarietiesAlternativesMandarin2017,liuPragmaticExplanationMeidou2021}.\footnote{
+  There is also an attempt at a unified analysis in \citet{xiangFunctionAlternationsMandarin2020}.
+  However, I do think that Xiang's analysis falls short on how unified it is and is overcomplicated. Xiang's analysis, though bearing the semblance of a unifying account, actually posits a separate lexical entry for each of \emph{dou}'s distributive/universal, FC, and scalar uses.
+  These lexical entries encode a stipulated anti-exhaustivity assertion, akin to a recursively applied exhaustifier (\(O\)/\(\exh\)).
+  The following are adapted from \citet{xiangFunctionAlternationsMandarin2020}.
+  \ex. \emph{Scalar use}
+  \a. \(\llbracket \text{dou}_C \rrbracket = \lambda p \lambda w: \exists q \in \textsc{Sub}_{\text{likely}}(p, C).\, p(w) \land \forall q \in \textsc{Sub}_{\text{likely}}(p, C).\, \lnot \textsc{Just}_C(q)(w)\)
+  \b. \(\textsc{Sub}_{\text{likely}}(p, C) = \{ q : q \in C \land q >_{\text{likely}} p \}\)
+  \b. \(\textsc{just}_C(q) = \lambda w.\, q(w) \land \forall r \in C.\, r(w) \to q \leq_{\text{likely}} r \)
+
+  \ex. \emph{Distributive use}
+  \a. \(\llbracket \text{dou}_C \rrbracket = \lambda p \lambda w : \exists q \in \textsc{Sub}_{\textsc{Excl}}(p, C).\, p(w) \land \forall q \in \textsc{Sub}_{\textsc{Excl}}(p, C).\, \lnot \exh_C(q)(w)\)
+  \b. \(\textsc{Sub}_{\textsc{Excl}}(p, C) = C \setminus (\textsc{Excl}(p, C) \cup \{ p \})\)
+  \b. \(\textsc{Excl}(p, C) = \{ q : p \not \subseteq q \land q \in C \}\)
+
+  \ex. \emph{FC use}
+  \a. \(\llbracket \text{dou}_C \rrbracket = \lambda p \lambda w : \exists q \in \textsc{Sub}_{\textsc{IExcl}}(p, C).\, p(w) \land \forall q \in \textsc{Sub}_{\textsc{IExcl}}(p, C).\, \lnot \exh_C(q)(w) \)
+  \b. \(\textsc{Sub}_{\textsc{IExcl}}(p, C) = C \setminus (\textsc{IExcl}(p, C) \cup \{ p \})\)
+  \b. \(\textsc{IExcl}(p, C) = \bigcap \{ A : A \text{ is a maximal subset of } C \text{ such that } \{ \lnot q : q \in A \} \cup \{ p \} \text{ is consistent} \} \)
+
+  The universal use and distributive use collapse into one, since Xiang treats universals as the same as plurals, following approaches that only sought to unify the distributive use and the universal use \citet{linDistributivityChineseIts1998}.
+  It is obvious that while all three definitions of \emph{dou} follow the same pattern, they are different in substantial ways.
+  They make assertions about different kinds of alternatives, which are lexically specified in the semantics of \emph{dou}, and assertions themselves are different as well: \(\lnot\textsc{Just}_C(q)(w)\) versus \(\lnot \exh_C(q)(w)\).
+  Additionally, there is the problem of redundancy and overcomplication. 
+  First, \citet{xiangFunctionAlternationsMandarin2020} proves that the lexical entry for the scalar use of \emph{dou} is equivalent to a standard formulation of the semantics of \emph{even}, which is formally much simpler.
+  Second, a large part of the assertion is redundant in the distributive use: \(\forall q \in \textsc{Sub}_{\textsc{Excl}}(p, C).\, \lnot \exh_C(q)(w)\) is implied by \(p(w)\).
+  It is almost as if the formally similar lexical entries given for the three uses of \emph{dou} are made similar by looking for the least common multiple in terms of the formal complexity of three distinct functions.
+  This state of affairs is clearly undesirable from a theoretical standpoint, especially when a unifying analysis is sought.
+}
+
+Liu's analysis of \emph{dou} is satisfactory in that the semantic contribution of \emph{dou} is held constant across the uses and the differences are evened out through its interaction with other standard operators, such as a covert distributor or \(\Exh\).
+Therefore, I will introduce \citet{liuVarietiesAlternativesMandarin2017,liuPragmaticExplanationMeidou2021} as the framework of analysis that this paper is based on. 
+% I will also augment the theory with my own extension of the analysis to the FC use, not originally covered by Liu, incorporating ideas from \citet{lahiriFocusNegativePolarity1998a,crnicNonmonotonicityNPILicensing2014,crnicNumberNPILicensing2022}.
+
+\citet{liuVarietiesAlternativesMandarin2017,liuPragmaticExplanationMeidou2021} treats \emph{dou} as essentially having the same semantic contribution as English \emph{even}, with the following semantics:
+\ex. \(\llbracket \text{dou\(_C\) } S \rrbracket\) is defined iff \(\forall q \in \{ \llbracket S' \rrbracket \mid S' \in \textsc{alt}(S) \} \cap C.\, \llbracket S \rrbracket \neq q \to \llbracket S \rrbracket \prec q\).\\
+If defined, \(\llbracket \text{dou }S \rrbracket = \llbracket S \rrbracket\) *(where \(\prec\) is either \(\prec_{\text{likely}}\) or \(\subset\)). \label{itm:dou_definition}
+
+In prose, this definition means that \emph{dou} presupposes that its prejacent is the strongest among the alternatives with respect to an ordering over propositions that is based on either likelihood or entailment.  
+If this presupposition is met, then the prejacent is asserted.
+
+There is one small gripe that one might have towards the lexical entry for \emph{dou}.
+The ordering on propositions varies according to the context between one based on likelihood and one based on entailment.
+In \cref{sub:eliminating_context_dependency_of_the_ordering_over_propositions}, I will introduce an observation in \citet{crnicNonmonotonicityNPILicensing2014} that likelihood alone is the only required relation between propositions that an \emph{even}-like element needs to access.
+
+This analysis also makes the common assumption that \emph{dou} covertly moves from its clause-medial position to a position that is able to take the entire clause as its argument; this is also assumed in \citet{crnicNonmonotonicityNPILicensing2014}.
+
+If the semantic contribution of \emph{dou} is assumed to be equivalent to \emph{even}, then the scalar use is considered the base case.
+Liu himself has covered the distributive, the universal, and the scalar uses.
+% The FC use is straightforwardly derivable in light of \citet{crnicNonmonotonicityNPILicensing2014,crnicNumberNPILicensing2022}.
+In \crefrange{sub:deriving_the_scalar_use}{sub:deriving_the_distributor_use}, I will recapitulate the derivations \citet{liuVarietiesAlternativesMandarin2017,liuPragmaticExplanationMeidou2021} provides for the scalar, universal, and distributive uses of \emph{dou}.
+% In \crefrange{sub:deriving_the_fc_use_npi}{sub:non_monotonic_quantifiers}, I will propose extensions of Liu's account to the FC use of \emph{dou} with NPI indefinites, the FC use of \emph{dou} with \emph{wh}-indefinites (along with justification that they should be treated as a separate case from NPI indefinites), and to the use of \emph{dou} with a class of non-monotonic quantifiers, only partially and briefly discussed by \citet{liuPragmaticExplanationMeidou2021}. 
+% These extensions will be seen as evidence in support of the approach.
+% In \cref{ssub:deriving_the_free_choice_licensing_use}, I will demonstrate how his analysis can be extended to the FC use of \emph{dou} if we adopt the argument in \citet{lahiriFocusNegativePolarity1998a,crnicNonmonotonicityNPILicensing2014,crnicNumberNPILicensing2022} that negative polarity items (NPI) are licensed by an element with the semantic contribution of \emph{even}, combined with an \(\exh\)-based account of free choice.
+
+A crucial component of Liu's analysis is the principle of \emph{Maximize Presupposition}, first proposed in \citet{heimArtikelUndDefinitheit1991}.
+In cases where \emph{dou} is obligatory, i.e., functioning as a licensor for the relevant construction, the obligatoriness is derived through Maximize Presupposition, which roughly instructs one to presuppose as much as possible.
+More concretely, it requires the speaker to use \emph{dou}/\emph{even} when its presupposition is satisfied.
+Then, whenever \emph{dou} is licensed, it is obligatory, and turns into a licensor.
+However, I consider Maximize Presupposition as the weakest link in Liu's theory of \emph{dou}.
+In the following subsections, I will be introducing Liu's analysis, referring to Maximize Presupposition as employed by Liu while pointing out places to be suspicious about, but a full discussion of the problems will be delayed until \cref{sec:maximize_presupposition}.
+% Near the end of the paper, I will return to a discussion of why the application of Maximize Presupposition is unsatisfactory.
+% As such, I retract the ambition to give a complete answer to the question why \emph{dou} is obligatory in certain cases and leave the issue to future research.
+
+
+\subsection{Deriving the scalar use}
+\label{sub:deriving_the_scalar_use}
+
+The scalar use of \emph{dou} follows directly from the definition of \emph{dou} in \cref{itm:dou_definition}.
+\emph{Dou} moves to the left edge of the clause and takes the clause with a focused element, in this case, \emph{Zhangsan}, as an argument.
+The ordering relation over propositions \(\prec\) that \emph{dou} takes is based on likelihood.
+\vspace{2.5em}
+\ex. \gll
+\tikzmarknode{even}{dou} [ \tikzmarknode{zhangsan}{Zhangsan}\(_F\) \tikzmarknode{dou}{\sout{dou}} lai-le ]. \\
+{} {} Z. \textsc{dou} come-\textsc{pfv} \\
+\glt `Even Zhangsan came.'
+\begin{tikzpicture}[overlay, remember picture]
+	\draw[dashed] ([xshift=3pt]even.north) -- ++(0, 0.25) -| node[pos=0.25, above] {\scriptsize foc assoc} (zhangsan);
+	\draw[Stealth-] ([xshift=-3pt]even.north) -- ++(0, 0.75) -| node[pos=0.25, above] {\scriptsize Move} (dou);
+\end{tikzpicture}
+
+This is felicitous if \emph{Zhangsan came} is the least likely among the alternatives such as \emph{Lisi came}.
+Therefore, semantically, the scalar use of the \emph{dou} is just like English \emph{even}.
+
+% The true difference between the scalar use and the other two uses seems to be that the scalar use involves individual alternatives rather than domain alternatives.
+
+% One syntactic difference is that \emph{dou} in this case does not need to associate to the left; an associate on the right can also license it.
+
+
+
+
+\subsection{Deriving the universal use}
+\label{sub:deriving_the_universal_use}
+
+
+This derivation is the focus of \citet{liuPragmaticExplanationMeidou2021}.
+The universal quantifier \emph{mei} has the following regular semantics according to Liu:
+\ex. \(\llbracket \text{mei} \rrbracket = \lambda P_{et}.\, \lambda Q_{et}.\, \forall x_{e}.\, x \in D \land P(x) \to Q(x)\)
+
+The associate of \emph{dou} in such sentences is the domain variable \(D\) on \emph{mei}.
+The alternatives of \(D\) that are generated are the sub-domain alternatives, which are \(D'\) such that \(D' \subseteq D\).
+The ordering relation over propositions \(\prec\) that \emph{dou} takes is based on entailment.
+\vspace{2.5em}
+\ex.  \gll
+\tikzmarknode{even}{dou} [ mei\(_{\tikzmarknode{D}{D_F}}\) yi-ge xuesheng \tikzmarknode{dou}{\sout{dou}} lai-le ].\\
+{} {} \textsc{mei} 1-\textsc{cl} student \textsc{dou} come-\textsc{pfv}\\
+\glt `Every student came.'\\
+\(\forall x.\, x \in D \land \mathsf{student}(x) \to \mathsf{came}(x) \)
+\begin{tikzpicture}[overlay, remember picture]
+	\draw[dashed] ([xshift=3pt]even.north) -- ++(0, 0.25) -| node[pos=0.25, above] {\scriptsize foc assoc} (D);
+	\draw[Stealth-] ([xshift=-3pt]even.north) -- ++(0, 0.75) -| node[pos=0.25, above] {\scriptsize Move} (dou);
+\end{tikzpicture}
+
+In a context where there are three students \(\{ \mathbf{a},\mathbf{b},\mathbf{c} \} = D\), we have the following alternatives to the prejacent of \Last:
+\ex.
+\(\begin{Bmatrix*}[l]
+	\forall x.\, x \in \{ \mathbf{a} \} \to \mathsf{came}(x) \\
+	\forall x.\, x \in \{ \mathbf{b} \} \to \mathsf{came}(x) \\
+	\forall x.\, x \in \{ \mathbf{c} \} \to \mathsf{came}(x) \\
+	\forall x.\, x \in \{ \mathbf{a}, \mathbf{b} \} \to \mathsf{came}(x) \\
+	\forall x.\, x \in \{ \mathbf{b}, \mathbf{c} \} \to \mathsf{came}(x) \\
+	\forall x.\, x \in \{ \mathbf{c}, \mathbf{a} \} \to \mathsf{came}(x) \\
+	\underline{\forall x.\, x \in \{ \mathbf{a}, \mathbf{b}, \mathbf{c} \} \to \mathsf{came}(x)} \\
+\end{Bmatrix*}\)
+
+The alternatives have subsets of \(D\) as the domain of quantification and are all going to be entailed by the prejacent.
+The prejacent is therefore the strongest among the alternatives and the presupposition of \emph{dou} is met.
+
+The above derives the \emph{acceptability} of \emph{dou} in the universal use.
+However, it is not just \emph{acceptable}, but also \emph{obligatory} in the presence of \emph{mei} that is outside the VP.
+\citet{liuPragmaticExplanationMeidou2021} accounts for this requirement through the assumption that universal quantifiers such as \emph{mei} can and sometimes must generate domain alternatives \citep{chierchiaLogicGrammarPolarity2013,xiangFunctionAlternationsMandarin2020}, and crucially, Maximize Presupposition, proposed first in \citet{heimArtikelUndDefinitheit1991}:
+\ex. \emph{Maximize Presupposition} (MP)\\
+Make your contribution presuppose as much as possible. \label{itm:mp}
+
+MP requires that the speaker use the sentence among a set of alternatives with the same assertive content that bears the most presuppositions.
+The same principle is argued to be at work for English \emph{too}, as in
+\ex. Bill went to the party, too.
+
+\Last is obligatorily preferred over \emph{Bill went to the party} when the presupposition of \emph{too} is satisfied.
+\citet{liuPragmaticExplanationMeidou2021} notes in a footnote that there might be suspicion about the alternatives for competition, since if the alternatives that the sentences with \emph{dou} must outcompete include the same sentence without \emph{dou}, then we have a case of alternatives differing in structural complexity competing against each other, since \emph{dou} competes with the absence of any element in the same position.
+Liu proposes that the solution \citet{singhModularityLocalityInterpretation2008} gives for the \emph{too} case can also be applied to the \emph{dou} case: the alternative to \emph{dou} could be \(\sim\) of \citet{roothTheoryFocusInterpretation1992}.
+Notice here the assumption would be that \(\sim\) is not required for focus operations in general (so \emph{dou}\(_C\) does not require \(\sim\) to work and directly merges with its prejacent), but is just an element that vacuously consumes all of the alternatives of the prejacent.
+
+As given in \citet{liuPragmaticExplanationMeidou2021}, the formulation of the MP is very vague, and it is difficult to reason about the competitors of \emph{dou}, and one might also have the suspicion that \emph{dou} is unable to outcompete anything because the presupposition in the universal use is tautological. 
+These issues will be the basis for my modification of Liu's account in \cref{sec:maximize_presupposition}.
+
+
+
+\subsection{Deriving the distributive use}
+\label{sub:deriving_the_distributor_use}
+Unlike \citet{xiangFunctionAlternationsMandarin2020}, Liu has treated the distributive use and the universal use of \emph{dou} as separate but unifiable. 
+Liu provides many arguments against considering \emph{mei}-DPs as plurals and for treating them as real universal quantifiers in \citet{liuPragmaticExplanationMeidou2021}, which I will not recapitulate here and to which the reader will be advised to refer to if interested in these arguments.
+
+The distributive use of \emph{dou} is accounted for in \citet{liuVarietiesAlternativesMandarin2017}.
+The associate of \emph{dou} is considered to be the plural DP.
+The ordering relation over propositions \(\prec\) that \emph{dou} takes is based on entailment.
+\vspace{2em}
+\ex.  \gll
+\tikzmarknode{even}{dou} [ \tikzmarknode{they}{tamen\(_F\)} \(\Delta\) \tikzmarknode{dou}{\sout{dou}} lai-le ].\\
+{} {} they {} \textsc{dou} come-\textsc{pfv}\\
+\glt `They all came.'
+% \\ \(\forall x.\, x \in D \to \mathbf{came}(x) \)
+\begin{tikzpicture}[overlay, remember picture]
+	\draw[dashed] ([xshift=3pt]even.north) -- ++(0, 0.25) -| node[pos=0.25, above] {\scriptsize foc assoc} (they);
+	\draw[Stealth-] ([xshift=-3pt]even.north) -- ++(0, 0.75) -| node[pos=0.25, above] {\scriptsize Move} (dou);
+\end{tikzpicture}
+
+A covert distributor \(\Delta\) is present in \Last to contribute distributivity, with the following standard semantics:
+\ex. \(\llbracket \Delta \rrbracket = \lambda P.\, \lambda x.\, \forall y.\, y \leq x \land \atom(y) \to P(y)\) \label{itm:dist}
+
+The plural DP, as a mereological sum, generates subparts as its alternatives:
+\ex. \(\alt(\text{DP}) = \{ \text{DP}' : \llbracket \text{DP}' \rrbracket \sqsubseteq \llbracket \text{DP} \rrbracket\}\)
+
+One might immediately observe the unusual nature of the alternatives thus specified; they are not derived through syntactic manipulations as is commonly assumed (e.g.\ \citealt{foxCharacterizationAlternatives2011}), but specified in terms of their interpretations.
+This will foreshadow a discussion of the undesirability of the idea of plurals generating subparts in \cref{ssub:arguments_against_plurals_having_subparts_as_alternatives}.
+In place of plurals generating subparts as alternatives, I will propose that \emph{dou} also associates with a domain variable, but on a covert distributor, in the distributive use.
+
+Then, observe that a  plural DP along with a distributive operator is semantically equivalent to a universal quantifier whose domain is the set of all atomic subparts of the plural DP.
+\ex. \(\llbracket \alt(\text{they}) \rrbracket = \{ \mathbf{z}, \mathbf{l}, \mathbf{w}, \mathbf{z} \oplus \mathbf{l}, \mathbf{z} \oplus \mathbf{w}, \mathbf{l} \oplus \mathbf{w}, \mathbf{z} \oplus \mathbf{l} \oplus \mathbf{w} \}\)\footnote{Here, \(\llbracket \cdot \rrbracket\) applies pointwise to a set of syntactic objects (alternatives).
+% , a peculiarity in notation that will foreshadow a discussion about the theoretical status of subparts as alternatives to a plural DP.
+}
+
+If the alternatives of a  plural DP are its subparts, then the alternatives of the whole sentence would be semantically the same as if the plural DP were a universal operator accordingly domain-restricted.
+\ex. \(\{ \text{\(\mathbf{z}\) bought a car},\ldots, \text{\(\mathbf{z} \oplus \mathbf{w}\ \Delta\) bought a car},\ldots, \text{\(\mathbf{z} \oplus \mathbf{l} \oplus \mathbf{w}\ \Delta\) bought a car} \}\)
+
+\ex. \(\{  \forall x \in D'.\, \text{\(x\) bought a car} : D' \subseteq D = \{ y : \atom(y) \land y \leq \mathbf{z} \oplus \mathbf{l} \oplus \mathbf{w} \} \} \)\\
+\strut \hfill \LLast \(\cong\) \Last
+
+Then, in theory, the same \emph{even}/\emph{dou} can associate with both the universal determiner and the plural DP since in both cases the prejacent is the strongest and therefore least likely among the alternatives.
+In both cases, Maximize Presupposition will make \emph{dou}'s presence obligatory.
+
+\section{Extensions}
+\label{sec:extensions}
+
+Liu's analysis does not cover the FC use of \emph{dou}; however, with the help of the approach to NPI-licensing in \citet{lahiriFocusNegativePolarity1998,crnicNonmonotonicityNPILicensing2014}, his analysis can be easily extended to the NPI FC case, which will be seen in \cref{sub:deriving_the_fc_use_npi}.
+In \cref{sub:wh_indefinites}, I will point out the ways in which the FC of \emph{wh}-indefinites is different from NPI indefinites and provide an account.
+In \cref{sub:non_monotonic_quantifiers}, I will expand Liu's brief comment on non-monotonic quantifiers co-occurring with \emph{dou} into a unified, precisified account of \emph{dou} and non-monotonicity, supplied with previously undescribed data that motivates the unification.
+
+\subsection{Deriving the FC use: NPI indefinites}
+\label{sub:deriving_the_fc_use_npi}
+
+% One use that has not been covered in \citet{liuVarietiesAlternativesMandarin2017,liuPragmaticExplanationMeidou2021} is the FC use. 
+I will show that the FC use of \emph{dou} for NPI indefinites is actually straightforwardly explained by the approach to NPI where NPIs are licensed by an element with the semantic contribution of \emph{even} \citep{lahiriFocusNegativePolarity1998,crnicNonmonotonicityNPILicensing2014,crnicFreeChoiceEllipsis2017a,crnicNumberNPILicensing2022}, which is exactly \emph{dou} in Mandarin Chinese.
+That Liu's account can be so readily extended to the FC use is evidence for his account being on the right track.
+
+The underlying assumption I adopt is that universal free choice is derived as an implicature.
+For concreteness, I adopt \emph{Innocent Inclusion} of \citet{bar-levFreeChoiceSimplification2020}, but \emph{Recursive Exhaustification} of \citet{foxFreeChoiceTheory2007a} should work just as well.
+%  The association configuration
+%   \ex. [\tikzmarknode{even}{even} [\ldots{} any\(_{\tikzmarknode{D}{D_{F}}}\) \ldots{} ]0.0.]
+%   % \tikz[overlay, remember picture]{}
+%
+%   \begin{tikzpicture}[overlay, remember picture]
+%     \draw[] (even) -- ++(0, -0.5) -| (D);
+%   \end{tikzpicture}
+
+% The presence of \exh\(_R\) does not seem to prevent \emph{even} from directly associating with \emph{any}.
+\emph{Dou} will associate with the domain variable \(D\) as in the universal use, but this time on \emph{renhe}.
+The ordering relation over propositions \(\prec\) that \emph{dou} takes is based on entailment.
+The FC use of \emph{dou} will have the following Logical Form, assuming that the NPI reconstructs under the modal:
+\vspace{2em}
+\ex. \gll
+\tikzmarknode{even}{dou} [ {\Exh} [ renhe\(_{\tikzmarknode{D}{D_F}}\) ren\(_1\) \tikzmarknode{dou}{\sout{dou}} [  keyi \gap{1} lai ]]]. \\
+{} {} {} {} any person \textsc{dou} {} can {} come \\
+\glt `Anyone can come.' \label{itm:even_ex}
+\begin{tikzpicture}[overlay, remember picture]
+	\draw[dashed] ([xshift=3pt]even.north) -- ++(0, 0.25) -| node[pos=0.25, above] {\scriptsize foc assoc} (D);
+	\draw[Stealth-] ([xshift=-3pt]even.north) -- ++(0, 0.75) -| node[pos=0.25, above] {\scriptsize Move} (dou);
+\end{tikzpicture}
+
+The above can be simplified into the following for ease of exposition:
+\ex. [even [{\Exh} [\(\Diamond\) [any\(_{D_F}\) person\(_x\)  come]]]]
+
+The alternatives to the prejacent of \emph{even} in \Last are:
+% \ex. \(\left\{ \text{[{\Exh} [\(\Diamond\) [any\(_{D'}\) person\(_x\) come]]]},\linebreak[1] \text{[{\Exh} [\(\Diamond\) [every\(_{D'}\) person\(_x\) come]]]} : \llbracket D' \rrbracket \subseteq \llbracket D \rrbracket \right\}\)
+%
+\ex. \(\left\{ \text{[{\Exh} [\(\Diamond\) [any\(_{D'}\) person\(_x\) come]]]}: \llbracket D' \rrbracket \subseteq \llbracket D \rrbracket \right\}\)
+
+The prejacent \LLast is clearly the strongest among those in \Last, as these are equivalent in meaning to 
+\ex. \(\left\{ \text{[every\(_{D'}\) person\(_x\) [\(\Diamond\) [\(x\) come]]]}: \llbracket D' \rrbracket \subseteq \llbracket D \rrbracket \right\}\).
+
+Thus, the presupposition of \emph{dou} is satisfied since it only requires the prejacent to be stronger than every alternative that does not express the same proposition.
+In this case, Maximize Presupposition will also force the presence of \emph{dou}, in addition to the assumption that NPI must be licensed by an \emph{even}-element.\footnote{
+  Implicit in this approach to NPI licensing is the assumption in the free choice context that \emph{even} only quantifies over domain alternatives rather than also over alternatives that are generated by replacing \emph{any} with \emph{every}, unlike {\Exh}, which does quantify over alternatives involving \emph{every}.
+  It thus seems that \emph{dou}/\emph{dou} only associates with the domain variable, but {\Exh} associates with the entire determiner.
+  I leave to future research a principled explanation of this distinction.
+}
+
+%    \ex. \a. Gal is allowed to read any book.
+%     \b. [even [\exh\(_R\) [\(\Diamond\) [any\(_{D_F}\) book\(_x\) [Gal read \(x\)]]]]]
+%
+%     The alternatives are
+%     \ex. \(\left\{ \text{[\exh\(_R\)[\(\Diamond\) [any\(_{D_F}\) book\(_x\) [Gal read \(x\)]]]]} : \llbracket D^{*} \rrbracket \subseteq \llbracket D \rrbracket \right\}\)
+%
+%    \ex. \(\forall D^* : \llbracket D^{*} \rrbracket \subseteq \llbracket D \rrbracket \land {}\)\\
+%     \(\llbracket \text{[\exh\(_R\) [\(\Diamond\) [any\(_D\) book\(_x\) [Gal read \(x\)]]]]} \rrbracket \not \Leftrightarrow \llbracket \text{[\exh\(_R\) [\(\Diamond\) [any\(_{D^{*}}\) book\(_x\) [Gal read \(x\)]]]]} \rrbracket \to\)\\
+% \(\llbracket \text{[\exh\(_R\) [\(\Diamond\) [any\(_D\) book\(_x\) [Gal read \(x\)]]]]} \rrbracket < \llbracket \text{[\exh\(_R\) [\(\Diamond\) [any\(_{D^{*}}\) book\(_x\) [Gal read \(x\)]]]]} \rrbracket \)
+%
+%  % It is clear that \exh\(_R\) does not use up the alternatives generated by \emph{any}\(_D\); they are still visible to \emph{even}.
+%
+%  \exh\(_R\) is duplicated across the alternatives.
+%
+%  \Last is basically
+%  \ex. \(\forall D^* : \llbracket D^{*} \rrbracket \subset \llbracket D \rrbracket \to {}\)\\
+% \(\llbracket \text{[\exh\(_R\) [\(\Diamond\) [any\(_D\) book\(_x\) [Gal read \(x\)]]]]} \rrbracket < \llbracket \text{[\exh\(_R\) [\(\Diamond\) [any\(_{D^{*}}\) book\(_x\) [Gal read \(x\)]]]]} \rrbracket \)
+%
+% which is trivially satisfied.
+%
+% \ex. Kenny Chatain
+
+\subsection{Deriving the FC use: \emph{wh}-indefinites}
+\label{sub:wh_indefinites}
+
+The derivation above involves the NPI indefinite \emph{renhe} `any.'
+\emph{Wh}-indefinites are usually grouped with the \emph{any}-type indefinites in the FC use of \emph{dou} without special treatment \citep{xiangFunctionAlternationsMandarin2020}.
+Indeed, every instance of an NPI indefinite in the FC use of the \emph{dou} can be replaced by a \emph{wh}-indefinite.
+\ex. \gll \{ ren ren / shenme ren \} dou key lai.\\
+{} any person {} what person {} \textsc{dou} can come\\
+\glt `Any person can come.'
+
+However, not every \emph{wh}-indefinite can be replaced by an\emph{any}-type indefinites; the two are different in a very important way: FC of \emph{any}-type requires the \emph{wh}-indefinite to take scope under a possibility modal (\(\Diamond\)), while FC of \emph{wh}-indefinites indefinites does not.
+\ex. *\gll 
+renhe ren dou lai-le. \\
+any person \textsc{dou} came \\
+\glt Intended: `Any person came.'
+
+\ex. \gll 
+shenme ren dou lai-le. \\
+what person \textsc{dou} came \\
+\glt `Whatever person they are, they came.'
+
+In view of this divergence, the derivation of the FC use seen in \cref{sub:deriving_the_fc_use_npi} must be slightly modified to account for the FC of \emph{wh}-indefinites.
+Assuming that \emph{wh}-indefinites are also just existential quantifiers paired with a domain variable \(D\), the modification is that the universal alternatives must be absent.
+One way to ensure this is to stipulate that {\Exh}, instead of associating with the entire determiner which contains the domain variable \(D\), associates only with \(D\) in the case of \emph{wh}-indefinites.
+
+Again, we try to simplify the LF, getting the following for the FC use of \emph{wh}-indefinites:
+\ex. [even [{\Exh} [wh\(_{D_F}\) person came]]] \label{itm:wh-prej}
+
+Now, the important question is how a \emph{wh}-phrase behaves focus-semantically.
+I assume, as per Hamblin semantics for questions, that \emph{wh}-phrases generate individual alternatives.
+However, I depart from the usual assumption that \emph{wh}-phrases do not have regular semantic values.
+I argue that \emph{wh}-phrases are existential quantifiers as regular semantic values.
+This is due to the existence of existential interpretation of \emph{wh}-phrases, which also cannot scope out of any islands (or actually, any c-commanding scope-taking element like modals or negation) in a manner that in situ \emph{wh}-questions can.
+\ex. \label{itm:who-came}
+\a. \gll 
+shenme ren lai-le. \\
+what person came \\
+\glt `Someone came.'
+\b. \gll 
+SHENME ren lai-le? \\
+what person came \\
+\glt `Who came?'
+
+\ex. \label{itm:must-eat-what}
+\a. \gll 
+ni bixu chi dian shenme. \\
+you must eat bit what \\
+\a. `You must eat something.'
+\b. *`There is something you must eat.'\\
+\(\Box \exists\), *\(\exists \Box\)
+\z.
+\b. \gll 
+ni bixu chi dian SHENME? \\
+you must eat bit what \\
+\glt `What is something you must eat?'\\
+
+\ex. \label{itm:heard-what-sound}
+\a. \gll 
+huibao tingjian-le shenme shengyin de ren dou bei xiahuai-le.\\
+report heard what sound \textsc{de} person \textsc{dou} \textsc{pass} horrified \\
+\a.  `People who reported that they heard something were all horrified.'
+\b. *`There is some sound \(x\) such that people who reported that they heard \(x\) were all horrified.'
+\z.
+\b. \gll 
+huibao tingjian-le SHENME shengyin de ren dou bei xiahuai-le?\\
+report heard what sound \textsc{de} person \textsc{dou} \textsc{pass} horrified \\
+\glt `What is the sound \(x\) such that people who reported they heard \(x\) were all horrified?'
+
+This can be explained if the \emph{wh}-phrases, when used existentially, are actual quantifiers that must move to take scope; such quantifier raising is usually clause-bound (and of course island-bound), and as I will discuss later, modals and negation take clausal complements, which forbid the raising of quantifier across them, forcing narrowest scope for \emph{wh}-phrases interpreted existentially.
+An additional piece of evidence is that existentially used \emph{wh}-phrases do not bear prosodic prominence, indicating that they are likely not focused, and alternatives are not involved in deriving the existential meaning.
+The prosodic contrast between the existential and interrogative use of \emph{wh}-phrase are illustrated in examples \crefrange{itm:who-came}{itm:heard-what-sound}.
+
+Given the discussion above, we can now see how the FC of \emph{wh}-indefinites are derived.
+The alternatives to the prejacent of \emph{even} in \cref{itm:wh-prej} are:
+\ex. \(\left\{ \text{{\Exh} [what=some\(_{D'}\) person came]} : \llbracket D' \rrbracket \subseteq \llbracket D \rrbracket\right\}\) \label{itm:wh-ind-alt}
+
+The alternatives to the prejacent of {\Exh} for each \(D'\) in \Last are:
+\ex. \(\left\{ \text{\(x\) came}  : x \text{ is a person and } x \in \llbracket D' \rrbracket\right\}\)
+
+None of these alternatives are innocently excludable since every maximal consistently excludable subset excludes one of these alternatives, and therefore the intersection of these subsets is empty.
+% Then, everything is innocently includable.
+%
+% The alternatives to the prejacent of \emph{even} in \cref{itm:wh-prej} are:
+% \ex. \(\left\{ \text{[{\Exh} [wh\(_{D'}\) person came]]}: \llbracket D' \rrbracket \subseteq \llbracket D \rrbracket \right\}\) \label{itm:wh-alt}
+%
+% The alternatives to the prejacent of {\Exh} for each \(D'\) in \Last are:
+% \ex. \(\left\{ \text{wh\(_{D''}\) person came} : \llbracket D'' \rrbracket \subseteq \llbracket D' \rrbracket \right\}\) \label{itm:wh-exh-alt}
+%
+Then, all of these alternatives are innocently includable, and the meaning of the alternative to the prejacent of \emph{even} with domain variable \(D'\) is the conjunction of the alternatives in \Last, i.e., 
+\ex. every\(_{D'}\) person came. \label{itm:wh-exh-prej}
+
+Then, the alternatives in \cref{itm:wh-ind-alt} are semantically equivalent to
+\ex. \(\left\{ \text{[every\(_{D'}\) person came]}: \llbracket D' \rrbracket \subseteq \llbracket D \rrbracket \right\}\)
+
+Again, the prejacent,
+\ex. {\Exh} [what=some\(_{D}\) person came]
+
+which is equivalent to 
+\ex.  every\(_{D}\) person came,
+
+is the strongest among \cref{itm:wh-ind-alt}.
+Thus, the presupposition of \emph{dou} (\emph{even}) is satisfied.
+
+Now, notice that \emph{wh}-indefinites are also not NPIs in Mandarin Chinese:
+\ex. \gll 
+shenme ren lai-le. \\
+what person came \\
+\glt `Someone came.'
+
+As a result, we cannot assume that they must be licensed through association with \emph{even}.
+Maximize Presupposition must still be invoked to make the presence of \emph{dou} obligatory.
+Again, the issues with Maximize Presupposition itself will be discussed in \cref{sec:maximize_presupposition}.
+
+
+
+
+\subsection{Deriving the use of \emph{dou} with non-monotonic quantifiers}
+\label{sub:non_monotonic_quantifiers}
+
+There have been a recurring difficulty posed to anyone who undertakes a unified analysis of \emph{dou}: non-monotonic quantifiers.
+\citet{liuPragmaticExplanationMeidou2021} has addressed several of them, including \emph{dabufen} `most' and \emph{henduo} `many.'
+The basic idea is that these are possibly maximal items on a truncated scale, derived from the scale \(\left\langle \text{yixie}, \text{henduo}, \text{dabufen}, \text{suoyou} \right\rangle\), which corresponds to English \(\left\langle \text{some}, \text{many}, \text{most}, \text{all} \right\rangle\).
+Then, the prejacent of \emph{dou} will be the most informative (alternatively, least likely) one among the alternatives, licensing the use of \emph{dou}.
+In this section, I will report additional non-monotonic quantifiers that are compatible with \emph{dou}, namely phrases of the form \emph{chaoguo}+numeral/proportion, meaning `over/more than' a certain number or proportion.
+I will then propose an extension of Liu's analysis of \emph{dou} as \emph{even} that unifies all of the non-monotonic quantifiers.
+
+The relevant examples, including ones of the kind already covered by Liu, and the new ones I will discuss, are as follows:
+\ex. \label{itm:non-monotonic} \a. \gll 
+dabufen xuesheng (dou) lai-le. \\
+most student \phantom{(}\textsc{dou} came \\
+\glt `Most students came.'
+\b. \gll 
+henduo xuesheng (dou) lai-le. \\
+many student \phantom{(}\textsc{dou} came \\
+\glt `Many students came.'
+\b. \gll 
+chaoguo sanfenzhiyi de xuesheng (dou) lai-le. \\
+over one.third \textsc{de} student \phantom{(}\textsc{dou} came \\
+\glt `Over half of the students came.'
+\b. \gll 
+chaoguo shi-ge xuesheng (dou) lai-le. \\
+over 10-\textsc{cl} student \phantom{(}\textsc{dou} came \\
+\glt `More than 10 students came.'
+
+There are several observations to make.
+First, \emph{dou} is optional, and its presence or absence seems to depend on the context.
+% Second, \emph{dou} involved in these non-monotonic quantifiers pattern with the universal use of \emph{dou} in both prosody and syntax.
+% In all of \Last, the quantifier is the element that bears stress, and the quantifier and \emph{dou} cannot be separated by negation or modals; this is also the case for the universal use of \emph{dou}, but not the case for the distributive use of \emph{dou}(please see \crefrange{sub:prosody_and_focus}{ssub:syntactic_constraints} for a full discussion of these patterns).
+% \ex. \a. \gll 
+% dabufen xuesheng (dou) keyi (*dou) lai. \\
+% most student \phantom{(}\textsc{dou} can \phantom{(*}\textsc{dou} come \\
+% \glt `Most students can come.'
+% \b. \gll 
+% henduo xuesheng (dou) keyi (*dou) lai. \\
+% many student \phantom{(}\textsc{dou} keyi \phantom{(*}\textsc{dou} come \\
+% \glt `Many students can come.'
+% \b. \gll 
+% chaoguo yi-ban de xuesheng (dou) keyi (*dou) lai. \\
+% over one.half \textsc{de} student \phantom{(}\textsc{dou} can \phantom{(*}\textsc{dou} come \\
+% \glt `Over half of the students can come.'
+%
+% This means that it is justified to claim that \emph{dou} associates, contra the claim in \citet{chenNovelArgumentEvenlike2022} that these are examples of the distributive use of \emph{dou}.
+The second observation is that all of the non-monotonic quantifiers compatible with \emph{dou} have an underlying comparative semantics, with a meaning statable in terms of `more than \(d\)', where \(d\) is a proportion or an absolute quantity.
+For constructions that involve \emph{chaoguo} `over,' \emph{duoyu} `more than,' and the like, this is straightforwardly true due to the presence of an explicit comparative morpheme and an overt numeral or proportion.
+I will argue that \emph{dabufen} and \emph{henduo} are also inherently comparative.
+\emph{Dadabufen} semantically implies that the quantity exceeds half of the size of the domain.
+One suspicion to have is whether this semantics is actually the result of an underlying superlative construction, as \citet{hacklGrammarProcessingProportional2009a} analyzes English \emph{most}.
+However, this is unlikely because \emph{dabufen} contains no superlative morphemes and does not have a superlative use; it is always just proportional.
+In addition, the counterpart of \emph{dabufen}, \emph{xiaobufen} `fewer than half,' predicted to be non-existent according to a superlative account, does exist in Chinese.
+The same goes for an alternative way of saying `most', \emph{duoshu}, which has the counterpart \emph{shaoshu}.
+Moving on to \emph{henduo} `many,' a common analysis, for example, the one given in \citet{hacklGrammarProcessingProportional2009a}, simply treats English \emph{many} as a comparative with a contextually supplied standard degree of cardinality:
+\ex. \(\llbracket \text{many} \rrbracket(d)(A) = \lambda x.\, A(x) \land \lvert x \rvert \geq d\)
+
+Given this example, we can now write out lexical entries for all the quantifiers described in this section, assuming that they form generalized quantifiers with their NP restriction.
+I also assume that there are two versions of \emph{henduo}, one with degrees as absolute quantities, and the other as 
+\ex. 
+\a. \(\llbracket \text{chaoguo } n \rrbracket = \lambda A.\, \lambda B.\, \lvert A \cap B \rvert \geq n\) \hfill absolute
+\b. \(\llbracket \text{chaoguo } r \rrbracket = r < 1.\, \lambda A.\, \lambda B.\, \lvert A \cap B \rvert \geq r \lvert A \rvert\) \hfill proportional
+\b. \(\llbracket \text{dabufen} \rrbracket = \llbracket \text{chaoguo } \frac{1}{2} \rrbracket = \lambda d.\, \lambda A.\, \lambda B.\, \lvert A \cap B \rvert \geq \frac{1}{2} \lvert A \rvert \)
+
+\emph{henduo} is the same as \emph{chaoguo}, except that the \(n\) or \(r\) argument are covert and contextually supplied.
+When these quantifiers are focused, it is exactly the \(n\) or \(r\) argument that generates scalar alternatives, which are \(n'\) or \(r'\) such that \(n' \geq n\) and \(r' \geq r\).
+\ex. \(\{ \text{more than \(n'\) NP VP} : n' \leq n \}\)
+
+Alternatives involving larger degrees than \(n\) or \(r\) are possible, but when \emph{dou} is involved, the scale is always contextually truncated according to relevance such that \(n\) or \(r\) is the maximal element in the scale.
+We might want to say that it is the presence of \emph{dou} that presupposes that the scale is contextually truncated this way, or that one utters such a sentence with \emph{dou} to convey that the scale should be truncated this way, as per what is relevant for the present issue.
+
+
+% Because these are non-monotonic, the approach to the universal use of \emph{dou} cannot be straightforwardly applied to them because the prejacent does not entail alternatives based on subdomains of the domain variable \(D\) on the quantifiers, failing to satisfy the presupposition of \emph{dou}.
+% One way forward is probable to claim that \emph{dou} just associates with the determiner to the exclusion of the quantifier variable; thus, the alternatives are items on a scalar that is contextually truncated so as to have the quantifier in question as the maximal item.
+% This dependency on the context underlies the optionality of \emph{dou}.
+% It is only when indeed that the quantifier in question is the maximum on the scale of relevant items that \emph{dou} is licensed, and perhaps by Maximize Presupposition or other mechanisms, obligatory.
+
+% However, there is at the moment no principled explanation of why \emph{dou} associates with the domain variable but not the determiner in the FC use and why it associates with the determiner in non-monotonic quantifiers.
+% One can only say that if this is not the case, then the end result is that the presupposition of \emph{dou} is not satisfied.
+% This is far from satisfactory; I leave the issue to future research.
+
+
+\section[Amendments to Liu]{Amendments to \citet{liuVarietiesAlternativesMandarin2017,liuPragmaticExplanationMeidou2021}}
+\label{sec:amendments_to_liu}
+
+With Liu's account demonstrated above, we can move on to an examination of its problems. 
+In this section, I will propose a modification to the semantics of \emph{dou} and motivate a revision of the analysis for the distributive use by showing its inability to explain several asymmetries between the distributive use and the other uses.
+In \cref{sub:eliminating_context_dependency_of_the_ordering_over_propositions}, I will show that the insight in \citet{crnicNonmonotonicityNPILicensing2014} can help eliminate the need for the context-dependency of the ordering relation over propositions that \emph{dou} (or \emph{even}) has access to.
+% In \cref{sec:maximize_presupposition}, I will show that \emph{Maximize Presupposition} (MP) as cited by Liu from \citet{heimArtikelUndDefinitheit1991a} cannot derive the obligatoriness of \emph{dou} straightforwardly since the presupposition of \emph{dou} in the universal and distributive cases are tautological, i.e., they presuppose nothing.
+% In \cref{sub:deriving_the_fc_use_npi}, I will demonstrate how his analysis can be extended to the FC use of \emph{dou} if we adopt the argument in \citet{lahiriFocusNegativePolarity1998a,crnicNonmonotonicityNPILicensing2014,crnicNumberNPILicensing2022} that negative polarity items (NPI) are licensed by an element with the semantic contribution of \emph{even}, combined with an \(\exh\)-based account of free choice.
+In \cref{sub:re_examination_of_the_distributive_use_of_dou}, I will show evidence that Liu's derivation of the distributive use of \emph{dou} is incorrect in assuming that the focus associate of \emph{dou} is the plural DP.
+
+\subsection{Eliminating context-dependency of the ordering over propositions}
+\label{sub:eliminating_context_dependency_of_the_ordering_over_propositions}
+
+Recall that Liu assumes a lexical entry for \emph{dou} where the ordering over propositions is context-dependent (repeated here):
+\ex.[\cref{itm:dou_definition}] 
+\(\llbracket \text{dou\(_C\) } S \rrbracket\) is defined iff \(\forall q \in \{ \llbracket S' \rrbracket \mid S' \in \textsc{alt}(S) \} \cap C.\, \llbracket S \rrbracket \neq q \to \llbracket S \rrbracket \prec q\).\\
+If defined, \(\llbracket \text{dou }S \rrbracket = \llbracket S \rrbracket\) *(where \(\prec\) is either \(\prec_{\text{likely}}\) or \(\subset\)). 
+
+Whether \(\prec\) is realized as entailment-based or likelihood-based ordering depends on the context.
+In the universal and distributive uses, \(\prec\) is \(\subset\); in the scalar use, \(\prec\) is \(\prec_{\text{likely}}\).
+This could be seen as one step short of being a truly unified analysis, as the semantic contribution of \emph{dou} is still not entirely uniform across all of its uses.
+
+There is a simple fix to this problem.
+We can just say that \(\prec\) is always \(\prec_{\text{likely}}\).
+\citet{crnicNonmonotonicityNPILicensing2014} proposes the \emph{principle of coherence}, which has as a consequence the \emph{principle of entailment}:
+\ex. \emph{Principle of coherence}\\
+If propositions \(p\), \(q\), \(r\) are mutually incompatible, then the disjunction of \(p\) and \(q\) will be less likely than the disjunction of \(q\) and \(r\) iff \(p\) is less likely than \(r\).
+
+\ex. \emph{Principle of entailment}\\
+If a proposition \(p\) entails a proposition \(q\), \(p\) is at most as likely as \(q\).
+
+Concretely, when applied to sentence with a universal meaning, the principle of entailment captures the idea that whenever \(\forall x \in D.\, P(x)\) will definitely be non-weaker than any of its alternatives based on subdomains of \(D\).
+And as long as \(\prec_{\text{likely}}\) is considered reflexive over likelihoods and so for any propositions \(p, q\) such that \(p\) has the same likelihood as \(q\), \(p \prec_{\text{likely}} q\), the presupposition of \emph{dou} will be satisfied, and the rest of the analysis should follow.
+
+
+\subsection{Re-examination of the distributive use of \emph{dou}}
+\label{sub:re_examination_of_the_distributive_use_of_dou}
+
+
+
+We have thus seen that a single lexical entry for \emph{dou}, when combined with other covert elements such as \(\Delta\) and {\Exh}, can account for its various uses, following the line of research in \citet{liuVarietiesAlternativesMandarin2017,liuPragmaticExplanationMeidou2021}.
+This unified account, however, overlooks several major extra-semantic differences between the distributive use and the other three uses.
+First, the prosody of sentences involving the distributive use of \emph{dou} is different from the other uses; the assumed associate of \emph{dou}, the plural DP, does not bear the prosodic prominence characteristic of a focus associate (\cref{sub:prosody_and_focus}).
+Second, the locality constraint that holds between \emph{dou} and the proposed associate in all the three other uses does not hold between \emph{dou} and plural DP int the distributive use (\cref{ssub:syntactic_constraints}).
+Third, there are also conceptual arguments against the idea of plurals being able to generate subparts as alternatives, a requisite for the association-with-plural approach (\cref{ssub:arguments_against_plurals_having_subparts_as_alternatives}).
+All of these points combined suggest that the plural that is distributed over is not the focus associate of \emph{dou}, disqualifying Liu's approach as a unified analysis, at least for now.
+
+
+
+\subsubsection{Prosody and focus}
+\label{sub:prosody_and_focus}
+
+
+
+One of the reasons is that the distributive \emph{dou} itself needs to bear stress and seems to be the focused material, unlike in the case of universals, free choice indefinites, and the scalar case, where \emph{dou} does not bear stress, and the stress falls on \emph{dou}'s proposed focus associate.
+First, observe the situation with the other three uses:
+\ex. \emph{Scalar use}\\
+\gll
+ZHANGSAN HE LISI \textsc{dou} mai-le che.   \\
+Z. and L. \textsc{dou} bought car \\
+\glt `Even Zhangsan and Lisi bought cars.' \label{itm:scal_stress}
+
+\ex. \emph{Universal use}\\
+\gll
+MEI-ge ren dou mai-le che. \\
+every-\textsc{cl} person \textsc{dou} bought car \\
+\glt `Everyone bought a car.'
+
+\ex. \emph{FC use}\\
+\gll
+RENHE ren dou keyi mai che. \\
+any person \textsc{dou} can buy car \\
+\glt `Anyone can buy a car.'
+
+The entire subject \emph{Zhangsan he Lisi}, the universal quantifier \emph{mei}, and the NPI \emph{renhe} receive stress in the scalar, universal, and distributive uses, respectively.
+Then, observe the stress pattern in the distributive use:
+\ex. \emph{Distributive use}\\
+\gll
+Zhangsan he Lisi DOU mai-le che. \\
+Z. and L. \textsc{dou} bought car \\
+\glt `Zhangsan and Lisi both bought cars.' \label{itm:dist_stress}
+
+Instead of the plural \emph{Zhangsan he Lisi} bearing stress, \emph{dou} itself receives the greatest prosodic prominence.
+The contrast between \cref{itm:scal_stress} and \cref{itm:dist_stress} is thus particularly telling.
+The different stress patterns disambiguate between the scalar and distributive uses of \emph{dou}.
+When the plural is stressed, \emph{dou} is used scalarly; when \emph{dou} is stressed, the meaning is distributive.
+
+The stress pattern in the distributive use seems to suggest that \emph{dou} is the actual bearer of focus.
+\emph{dou}'s focus status when used distributively can be evidenced by the following:
+\ex. \gll
+Zhangsan he Lisi shi DOU lai-le, bushi zhi lai-le yi-ge. \\
+Z. and L. \textsc{foc} \textsc{dou} came not just came one-\textsc{cl} \\
+\glt `It is that Zhangsan and Lisi BOTH came, not that only one of them came.'
+
+In \Last, the focus marker \emph{shi} is used, which usually associates with an element in its c-command domain, which judging by the stress pattern, must be \emph{dou}.
+Indeed, if we would like to follow up with a corrective sentence, the alternatives seem to be about the domain of distributivity: ``It is not that BOTH of them came, but that only one of them came.''
+In all, the plural distributed over is unlikely to be the focused material, which means that accounts of \emph{dou} in the distributive use does not appear to depend on alternatives of the plural.
+
+
+
+\subsubsection{Syntactic constraints}
+\label{ssub:syntactic_constraints}
+
+
+
+The other point is that there is a strict locality requirement on the dependency between \emph{dou} and its focus associate in the scalar, universal, and FC uses, but such a requirement is not obeyed between the plural and \emph{dou} in the distributive use.
+I will summarize the locality constraint that holds between \emph{dou} and its proposed associates as follows:
+\ex. \emph{\emph{Dou} Locality Constraint} (DLC)\\
+\emph{Dou} and its associate cannot be linearly intervened by a scope-taking element, such as a modal or negative marker. \label{itm:dlc}
+
+We examine the uses other than the distributive one first.
+Scope-taking elements cannot intervene between the universal quantifier and the universal \emph{dou}, and in the grammatical sentence \Last, there is no scopal ambiguity; the surface order of the universal and the scope-taking element determines the relative scope. 
+\ex. \gll
+mei-ge ren\(_1\) dou  keyi  \gap{1}  lai. \\
+every-\textsc{cl} person \textsc{dou} can {} come \\
+\a.[i.] `Everyone is allowed to come.'
+\b.[ii.] *`It is allowed that every comes.'
+\b.[\(\Rightarrow\)] \(\forall > \Diamond\), *\(\Diamond > \forall\)
+
+\ex. *\gll
+mei-ge ren\(_1\)  keyi  \gap{1} dou  lai. \\
+every-\textsc{cl} person can {} \textsc{dou} come \\
+\a.[i.] *` Everyone is allowed to come.'
+\b.[ii.] *`It is allowed that everyone comes.'
+\b.[\(\Rightarrow\)] {}*\(\Diamond > \forall\), *\(\forall > \Diamond\)
+
+The situation is the same for the FC use of \emph{dou}:
+\ex. \gll
+renhe ren\(_{1, F}\) dou keyi  \gap{1} lai. \\
+any person \textsc{dou} can {} come \\
+\glt `Any person can come.'
+
+\ex. * \gll
+renhe ren\(_{1, F}\) keyi  \gap{1} dou lai. \\
+any person can {} \textsc{dou} come \\
+\glt Intended: `Any person can come.'
+
+It is also the same for the scalar use of \emph{dou}:
+\ex. \gll
+Zhangsan\(_{1, F}\) dou keyi  \gap{1} lai. \\
+Z. \textsc{dou} can {} {}  come \\
+\glt `Even Zhangsan can come.'
+
+\ex. * \gll
+Zhangsan\(_{1, F}\) keyi  \gap{1} dou lai. \\
+Z. can {} {} \textsc{dou} come \\
+\glt Intended: `Even Zhangsan can come.'
+
+
+%  If \emph{dou} were a true distributor when used with a plural, the contrast should be straightforward to account for.
+%   
+%      Distributors can distribute over a trace.
+%      \emph{Even} cannot associate with a trace. 
+%   
+Therefore, we see that the DLC is obeyed in all of the scalar, universal, and FC uses.
+However, scope-taking elements \textbf{can} intervene between the DP distributed over and the distributive \emph{dou}:
+\ex. \gll
+tamen\(_1\) dou  keyi  \gap{1}  lai. \\
+they \textsc{dou} can {} come \\
+\glt `They all can come.'\\
+\(\forall > \Diamond\)
+
+\ex. \gll
+tamen\(_1\)  keyi  \gap{1} dou  lai. \\
+they can {} \textsc{dou} come \\
+\glt `They are allowed to all come.'\\
+\(\Diamond > \forall\)
+
+Not only is a scopal intervener possible, but the surface order between it and \emph{dou} also determines the relative scope of its own quantificational force and \emph{dou}'s distributive universal quantification, all with the plural DP in the same position.
+This means that the DLC does not hold if the plural is the focus associate of \emph{dou}, constituting a proof by contradiction that the plural is \emph{not} the focus associate of \emph{dou} as long as we assume the DLC should apply generally to \emph{dou} and its associate regardless of the use \emph{dou} displays, a consideration that should be entertained for a \emph{unified} analysis.
+It is thus unlikely that the relationship between \emph{dou} and the plural is the same as the one between \emph{dou} and the other supposed associates.
+
+% There is one caveat to the syntactic constraint DLC proposed. 
+% The locality requirement also does not hold in the scalar use, when \emph{dou} is associating to the right, a direction of association that is exclusive to the scalar use.
+% \ex. \gll 
+% Zhangsan dou keyi kao jiushi fen,  \\
+%  \\
+% \glt `'
+
+% \ex. \gll
+% tamen\(_1\) dou  mei  \gap{1}  lai . \\
+% they \textsc{dou} {} \textsc{neg} {} {} {} come \\
+% \glt `They all didn't come.'\\
+% \(\forall > \neg\)
+%
+% \ex. \gll
+% tamen\(_1\)  mei  \gap{1} dou  lai . \\
+% they {} \textsc{neg} {} {} \textsc{dou} {} come \\
+% \glt `They haven't all come.'\\
+% \(\neg > \forall\)
+
+%  I wonder how Erlewine (2014) can help clarify the issue.
+%  Every instance of \emph{dou} involving domain alternatives or subparts (as per Liu et al.) features backwards association, where the associate is out of the syntactic scope of \emph{dou}.
+%  His observations for English \emph{even} does not carry over; but \emph{dou} and \emph{even} are clearly significantly different in many aspects, so I don't know what exactly to conclude.
+%  Maybe an investigation using the same methods should be conducted.
+%   
+%      The problem here is more pronounced.
+%      The same kind of associate is involve, i.e., a DP.
+%      There is no reason to believe that the lower copy left behind is of a different nature.
+%      It just appears that there can be nothing to scopally intervene between the scalar \emph{dou} and its associate.
+%      The alternatives here are of generally the same shape as in the distributor case, if distributivity is also derived through an \emph{even}-like semantics.
+%      Maybe there is a difference between quantifiers and DPs; the latter leaves a trace-converted lower copy that does not produce domain alternatives?
+%      Is this reasonable?
+%   
+
+
+
+\subsubsection{Arguments against plurals having subparts as alternatives}
+\label{ssub:arguments_against_plurals_having_subparts_as_alternatives}
+
+There are also problems with the idea that it is the alternatives based on the plural's subparts that \emph{dou}'s presupposition is evaluated against.
+
+It is clear that plurals such as \emph{Zhangsan he Lisi} `Zhangsan and Lisi' can generate alternatives like \emph{Zhangsan he Wangwu} `Zhangsan and Wangwu,' assuming that the name \emph{Wangwu} is in the lexicon or the context.
+There is no way in the present theory to prevent the plural from generating these alternatives that are not subparts.
+However, for the presupposition of \emph{dou} to be satisfied in the distributive use, the prejacent must entail alternatives of the sentence based on these alternatives to the plural as well.
+But whether this is true is contingent upon the context, rather than a necessary result as in the case of the alternatives based on subparts of the plural.
+Essentially, when these non-subpart-based alternatives are present, the shape of the alternative set looks exactly like that in the scalar use of \emph{dou}, whose licensing is always context-dependent.
+Yet, the distributive use of \emph{dou} is unselective with respect to the context.
+It is always licensed as long as there is a plural element to distribute over.
+The only imaginable way for the association-with-plural approach to resolve this issue is to suggest that every alternative that is not a subpart of the plural is pruned.
+But then this would be a curious situation where pruning on a focus operator results in the removal of any semantic or pragmatic effect of said operator, i.e., \emph{dou} presupposes a tautology after the pruning is performed.
+Notice that the problem is not that the presupposition is a tautology (we have seen this situation in the universal and FC uses of \emph{dou} and a Crni\v{c}ian analysis of English FC \emph{any}), but that \emph{pruning results in a tautological presupposition}.
+While theoretically viable, it is by no means a canonical application of pruning, which deserves further comments from proponents of the association-with-plural approach.
+
+Additionally, recall that the scalar use of \emph{dou} has the exceptional property among the uses where it is allowed to associate with an element on the right.
+Under the association-with-plural approach, assuming the validity of the discussion above about pruning, in terms of the kind of alternatives generated, the distributive use involves the same kind of alternatives that the scalar use does.
+In this way, a good way of capturing the exceptional directionality of the association in the scalar use is lost.
+One could have suggested that \emph{dou} operating over domain alternatives to silent variables is subject to a different restriction than that of \emph{dou} operating over constituent alternatives in the scalar use if they also assumed a domain variable as the associate of \emph{dou} in the distributive use.
+This kind of differentiation is rather unavoidable if we look at English.
+In English, \emph{even} operating over constituent variables can be overt, but \emph{even} operating over domain variables must be covert:
+\ex. \a. Even John\(_F\) came.
+\b. (*Even) anyone\(_{D_F}\) came.
+
+But by using the subpart alternatives of a plural, one can no longer appeal to this distinction and must provide a different way of uniting the distributive, universal, and FC uses of \emph{dou} against the scalar use of \emph{dou}.
+
+There are also additional arguments against the use of subpart alternatives to plurals, which I will not introduce; see \citealt[pp. 1063]{bar-levImplicatureAccountHomogeneity2021} for a summary of these arguments.
+% This discrepancy in the licensing conditions means that the alternatives off the plural should not be what the presupposition of \emph{dou} is checked against.
+
+% \citet{bar-levImplicatureAccountHomogeneity2021} also provides several reasons against the entire idea of plurals generating subdomain alternatives.
+% They are quoted here.
+% \begin{quote}
+% 	First, since alternatives are syntactic objects, it will have to be assumed that every part of the denotation of the kids has a corresponding (salient) name to be substituted for the kids.
+% 	This may be a reasonable assumption when the kids denotes a plurality of two, but it ceases to be natural once we move to, say, a plurality of 500 kids.
+% \end{quote}
+% This begs the question why domain variables are easily allowed subdomain alternatives
+% Domain variables are syntactically just indices, and their alternatives are other indices, which the assignment function will map to different domains.
+% The underlying assumption, of course, is that every possible domain is paired with a distinct index, but this is an assumption that is not difficult to maintain.
+% As long as this assumption in place, then by the usual means of deriving alternatives, such as those in \citet{foxCharacterizationAlternatives2011a,katzirRolesMarkednessContradiction2014}. 
+% However, the same assumption will also make it possible for plurals to have indices which are mapped to the subparts as alternatives, rather than directly with syntactic structures that represent the subparts explicitly.
+% Thus, this first argument against plurals generating subparts as alternatives does not hold.
+%
+%
+% \begin{quote}
+% 	Second, as \citet{krizInterpretingPluralPredication2021} pointed out, this choice leads to problems when the  plural does not simply denote an individual but contains a variable which makes its denotation assignment dependent, as in \Next:
+% 	\ex. Every kid read their books.
+%
+% \end{quote}
+% TODO.
+% \begin{quote}
+% 	Third, this choice will make the extension of the system to non-distributive predicates (also in \citealt{bar-levImplicatureAccountHomogeneity2021}) very difficult.
+% \end{quote}
+% TODO.
+
+
+
+\subsubsection{Summary}
+\label{ssub:summary}
+
+
+Arguments from prosody and syntax suggest that \emph{dou} and the plural are not related via focus association in the distributive use.
+Conceptual and empirical difficulties make allowing plurals to generate subparts as alternatives a choice that is difficult to justify.
+\emph{Dou}, if still analyzed as a focus operator with the semantics of \emph{even}, must associate with an element satisfying the same locality constraints as in the other uses.
+Ideally, the associate should be a domain variable so that the distributive use can be grouped with the universal and the FC uses, deriving a correlate with an asymmetry with the scalar use in terms of the directionality of association.
+
+
+% \subsection{Licensing}
+% \label{ssub:licensing}
+%
+% 
+%    The general \emph{dou} as \emph{even} enterprise relies on Maximize Presupposition to explain \emph{dou}'s obligatoriness.
+%    In the distributive case, if there is a covert distributor, while \emph{dou} is just \emph{even}, then whenever there is a covert distributor, the presupposition of \emph{dou} is met, and its presence should be obligatory.
+%    However, this is not the case.
+%    There is an overt distributor in Mandarin Chinese, \emph{ge}.
+%    \emph{ge} can be used without \emph{dou}:
+%     \ex. \gll
+%     Zhangsan he Lisi \textbf{ge} mai-le yi-dong fangzi. \\
+%     Z. and L. each bought one-\textsc{cl} house  \\
+%     \glt `Zhangsan and Lisi each bought a house.'\\
+%     \(\mathbf{z} \oplus \mathbf{l}\ \Delta\) [bought a house] \(>\) \(\mathbf{z}\ \Delta\) [bought a house], \(\mathbf{l}\ \Delta\) [bought a house]
+%
+%    If the plural subject \emph{Zhangsan and Lisi} is generally allowed to generate subpart alternatives, then we expect \Last to also be the strongest among its alternatives.
+%    However, the presence of \emph{dou} is not obligatory.
+%    Maximize Presupposition now seems to undergenerate.
+%
+%     %  In Mandarin, covert distributors can occur without \emph{dou}.
+%     %  The following example is due to Lin (2017) himself.
+%     %   \ex. \a. Who drew two pictures?
+%     %   \b. \gll 
+%     %    Zhangsan he Lisi hua-le liang-fu hua.\\
+%     %    Z. and L. drew two-\textsc{cl} pictures\\
+%     %   \glt `Zhangsan and Lisi drew two pictures.' \(\leadsto\) each drew two
+%     %   
+%     %  \emph{dou}'s presupposition is also met in \Last[b].
+%     %   Why isn't \emph{dou} obligatory there?
+% 
+% % \subsubsection{Alternatives of plural DPs}
+% % \label{ssub:alternatives_of_plural_dps}
+% % 
+% %    If plural DPs can generate subparts as alternatives, a potential overgeneration issue arises:
+% %    Consider the following scenario. 
+% %     Zhangsan, Wangwu, and Lisi are considering buying houses. 
+% %     They all prefer to have a house of their own, rather than sharing a house with someone else.
+% %     Thus, Z, W, and L buying a house together is more unlikely than any two of them buying a house together, which is in turn more unlikely than they each buying their own houses.
+% %    Then, consider the example
+% %     \ex. \#\gll 
+% %     \I[DP Zhangsan, Lisi, he Wangwu]\(_F\) dou mai-le yi-dong fangzi. \\
+% %     {} Z. L. and W. \textsc{dou} bought one-\textsc{cl} house \\
+% %     \glt ` Even [Zhangsan, Lisi, and Wangwu]\(_F\) bought a house.'
+% %     
+% %    Here, the alternatives of \(\mathbf{z} \oplus \mathbf{l} \oplus \mathbf{w}\) are \(\{ \mathbf{z}, \mathbf{l}, \mathbf{w}, \mathbf{z} \oplus \mathbf{l}, \mathbf{z} \oplus \mathbf{w}, \mathbf{l} \oplus \mathbf{w}, \mathbf{z} \oplus \mathbf{l} \oplus \mathbf{w} \}\).
+% %    The alternatives of the entire prejacent would then be 
+% % \(\begin{Bmatrix*}[l]
+% %   \mathsf{buy.a.house}(\mathbf{z}),\\
+% %   \mathsf{buy.a.house}(\mathbf{l}),\\
+% %   \mathsf{buy.a.house}(\mathbf{w}),\\
+% %   \mathsf{buy.a.house}(\mathbf{z} \oplus \mathbf{l}),\\
+% %   \mathsf{buy.a.house}(\mathbf{z} \oplus \mathbf{w}),\\
+% %   \mathsf{buy.a.house}(\mathbf{l} \oplus \mathbf{w}),\\
+% %   \mathsf{buy.a.house}(\mathbf{z} \oplus \mathbf{l} \oplus \mathbf{w})\\
+% %     \end{Bmatrix*}\).
+% %    The prejacent is indeed the most unlikely, according to the scenario given.
+% %    However, \Last is not felicitous.
+% %
+% %
+% % 
+% %
+\section{Analyzing the distributive use of \emph{dou}}
+\label{sec:analyzing_the_distributive_use_of_dou}
+
+
+As we have shown that Liu's original proposal for the distributive use of \emph{dou} as a part of the unified approach cannot work, a new analysis of the distributive use should be sought.
+
+I propose that a unified approach to \emph{dou} can still be maintained, i.e., \emph{dou} is just like English \emph{even} in all of its uses. 
+However, the focus associate of \emph{dou} in the distributive use should be the covert distributor \(\Delta\), or rather more precisely, the domain variable \(D\) which \(\Delta\) takes as a parameter in a configuration \(\Delta_D\).
+\exi. [CP \ldots{} subj\sub{\textsc{pl}} \ldots{} \(\Delta_{\tikzmarknode{dist}{D_F}}\) \tikzmarknode{dou}{dou}  [\emph{v}P/VP \ldots{} ]]
+
+\(\Delta_D\) bears universal force, and \(D\) generates subdomains as its alternatives.
+Thus, semantically, this is very similar to the universal use; the prejacent will entail all of the alternatives, and thus the use of \emph{dou} is allowed.
+By Maximize Presupposition, the presence of \emph{dou} becomes not just allowed but also obligatory.
+
+I will motivate this analysis with a simple empirical observation in \cref{sub:arguments_for_dou_associating_with_a_distributor}.
+Then, I will provide the mechanisms by which the prosodic patterns in the distributive use (\cref{sub:deriving_the_stress_on_dou_in_the_distributive_use}) are derived and the DLC is concretely implemented and maintained in the distributive use (\cref{sub:deriving_the_syntactic_behavior_of_dou_across_the_uses}).
+In \cref{sub:towards_a_semantic_analysis_of_the_distributive_use_of_dou}, I will provide a more detailed semantic analysis of \emph{dou} in its distributive use.
+
+
+
+
+\subsection{Arguments for \emph{dou} associating with a distributor}
+\label{sub:arguments_for_dou_associating_with_a_distributor}
+
+
+The empirical evidence for this choice comes from the fact that the covert distributor \(\Delta\) has an overt counterpart, \emph{quan} `all.'
+\ex. \gll
+tamen \textbf{quan} dou lai-le. \\
+they all \textsc{dou} came \\
+\glt `They all came.'
+
+\emph{Quan} can contribute the distributive meaning without \emph{dou}:
+\ex. \gll
+tamen \textbf{quan} lai-le. \\
+they all came \\
+\glt `They all came.' \label{itm:quan}
+
+In \LLast, \emph{quan} appears where an associate of \emph{dou} should appear: to \emph{dou}'s linear left.
+It is also \emph{quan} that bears the stress, which is predicted by a structure where \emph{quan} is the focus associate of \emph{dou}.
+
+In \Last, \emph{quan} appears without \emph{dou} and bears the stress.
+While this example provides evidence for the independent distributivity contributed by \emph{quan}, it also calls into question the analysis provided for the distributive use of \emph{dou} without \emph{quan}.
+If the covert \(\Delta_D\) requires \emph{dou} by Maximize Presupposition, then it is unclear why, if \emph{quan} and \(\Delta\) are semantically identical, \emph{quan} does not necessitate the presence of \emph{dou}.
+This optionality of \emph{dou} in the face of \emph{quan} can be derived if we consider \emph{quan} to optionally generate focus alternatives, unlike in the case of \emph{mei}, which obligatorily generates alternatives.
+If \emph{quan} is not even generating domain alternatives, then the focus operator \emph{even} cannot be merged.
+
+% Either \emph{dou} is itself a distributor, or it associates with a covert distributor.
+%
+% \exi. [CP \ldots{} subj\(_{\textsc{pl}}\) \ldots{} dou\sub{\(\Delta\)} [\emph{v}P/VP \ldots{} ]]
+%
+% \exi. [CP \ldots{} subj\sub{\textsc{pl}} \ldots{} \(\Delta_{\tikzmarknode{dist}{D_F}}\) \tikzmarknode{dou}{dou}  [\emph{v}P/VP \ldots{} ]]
+%
+% \tikz[remember picture, overlay]{ \draw ([yshift=-3pt]dou.base) -- ++(0, -0.3) -| node [pos=0.25, below] {\scriptsize associate} ([yshift=-3pt]dist.base); }
+%
+%  Additionally, now \emph{dou} and its associate can obey the same locality constraints in the distributive use as in every other use.
+%   \ex. \gll
+%   tamen\(_1\) \(\Delta_{D_F}\) dou \I[VP keyi \I[CP \gap{1} \I[VP lai ]]]. \\
+%   they \textsc{dou} {} can {} {} {} come \\
+%   \glt `They all can come.'\\
+%   \(\forall > \Diamond\)
+%
+%   \ex. \gll
+%   tamen\(_1\) \I[VP keyi \I[CP \gap{1} \(\Delta_{D_F}\) dou \I[VP lai ]]]. \\
+%   they {} can {} {} \textsc{dou} {} come \\
+%   \glt `They are allowed to all come.'\\
+%   \(\Diamond > \forall\)
+%
+%  This is also required by the scope relations; the universal force contributed by \(\Delta\) takes narrower scope than the existential modal \emph{keyi}; the locality requirement between \emph{dou} and the associate will enable \emph{dou} to signal where the scope-taking associate is located.
+%
+%
+
+
+\subsection{Deriving the stress on \emph{dou} in the distributive use}
+\label{sub:deriving_the_stress_on_dou_in_the_distributive_use}
+
+When \emph{dou} is used distributively, it itself bears stress.
+This is explained since the actual focus associate is silent, i.e., \(\Delta\), which cannot bear stress.
+In order to realize this stress, \emph{dou} itself bears the stress.
+This is a rare example of a focus operator bearing the stress that belongs to the associate.
+The phenomenon of a focused null element having the stress realized on some adjacent element is already prevalent in the literature.
+Every other case of focus association with a domain variable as in the case of universals or free choice indefinites involves moving the stress on the domain variable to the determiner such as \emph{every} or \emph{any} in English, or \emph{mei} or \emph{renhe} in Chinese.
+\ex. \a. every\(_{D_F}\) \(\Longrightarrow\) EVERY
+\b. mei\(_{D_F}\) \(\Longrightarrow\) MEI
+\b. \(\Delta_{D_F}\) \emph{dou} \(\Longrightarrow\) DOU
+
+There needs to be an explanation as to why the stress must fall on \emph{dou} when the distributor is null, but not on any other overt material.
+
+First, observe that whenever \(\Delta\) is overt, i.e., there is \emph{quan}, it is \emph{quan} instead of \emph{dou} that bears stress.
+\ex. \gll
+tamen QUAN dou lai-le. \\
+they all \textsc{dou} came \\
+\glt `They all came.'
+
+This follows from our approach which considers the distributor to be the focus associate of \emph{dou}; it should bear stress when it can, and it can when it is overt, as \emph{quan}.
+
+By inspecting the overt distributor \emph{quan}, we see that indeed there should be nothing intervening between \emph{quan} (and by extension \(\Delta\)) and \emph{dou}:
+\ex. \gll
+tamen quan *\{ zai zuotian / henkuai-de \} dou wancheng-le bisai. \\
+they all {} on yesterday {} quickly {} \textsc{dou} finish-\textsc{pfv} race \\
+\glt Intended: `They all on yesterday/quickly finished the race.'
+
+Second, it is reasonable to assume that the stress that belongs to a null element, (a) should appear on an adjacent overt element instead, and (b) when faced with the choice of which of the two adjacent overt elements this stress should be realized on, should choose the element that is less contentful, i.e., contains fewer assertive content, for which I use the number of formal alternatives as the proxy.
+This principle I formalize in the following:
+\ex. \emph{Null Stress Realization Constraint} (NSRC)\\
+Given a \(\sigma_F\) which is a silent focused lexical item, suppose that \(\sigma_L\) and \(\sigma_R\) are the string-adjacent overt lexical items on \(\sigma_F\)'s left and right, respectively.
+Realize the stress on whichever between \(\sigma_L\) and \(\sigma_R\) has fewer formal alternatives prior to contextual restriction, that is, the \(\sigma_X\) such that \(X \in \{L, R\}\) and \[\lvert F(\sigma_X, C) \rvert = \min(\lvert F(\sigma_L, C) \rvert, \lvert F(\sigma_R, C) \rvert),\] \(F(\cdot, \cdot)\) as defined in \citet[ex. (37)]{foxCharacterizationAlternatives2011}.\footnote{
+  There are two questions that arise from the proposed constraint. 
+  First, what, if any, is the underlying explanation of the NSRC?
+  Second, is there independent evidence for the existence of the NSRC?
+  I leave the exploration of these two questions to future research.
+}
+
+% \ex. \emph{Null Stress Realization Constraint} (NSRC)\\
+% Given a linear sequence of lexical items \([\alpha_m,\ldots,\alpha_2, \alpha_1, \sigma_F, \beta_1, \beta_2,\ldots,\beta_n]\), where \(\sigma_F\) is focused but null and \(\alpha_i\) and \(\beta_j\) are overt and \(\lnot \exists i < m, j < n,\, \alpha_i\) and \(\beta_j\) are overt, the stress should be realized on whichever between \(\alpha_m\) and \(\beta_m\) is less contentful.
+%
+Then, supposing that \(X\) is overt and looking at the sequence [X, \(\Delta\), \(D_F\), \emph{dou}], it is clear that X and \emph{dou} are respectively \(\sigma_L\) and \(\sigma_R\).
+Since \emph{dou} has barely any formal alternatives in the language, it is always going to outcompete X, which is likely a subject or an adjunct with numerous formal alternatives.
+NSRC also explains the cases such as \emph{every}\(_{D_F} \Rightarrow\) \emph{EVERY}, since in the sequence [\emph{every}, \(D_F\), NP], \emph{every} clearly has fewer formal alternatives than the NP.
+With the NSRC, we can make sure that the stress that belongs to \(D\) on \(\Delta\) will be realized on \emph{dou}.
+% This includes any non-functional elements to the left of \(\Delta\), such as the subject, adjuncts, and modals.
+
+% Then, if we look at elements which are adjacent to \(\Delta\), on the left we will encounter the subject and adjuncts, the stressing of which will lead to different interpretations, and on the right we have \emph{dou}, which seems to be the only choice to realize the stress.
+
+
+
+
+\subsection{Deriving the syntactic behavior of \emph{dou} across the uses}
+\label{sub:deriving_the_syntactic_behavior_of_dou_across_the_uses}
+
+Recall that I provided the DLC in \cref{itm:dlc}, repeated in \Next:
+\ex. \emph{\emph{Dou} Locality Constraint} (DLC)\\
+\emph{Dou} and its associate cannot be linearly intervened by a scope-taking element, such as a modal or negative marker. 
+
+This is used as evidence against Liu's analysis of the distributive use of \emph{dou} where \emph{dou} associates with the plural.
+I will show that my re-analysis does indeed make it possible for the distributive use to still conform to this constraint.
+Besides, there should be ways to state the DLC in more explicitly structural and derivational terms, perhaps even dissolving its stipulative nature through appropriate structural assumptions.
+
+The ingredients to the structural analysis of \emph{dou} are as follows.
+\ex. \label{itm:dou_struct}
+\a. \emph{Dou} moves from its overt position in the lower verbal domain to a high CP-adjoined. \label{itm:vp}
+\b. The movement of \emph{dou} cannot cross CP boundaries. \label{itm:cp}
+\b. \emph{Dou} and its the associate must be clausemates at surface. \label{itm:mate}
+\b. Scope-taking elements such as modals and negation are verbal and take CPs as complements. \label{itm:v}
+\b. The movement of \emph{dou} must cross its associate except in the scalar use. \label{itm:cross}
+
+I will then motivate these structural specifications one by one.
+
+\Last[a] is based on the fact that \emph{dou} can associate with elements base-generated high in the clause.
+For example, \emph{dou} can associate with a base-generated topic, which corresponds with a gap that is inside an island, for example, a relative class in the subject position:
+\ex. \gll 
+\textbf{dou} \I[TopP zhe-ge ban de mei-ge\(_{D_F}\) ren \I[Top\('\) \I[RC xihuan \gap{1} de ren ] \textbf{\sout{dou}} hen duo ]].\\
+\textsc{dou} {} this-\textsc{cl} class \textsc{de} every-\textsc{cl} person {} {} like {} \textsc{de} person {} \textsc{dou} very many\\
+\glt `Everyone \(x\) in this class is such that there are many people who like \(x\).' \label{itm:no-movement}
+
+Since this gap cannot be derived through movement as it is embedded inside two islands, the topic that seems dislocated is base-generated and the gap should be a case of object-drop, ubiquitous in Mandarin Chinese, anaphoric to the topic.
+Therefore, \emph{dou} is at least able to move as high as just above TopP.
+
+\cref{itm:cp} and \cref{itm:mate} are expected of the \emph{even}-like elements, with evidence from both Mandarin Chinese and English.
+\ex. *\gll 
+mei-ge\(_{D_F}\) ren shuo \I[CP Lisi dou xie-le zuoye ]. \\
+every-\textsc{cl} person say {} L. \textsc{dou} wrote homework \\
+\glt Intended: `Everyone said that Lisi did his homework.'
+
+If \emph{dou} were allowed to move into the matrix CP, or if \emph{dou} were allowed to associate with an element outside the smallest containing CP, then nothing prevents \emph{dou} from associating with \(D_F\) on \emph{mei} in the matrix, failing to predict the ungrammaticality of \Last.
+The same kind of example can be readily replicated in English:
+\ex. *John\(_F\) said Bill \textbf{even} did his homework.
+
+\cref{itm:cross} is needed simply to encode the fact that \emph{dou} obligatorily associates to the left except in the scalar use.
+When the focus associate is in the lower verbal domain at surface, then a covert counterpart of \emph{dou} is used.
+We will nevertheless focus on cases where overt \emph{dou} is involved.
+
+
+\cref{itm:v} is a natural consequence of \cref{itm:cp} and \cref{itm:mate} and the fact that \emph{even}-type elements are cross-linguistically able to move out of the scope of negation and modals.
+Take English for example:
+\ex. \textbf{even} John didn't \textbf{\sout{even}} read any book.
+
+\emph{Even} needs to move out of the scope of negation for its presupposition that the prejacent is the strongest to be true.
+In \Next, \emph{even} also seems to associate with an element across the modal \emph{can}, indicating that it is able to move across it.
+\ex. John\(_F\) can \textbf{even} swim.
+
+
+I have shown that \emph{dou} should be able to move as high as the edge of a CP in \cref{itm:cp}.
+If there is no other principle that prohibits the movement of \emph{dou} across modals and negation, it must be \cref{itm:cp} that is at work.
+Then, it must be the case that negation and modals in Mandarin Chinese take CPs as complements; then, \emph{dou} will not be able to move across them.
+This also means that negation and modals are verbal and are located in the lower verbal domain; the subject of the complement clause is raised across them into the matrix clause.
+This is evidenced by the very fact that \emph{dou} can appear above them in the same clause:
+\ex. \gll 
+mei-ge\(_{D_F}\) ren\(_1\) \textbf{dou} \I[VP keyi \I[CP \gap{1} lai ]]. \\
+every-\textsc{cl} person \textsc{dou} {} can {} {} come \\
+\glt `They all can come.'
+
+These observed and deduced syntactic constraints on \emph{dou} and its associate depart from those reported in \citet{erlewineMovementOutFocus2014a} for English \emph{even}.
+First, we have \cref{itm:no-movement} which is evidence for \emph{dou} associating with an element that is never in the scope of the surface position of \emph{dou}.
+Having a copy inside the surface scope of \emph{dou} is not a \emph{necessary} condition for the association.
+Second, we have already seen that the Chinese counterparts to \Last and \LLast with negation and the modal intervening between the subject associate and \emph{dou} are ungrammatical.
+Having a copy inside the surface scope of \emph{dou} is not a \emph{sufficient} condition for the association.
+Therefore, we can conclude that the Chinese data motivates a syntactic theory of association with focus that involves either movement of \emph{even}/\emph{dou} to a high position in the clause (at least above TopP), becoming a scope-taker with the enlarged scope, or is a reflex of such a scope-taker that is base-generated in a high position.
+For concreteness and familiarity, I have assumed that \emph{dou} itself moves.
+I leave to future research the reconciliation between the Chinese data and the theory of focus association in \citet{erlewineMovementOutFocus2014a}.
+% \Last[b] is a natural consequence of \Last[a].
+% \Last[c] and \Last[e] will conspire to derive the DLC.
+% \Last[d] derives \emph{dou}'s leftward association except in the scalar use, where the association can be either leftward or rightward.
+Then, we see that we can derive the DLC from \crefrange{itm:vp}{itm:cross}: \emph{dou} cannot escape its own minimal CP, and cannot associate across CP boundaries; modals and negation take CPs as complements, so whenever a modal or negation intervenes between \emph{dou}'s supposed associate and \emph{dou}, they will be separated by a CP boundary and association cannot be established between them.
+
+Thus, I can provide more detailed structures for the various uses of \emph{dou}, deriving the relevant grammaticality judgements.
+I will start with the distributive use.
+Because \emph{dou} now associates with the domain variable \(D\) on \(\Delta\) and the association is always leftward, we can put \(\Delta\) in an appropriate clausemate position:
+\ex. \gll
+dou tamen\(_1\) \(\Delta_{D_F}\) \sout{dou} \I[VP keyi \I[CP \gap{1} \I[VP lai ]]]. \\
+\textsc{dou} they {} {} {} can {} {} {} come \\
+\glt `They are all allowed to come.'\\
+\(\forall > \Diamond\)
+
+\ex. \gll
+tamen\(_1\) \I[VP keyi \I[CP dou \gap{1} \(\Delta_{D_F}\) \sout{dou} \I[VP lai ]]]. \\
+they {} can {} \textsc{dou} {} {} {}  {} come \\
+\glt `They are allowed to all come.'\\
+\(\Diamond > \forall\)
+
+When \emph{dou} is to the left of a modal or negation, it must be in a higher clause; by \cref{itm:mate}, \(\Delta\) will also be in the higher clause, making \(\Delta\) scope above said modal or negation. 
+When \emph{dou} is to the right of a modal or negation, it must be in the complement clause of said modal or negation; by \cref{itm:mate}, \(\Delta\) will also be in the complement clause, making \(\Delta\) scope below said modal or negation.
+Thus, the two scope relations in \LLast and \Last are derived.
+
+
+% Modals and negation(!) are verbal and take clausal complements.
+%
+% Some modals are obligatorily raising, others optionally.
+% Negation (\emph{bu} and \emph{mei}, not \emph{bushi}) is obligatory raising, can never precede the subject.
+% Also necessitated by the assumption that \emph{dou} can only occupy a position on the left edge of VP or \emph{v}P
+
+% \emph{Dou} and its associate must be clausemates overtly; traces of the associates don't count for this purpose.
+% Movement of \emph{dou} cannot across any CP boundaries.
+% Movement of \emph{dou} must across its associate in all but the scalar use; this derives the leftward association requirement.
+% This is perhaps related to (Generalized) Scope Economy.
+% Distributive use: even though the  plural can be separated from \emph{dou} by negation or modals, the true associate, \(\Delta\), can always be situated in the same clause as \emph{dou}.
+% \ex. \gll
+% dou tamen\(_1\) \(\Delta_F\) \sout{dou} \I[VP keyi \I[CP \gap{1} \I[VP lai ]]]. \\
+% {} they {} \textsc{dou} {} can {} {} {} come \\
+% \glt `They all can come.'\\
+% \(\forall > \Diamond\)
+%
+% \ex. \gll
+% tamen\(_1\) \I[VP keyi \I[CP dou \gap{1} \(\Delta_F\) \sout{dou} \I[VP lai ]]]. \\
+% they {} can {} {} {} {} \textsc{dou} {} come \\
+% \glt `They are allowed to all come.'\\
+% \(\Diamond > \forall\)
+
+% \ex. \gll 
+% tamen\(_1\) dou \I[VP mei \I[CP \gap{1} \I[VP lai ]]]. \\
+% they \textsc{dou} {} \textsc{neg} {} {} {} come \\
+% \glt `They all didn't come.'\\
+% \(\forall > \neg\)
+%
+% \ex. \gll 
+% tamen\(_1\) \I[VP mei \I[CP \gap{1} dou \I[VP lai ]]]. \\
+% they {} \textsc{neg} {} {} \textsc{dou} {} come \\
+% \glt `They haven't all come.'\\
+% \(\neg > \forall\)
+%
+In the other uses, \emph{dou}'s associate can be an overt clausemate of \emph{dou} when no modals or negation intervenes; however,
+\emph{dou}'s associate cannot be an overt clausemate of \emph{dou} when \emph{dou} and the associate are separated by negation or modals because the associate must have moved out of the clause where \emph{dou} is located due to raising \NNext.
+Thus the sentence is ungrammatical.
+\ex. \gll
+dou renhe ren\(_{1, F}\) \sout{dou} keyi \I[CP \gap{1} lai ]. \\
+{} any person \textsc{dou} can {} {} come \\
+\glt `Any person can come.'
+
+\ex. * \gll
+renhe ren\(_{1, F}\) keyi \I[CP dou \gap{1} \sout{dou} lai ]. \\
+any person can {} {} {} \textsc{dou} come \\
+\glt Intended: `Any person can come.'
+
+% \ex. \gll 
+% dou (lian) Zhangsan\(_{1, F}\) \sout{dou} keyi \I[CP \gap{1} lai]. \\
+% {} \phantom{(}\textsc{lian} Z. \textsc{dou} can {} {}  come \\
+% \glt `Even Zhangsan can come.'
+%
+% \ex. * \gll 
+% (lian) Zhangsan\(_{1, F}\) keyi \I[CP dou \gap{1} \sout{dou} lai]. \\
+% \phantom{(}\textsc{lian} Z. can {} {} {} \textsc{dou} come \\
+% \glt Intended: `Even Zhangsan can come.'
+%
+
+Thus, whether the associate of \emph{dou} is realized as an overt element separate from \emph{dou} becomes the main factor determining the syntactic behavior of \emph{dou} with respect to modals and negation.
+\(\Delta_D\) is covert and the stress is realized on \emph{dou}; therefore, it can be situated in whichever clause \emph{dou} is situated in.
+Thus, its scope is indicated by the position of \emph{dou}.
+Wherever the modal or negation is, \(\Delta_D\) can always be placed right next to \emph{dou}, avoiding any violation of the DLC.
+But the focus associate of the scalar use of \emph{dou}, \emph{mei}\(_D\), and \emph{renhe}\(_D\) are overt and independent from \emph{dou}, so in some configurations there is no way to put them in the same clause as \emph{dou}, making association with \emph{dou} impossible because of the DLC.
+
+\subsection{Towards a semantic analysis of the distributive use of \emph{dou}}
+\label{sub:towards_a_semantic_analysis_of_the_distributive_use_of_dou}
+For my analysis to work, disregarding the controversies over the nature of distributivity itself, any strategy of distributivity that is equipped with the universal force and a domain variable suffices.
+For example, the regular \(\Delta\) in \cref{itm:dist} augmented with a domain variable \(D\):
+\ex. \(\llbracket \Delta_D \rrbracket = \lambda P.\, \lambda x.\, \forall y.\, y \in D \land y \leq x \land \atom(y) \to P(y)\)
+\footnote{This kind of \(\Delta\) only works with a plural in the subject position.
+  However, any position higher than the base position of \emph{dou}, including preposed objects, adjuncts, and topics can be distributed over.
+  Thus, a more flexible strategy of distributivity such as the event-based one in \citet{champollionCovertDistributivityAlgebraic2016} augmented with a domain variable would be necessary, since it is able to specify the element bearing which \(\theta\)-role should be distributed over.
+}
+
+It is easy to verify that a sentence of the form
+\ex. DP\(_{\textsc{pl}}\) \ldots\ \(\Delta_{D_F}\) \ldots\ \label{itm:form}
+
+will entail every sentence of the form
+\ex. DP\(_{\textsc{pl}}\) \ldots\ \(\Delta_{D'}\) \ldots\ where \(D' \subseteq D\)
+
+since
+\ex. \(\forall y.\, y \in D \land y \sqsubseteq x \land \atom(y) \to P(y) \Longrightarrow  \forall y.\, y \in D' \land y \sqsubseteq x \land \atom(y) \to P(y) \) when \(D' \subseteq D\).
+
+Thus, the presupposition of \emph{dou} when taking a sentence of the form in \cref{itm:form} will be satisfied.
+The discussion about the semantics up to this point already suffices for supporting the present proposal.
+In \cref{ssub:a_possible_extension_bar_levimplicatureaccounthomogeneity2021}, I will discuss a possible integration with \citet{bar-levImplicatureAccountHomogeneity2021}, a proposal about the derivation of homogeneity and non-maximal readings of plurals through implicature.
+
+\subsubsection[A possible extension: Bar-Lev (2021)]{A possible extension: \citet{bar-levImplicatureAccountHomogeneity2021}}
+\label{ssub:a_possible_extension_bar_levimplicatureaccounthomogeneity2021}
+This kind of covert distributor paired with a domain variable is reminiscent of \(\exists\)-\textsc{pl}, the operator responsible for pluralization proposed in \citet{bar-levImplicatureAccountHomogeneity2021}.
+Essentially, \(\exists\)-\textsc{pl} is just the existential counterpart of the \(\Delta\) suggested above.
+\(\exists\)-\textsc{pl} is responsible for deriving homogeneity and non-maximal readings of plurals in junction with {\Exh} and contextual pruning.
+The relevant data include \citet[(1) and (3)]{bar-levImplicatureAccountHomogeneity2021}, adapted here as \Next and \NNext, respectively.
+\ex. \emph{Homogeneity}
+\a. \emph{Context: Out of the blue.} 
+\b. The kids laughed.
+\a. \(≈\) \emph{All} the kids laughed.
+\b. \(\not\approx\) \emph{Some} of the kids laughed.
+\z.
+\b. The kids didn't laugh.
+\a. \(\not\approx\) \emph{Not all} the kids laughed.
+\b. \(\approx\) \emph{None} of the kids laughed.
+
+\ex. \emph{Non-maximality}
+\a. \emph{Context: There was a clown at my kid's birthday party. Someone asks me if they gave a funny performance. I reply:}
+\b. The kids laughed.
+\a. \(\approx\) \emph{Most} of the kids laughed.
+
+The motivation for the integration of the distributive use of \emph{dou} with an account of homogeneity and the non-maximal readings of plurals is that homogeneity and non-maximality are also observed in Mandarin Chinese.
+\Last and \LLast can be almost exactly replicated in Mandarin Chinese:
+\ex. \emph{Homogeneity}
+\a. \emph{Context: Out of the blue.} 
+\b. \gll 
+haizi-men xiao-le. \\
+children laughed \\
+\glt `The kids laughed.'
+\a. \(≈\) \emph{All} the kids laughed.
+\b. \(\not\approx\) \emph{Some} of the kids laughed.
+\z.
+\b. \gll 
+haizi-men meiyou xiao. \\
+children \textsc{neg} laugh \\
+\glt `The kids didn't laugh.'
+\a. \(\not\approx\) \emph{Not all} the kids laughed.
+\b. \(\approx\) \emph{None} of the kids laughed.
+
+\ex. \emph{Non-maximality}
+\a. \emph{Context: There was a clown at my kid's birthday party. Someone asks me if they gave a funny performance. I reply:}
+\b. \gll 
+haizi-men xiao-le. \\
+children laughed \\
+\glt `The children laughed.'
+\a. \(\approx\) \emph{Most} of the kids laughed.
+
+It would be desirable that the same lexical entry \(\Delta\) proposed here for the sake of \emph{dou}, also serves a different function elsewhere in the grammar.
+
+\citet{bar-levImplicatureAccountHomogeneity2021} also proposes a potential \(\forall\)-\textsc{pl}, which is responsible for situations when homogeneity and non-maximality are removed, e.g., when the word \emph{all} is used in English.
+This \(\forall\)-\textsc{pl} will be basically identical to \(\Delta\) used in the present paper.
+Obviously but importantly, \emph{Dou} also removes homogeneity and non-maximal readings:
+\ex. 
+\a. \gll 
+haizi-men dou lai-le. \\
+children \textsc{dou} came \\
+\glt `The children all came.'
+\b. \gll 
+haizi-men meiyou dou lai. \\
+children \textsc{neg} \textsc{dou} come \\
+\glt `The children didn't all come.'
+
+The question now becomes whether an analysis in which \(\Delta\) can be assumed to be one of \(\exists\)-\textsc{pl} or \(\forall\)-\textsc{pl} and these facts be derived along with the patterns of the distributive use of \emph{dou}.
+I will now explore both possibilities, i.e., \(\Delta\) as \(\exists\)-\textsc{pl} and \(\Delta\) as \(\forall\)-\textsc{pl}.
+
+\subsubsection[Delta as existential pluralizer]{\(\Delta\) as \(\exists\)-\textsc{pl}}
+\label{ssub:delta_as_exists_pl}
+
+
+
+
+% Without introducing data that complicates the cross-linguistic theoretical landscape of distributivity,\footnote{Consider:
+% 	\ex. The students all lifted a piano.
+%
+% 	In \Last, it seems that the students can have lifted piano with someone that is not among the students.
+% I will disregard these interpretations, which will necessarily result in a reformulation of the semantics of distributivity in general.}
+% I adopt the account of pluralization in \citet{bar-levImplicatureAccountHomogeneity2021}.
+%
+% There are two choices.
+% One is that \(\Delta\) is actually \(\exists\)-\textsc{pl}.
+% \ex. \(\llbracket \Delta_D \rrbracket = \llbracket \exists\textsc{-pl}_D \rrbracket = \lambda P.\, \lambda x.\, \exists y.\, y \in D \land y \sqsubseteq x \land \exists z \sqsubseteq x.\, z \circ y \land P(z)  \) where \(z \circ y\) means \(\exists u.\, u \sqsubseteq z \land u \sqsubseteq y\), the overlap relationship.
+%
+% \(\exists\)-\textsc{pl} works well with my analysis since it is also paired with a domain variable \(\Delta\), which is what I have been assuming throughout.
+According to \citet{bar-levImplicatureAccountHomogeneity2021}, \(\exists\)-\textsc{pl} is the default pluralizer that is present in every sentence where the subject is plural. 
+It is strengthened in the positive through the merger of {\Exh} which associates with the domain variable \(D\) on \(\exists\)-\textsc{pl} to derive both maximal and non-maximal readings.
+Crucially, with the maximal reading, only the universal alternatives are absent; every subdomain alternative of \(D\) is present.
+In the non-maximal readings, further alternatives are pruned depending on the context and principles regulating pruning.
+Aside from contextual constraints, pruning is argued to always result in weakening.
+In a disjunctive situation, this means that the symmetry between disjunctive alternatives is never broken.
+Therefore, the kinds of meanings that are derivable through the strengthening of {\Exh} are either \(\forall x \in D.\, P(x)\) when no alternatives are pruned, or \(\exists n x \in D.\, P(x)\), where \(2 \leq n \leq \lvert D \rvert - 1\), when there is pruning of the alternatives.
+
+However, if {\Exh} operates over a pruned set of alternatives, the presupposition of \emph{dou} will not be met.
+Consider a domain \(D\) where \(\lvert D \rvert = n\) in a sentence 
+\ex. {\Exh} DP \exists-\textsc{pl}\(_D\) VP
+
+Suppose we prune all alternatives based on \(D'\) such that \(\lvert D' \rvert \leq n - 2\).
+That is to say, the alternatives left are based on \(D\) and \(D \setminus \{ x \}\) for some atom \(x \in D\).
+In this case, the result of the strengthening will be that at least \(2\) of the \(\llbracket \text{DP} \rrbracket\) individuals in \(D\) satisfy the predicate \(\llbracket \text{VP} \rrbracket\):
+\ex. \(\exists 2 x.\, x \sqsubseteq \llbracket \text{DP} \rrbracket \land x \in D \land \llbracket \text{VP} \rrbracket(x)\) \label{itm:sem_unpruned}
+
+Consider the semantics of the alternatives that \emph{dou} will quantify over, which are
+\ex. \(\exists 2 x.\, x \sqsubseteq \llbracket \text{DP} \rrbracket \land x \in D' \land \llbracket \text{VP} \rrbracket(x)\) where \(D' \subseteq D\)
+
+However, it is easy to see that these propositions are not entailed by \LLast.
+Consider a \(D'\) where \(D' = \{ \mathbf{a}, \mathbf{b} \}\) where \(\llbracket \text{DP} \rrbracket(\mathbf{a})\) and \(\llbracket \text{DP} \rrbracket(\mathbf{b})\) are true.
+\Last essentially says that \(\llbracket \text{VP} \rrbracket(\mathbf{a})\) and \(\llbracket \text{VP} \rrbracket(\mathbf{b})\) are also true.
+But this conclusion by no means follows from \cref{itm:sem_unpruned}.
+This means that \emph{dou}'s presupposition that its prejacent is the least likely among the alternatives is not satisfied and therefore cannot be used when there is pruning of the alternatives deriving non-maximal readings.
+By the equivalence of contrapositives, we see that whenever \emph{dou} is present in the structure if the sentence is grammatical, then there must not be pruning.
+The resulting strengthened meaning must be the maximal one.
+It is also clearly not possible to not perform strengthening, since an existential meaning is the weakest rather than the strongest among alternatives based on subdomains.
+% The presence of \emph{dou} as \emph{even} will force the merger of {\Exh}, causing the strengthening to a universal since only a universal meaning can be the strongest paired with a maximal domain.
+% \ex. dou \ldots\ *(\Exh) \ldots\ \(\exists\)-\textsc{pl}\(_D\) \sout{dou} \ldots
+
+In this case, \emph{quan} is not the real overt realization of \(\Delta\); rather, it must be inherently universal, since it can produce this meaning without \emph{dou}.
+The natural move here is to assume that \emph{quan} is just \(\forall\)-\textsc{pl}.
+% \(\forall\)-\textsc{pl}, also proposed by \citet{bar-levImplicatureAccountHomogeneity2021}, provides a suitable semantics for \emph{quan}:
+% \ex. \(\llbracket \text{quan}_D \rrbracket = \llbracket \forall\textsc{-pl}_D \rrbracket = \lambda P.\, \lambda x.\, \forall y.\, y \in D \land y \sqsubseteq x \land \exists z \sqsubseteq x.\, z \circ y \land P(z) \)
+
+One problem with this move is that for the original approach to homogeneity and non-maximality to work and for the analysis of the distributive use of \emph{dou} to follow, we must avoid having \(\forall\)-\textsc{pl} as an alternative to \(\exists\)-\textsc{pl}, as {\Exh} over a set of alternatives which include conjunctive ones will only lead to ignorance readings rather than strengthened readings.
+With English, Bar-Lev could appeal to the fact that it is the overt \emph{all} that licenses \(\forall\)-\textsc{pl}, and the sentence with \emph{all} is more complex than the one without it and therefore cannot be an alternative to the latter.
+This solution does not work in Mandarin Chinese, since there is no other overt marker of the universal force.
+I leave this issue open.
+% One might say that overt elements (such as \emph{quan}) cannot be alternatives to covert elements (\(\exists\)-\textsc{pl}).
+% One way of encoding this is to say that while structural complexity as implicated in \citet{foxCharacterizationAlternatives2011a,katzirRolesMarkednessContradiction2014} in general does not care about phonetic complexity, but make one exception: covert elements cannot have overt alternatives.
+%
+% \textcolor{red}{Are there other examples like this?}
+
+%  Another problem is that the original motivation for \(\exists\)-\textsc{pl}, that Homogeneity and Non-Maximality are absent under negation does not hold in Chinese, since as long as \emph{dou}
+
+\subsubsection[Delta as universal pluralizer]{\(\Delta\) as \(\forall\)-\textsc{pl}}
+\label{ssub:delta_as_forall_pl}
+
+
+The second choice is to consider \(\Delta\) to have the actual overt realization \emph{quan}, both of which are just \(\forall\)-\textsc{pl}.
+% \ex. \(\llbracket \Delta_D \rrbracket = \llbracket \text{quan}_D \rrbracket = \llbracket \forall\textsc{-pl}_D \rrbracket = \lambda P.\, \lambda x.\, \forall y.\, y \in D \land y \sqsubseteq x \land \exists z \sqsubseteq x.\, z \circ y \land P(z) \)
+%
+% This is because the distributive use of \emph{dou} displays classic Homogeneity removal and lack of non-maximality, similar to the situation with English \emph{all}.
+In this way, the derivation of homogeneity and non-maximality removal is much more straightforward, akin to the English case.
+%  A complication: in Chinese, we can get negated free choice readings as long as negation takes higher scope than \emph{dou}:
+%   \ex. \gll 
+%   ni bu shi renhe yi-ben shu dou keyi du. \\
+%   you \textsc{neg} \textsc{cop} any 1-\textsc{cl} book \textsc{dou} can read \\
+%   \glt `It is not the case that you are allowed to read any book.'
+%
+%
+The problem of avoiding having \(\forall\)-\textsc{pl} as an alternative to \(\exists\)-\textsc{pl} remains, and the appeal to phonetic complexity above does not work anymore, since both \(\exists\)-\textsc{pl} and \(\forall\)-\textsc{pl} have covert realizations.
+One may have to say that \emph{covert} \(\forall\)-\textsc{pl} but not the overt one (\emph{quan}) needs to be licensed by \emph{dou}, essentially making \(\Delta\) an NPI.
+That way, since \(\Delta\) requires \emph{dou} in the structure to be licensed, a direct substitution of \(\Delta\) for \(\exists\)-\textsc{pl} will not lead to a grammatical sentence, and hence no alternative based on \(\Delta\) can exist.
+
+The problem with this simpler approach is that there is redundancy. 
+We have already known that \(\exists\)-\textsc{pl}, independently motivated for homogeneity and non-maximality, exists in the lexicon, alongside {\Exh} and \emph{dou}, and we have seen that these elements when working together, can derive the desired universal meaning.
+It is unclear why there should be two mechanisms deriving exactly the same meaning.
+In addition, this approach still requires an explanation why \(\forall\)-\textsc{pl} or \emph{quan} cannot be an alternative to \(\exists\)-\textsc{pl}.
+% the incorporation of the phonetic complexity consideration as long as we would like to analyze \emph{quan} as an overt realization of \(\Delta\) or \(\forall\)-\textsc{pl}.
+This is arguably the weakest link of the \(\Delta\) as \(\exists\)-\textsc{pl} approach, but the \(D\) as \(\forall\)-\textsc{pl} is in no position to avoid it.
+
+Therefore, given the discussion in \crefrange{ssub:a_possible_extension_bar_levimplicatureaccounthomogeneity2021}{ssub:delta_as_forall_pl}, the \(\Delta\) as \(\exists\)-\textsc{pl} seems to be the more promising choice if an integration of the present approach to the distributive use of \emph{dou} and the account of homogeneity and non-maximality of plurals in \citet{bar-levImplicatureAccountHomogeneity2021}.
+As stated above, I leave open the issue of avoiding the universal alternatives for \(\exists\)-\textsc{pl} in the derivation of homogeneity.
+% I leave the issue of the undesirable phonetic complexity consideration for alternatives open to debate.
+
+
+
+% \subsection{\emph{Dou} as distributor}
+% \label{sub:dou_as_distributor}
+%
+% 
+%    The first case has a very straightforward semantics, the event-semantics version of \( \prt \) due to Schwarzschild would be suitable.
+%     \ex. \(\llbracket \prt_C \rrbracket = \lambda P.\, \lambda x.\, \forall y.\, C(y) \land y \leq x \to P(y)\) where \(C\) is a cover over the subject.
+%
+% 
+%
+% \subsection{\emph{Dou} associating with a distributor}
+% \label{sub:dou_associating_with_a_distributor}
+%
+% 
+%    The associate of \emph{dou} is proposed to be a domain variable on the covert distributor \(\Delta\) that is situated between the subject and \emph{dou}.
+%     \vspace{2em}
+%     \ex.  \tikzmarknode{even}{dou} \I[CP \ldots{} subj\sub{\textsc{pl}} \ldots{} \(\Delta\)\tikzmarknode{dist}{\(_{D_F}\)} \tikzmarknode{dou}{dou}  \I[\emph{v}P/VP \ldots{} ]]
+%     \tikz[remember picture, overlay]{ 
+%       \draw ([xshift=3pt]even.north) -- ++(0, 0.3) -| node [pos=0.25, above] {\scriptsize associate} (dist.north); 
+%       \draw[Stealth-] ([xshift=-3pt]even.north) -- ++(0, 0.75) -| node[pos=0.25, above] {\scriptsize Move} (dou);
+%     }
+%
+%    The second option faces difficulties with the semantics of distributivity.
+%
+%    Observe that in \Last, there is no variable over domains to generate domain alternatives.
+%    \(C\) is not a domain variable, but a cover variable; and as a cover variable, it is not easy to come up with alternatives that are weaker, unlike domain variables.
+%    The only choice seems to be to introduce another free variable \(D\), which is over domains.
+%    
+%     \ex. \(\llbracket \prt_{C, D} \rrbracket = \lambda P.\, \lambda x .\, \forall y .\, y \leq \bigoplus D \land C(y) \land  y \leq x \to P(y)\)
+%
+%    Here, it is clear that \(\bigoplus D\) should be a subpart of the subject, which is to be substituted into \(x\).
+%
+%    It is this \(D\) that \emph{dou} associates with.
+%    Then, when \(D\) is maximal, i.e., when \( \bigoplus D = x \), the presupposition of \emph{dou} is satisfied, and therefore the use of \emph{dou} is licensed, and further necessitated due to Maximize Presupposition.
+% 
+% \subsubsection{Puzzling data}
+% \label{ssub:puzzling_data}
+%
+% 
+%    Consider the following example:
+%     \ex. \gll 
+%     tamen \textbf{quan} dou lai-le. \\
+%     they all \textsc{dou} came \\
+%     \glt `They all came.'
+%
+%    This is semantically indistinguishable from the version with just \emph{dou}:
+%     \ex. \gll 
+%     tamen dou          lai-le. \\
+%     they  \textsc{dou} came    \\
+%     \glt `They all came.'
+%
+%    \emph{Quan} might be an overt reflex of \( \prt_{C, D} \), obeying the usual licensing conditions of \emph{dou}: it is to the left of \emph{dou}.
+%
+%    However, \emph{dou} is optional in the presence of \emph{quan}:
+%     \ex. \gll 
+%     tamen quan          lai-le. \\
+%     they  all came    \\
+%     \glt `They all came.'
+%
+%    The same example is at once for and against the unifying analysis of \emph{dou}.
+%
+%    Perhaps, the \(D\) argument inside of \emph{quan} is optionally focused (optionally generating alternatives)?
+%
+%    We need to say that elements like \emph{mei} `every' have domain variables that must generate alternatives, forcing the presence of \emph{dou} due to Maximize Presupposition.
+%
+% 
+%
+% \subsection{Argument structure complications}
+% \label{sub:argument_structure_complications}
+%
+% 
+%    However, Schwarzschild's \( \prt \) seems to be insufficient, since it is not always the subject that is distributed over:
+%     \ex. \gll 
+%     Zhangsan ba \textbf{tamen} dou song huijia le. \\
+%     Z. \textsc{ba} they \textsc{dou} send home \textsc{le} \\
+%     \glt `Zhangsan has sent them all home.'
+%
+%    Champollion's event-based \( \prt \) should be able to handle this case without problems:
+%     \ex. \(\prt_{\theta, C} = \lambda V.\, \lambda e.\, e \in *\{ e' \mid V(e') \land C(\theta(e')) \} \).
+%
+%    But in order for \emph{dou} to still have the unifying account, we need to squeeze in a domain variable.
+%     \ex. \(\prt_{\theta, C, D} = \lambda V.\, \lambda e.\, e \in *\{ e' \mid V(e') \land C(\theta(e')) \land \theta(e') \leq \bigoplus D \} \).
+%
+%     %  Champollion claims that \(C\) is, by the distributivity of \(\theta\) over \( \oplus \), i.e., \(\theta(e_1) \oplus \theta(e_2) = \theta(e_1 \oplus e_2) \), a cover.
+%     %
+%     %  I don't know if introducing a \(D\) will disrupt this inference.
+%
+% 
+%
+
+% \section{Gradability-based accounts of \emph{dou}}
+% \label{sec:gradability_based_accounts_of_dou}
+%
+% Newer accounts of \emph{even} and \emph{dou} in its scalar use are departing from the likelihood-based alternative semantics.
+% \citet{greenbergRevisedGradabilitybasedSemantics2018, chenNovelArgumentEvenlike2022, zhangPresuppositionEven2022}.
+%
+%
+%
+% \subsection{Illustration}
+% \label{sub:illustration}
+% Here, I illustrate with \citet{greenbergRevisedGradabilitybasedSemantics2018}.
+% \citet{greenbergRevisedGradabilitybasedSemantics2018} argues that likelihood is insufficient to make the use of \emph{even} felicitous.
+%
+% First, there is context-dependency:
+% \ex. Context: We were at a party where two soft drinks (cola and lemonade) and two alcoholic drinks (beer and whiskey) were served. Whiskey is more alcoholic than beer.
+% \a.[A:] John drank alcohol at the party. He better not drive now.
+% \b.[B:] Yes. He even drank [whisky]\(_F\)/\#[beer]\(_F\).
+%
+% Both \emph{he drank beer} and \emph{he drank whiskey} are less likely than the alternative \emph{John drank alcohol}, but only the latter is licensed.
+% The relevant scale is actually \emph{his unsuitability for driving}.
+%
+% Second, there is standard-sensitivity.
+% \ex. Context: John is an accountant, working in a standard western government office, where workers must wear official-like shirts, suits, and ties:
+% \a. John wore his usual white shirt to work yesterday, and he (??even) wore [a funny old hat]\(_F\).
+% \b. John wore a colorful T-shirt yesterday, and he (even) wore [a funny old hat]\(_F\).
+%
+% In both cases, \emph{he wore a funny old hat} seems to be the least likely among the alternatives; however, only \Last[b] is licensed.
+%
+% The proposed semantics for \emph{even} (extended to \emph{dou} in \citet{chenNovelArgumentEvenlike2022})
+% \ex. \(\llbracket \text{dou} \rrbracket(C)(p)(w)\) triggers the following scalar presupposition:
+% \(\forall w_1, w_2.\, w_1Rw \land w_2Rw \land w_2 \in p \land w_1 \in (q \land \lnot p) \to\)
+% \a. \(\max (\lambda d_2.\, G(d_2)(x)(w_2)) > \max (\lambda d_1.\, G(d_1)(x)(w_1)) \land \)
+% \b. \(\max (\lambda d_1.\, G(d_1)(x)(w_1)) > \mathrm{Std}_G \)
+% \z.
+% If defined, \(p(w) = 1\).\\
+% In prose, \(\llbracket \text{dou} \rrbracket(C)(p)(w)\) presupposes that (a) the maximal degree \(x\), a non-focused item in the prejacent \(p\), holds on a scale associated with a xontectually supplied gradable property \(G\) is higher in the accessible worlds \(w_2\) (where \(p\) holds), than in the accessible worlds \(w_1\) (where \(q \land \lnot p\) holds) and (b) the maximal degree that \(x\) holds in \(w_2\) is above the standard on the \(G\) scale. If defined, the prejacent is true in \(w\).
+%
+% There is a further refined version found in \citet{zhangPresuppositionEven2022}:
+% \ex. The presupposition of \(\llbracket \text{even} \rrbracket^w(p)\):\\
+% \(\forall w' \in \mathrm{Acc}(w) \cap p.\, \max_{\mathrm{info}}(\lambda I.\, G_{\mathrm{qud}}(x_{\mathrm{qud}})(w') \subseteq I) \subset [d_{\mathrm{std}}, +\infty) \land\)\\
+% \(\forall q \in C.\, \max_{\mathrm{info}}(\lambda I.\, \forall w' \in \mathrm{Acc}(w) \cap p.\, G_{\mathrm{qud}}(x_{\mathrm{qud}})(w') \subseteq I) \subseteq\)\\
+% \(\max_{\mathrm{info}}(\lambda I.\, \forall w'' \in \mathrm{Acc}(w) \cap q.\, G_{\mathrm{qud}}(x_{\mathrm{qud}})(w'') \subseteq I) \subseteq\)
+%
+% The crucial difference is that MaxInfo is used instead of just Max, and informativeness is also used in the ordering between alternatives.
+%
+%
+%
+% \subsection{Extension to \emph{dou}}
+% \label{sub:extension_to_dou}
+% \citet{chenNovelArgumentEvenlike2022} argues that this analysis originally meant for \emph{even} can be extended to \emph{dou}, both in its scalar use and its distributive use.
+%
+% I think the data on the scalar use is just the English version translated into Chinese, and I find them uncontroversial.
+%
+% However, the data use to justify the extension to the distributive use I find problematic.
+% \ex. \gll
+% henduo/\#henshao haizi dou hua le hua. \\
+% many/few kid dou draw \textsc{pfv} picture \\
+% \glt `Many/few kids each drew a picture.'
+%
+% It is claimed that \emph{cardinality} is the scale in the context.
+%
+% % The first objection is that this does not seem to be a distributive case at all; the stress is on \emph{henduo}, rather than \emph{dou}.
+% % This would make it 
+%
+%
+%
+% % 
+% %    Distributor use of \emph{dou} is clearly the odd one out; it itself seems to be the focused element, like a true universal quantifier.
+% %     It requires a plural argument of the verb to distribute over.
+% %     There is no movement of \emph{dou} or the merger of a higher operator.
+% %    The rest deal with another element that is the focus associate.
+% %     There is a clausemate operator at the scope position, either derived from movement of \emph{dou} or externally merged and checked via Agree.\footnote{This doesn't matter any more, since the relation is local.}
+% %     \exi. [CP \tikzmarknode{op}{even} \ldots{} ASSOCIATE\(_F\) \ldots{} \tikzmarknode{dou}{dou} [\emph{v}P/VP \ldots{} ]]
+% %
+% %     \tikz[remember picture, overlay]{ \draw ([yshift=-3pt]op.base) -- ++(0, -0.3) -| node [pos=0.25, below] {\scriptsize Agree/Move} ([yshift=-3pt]dou.base); }
+% %     % \tikz[remember picture, overlay]{ \draw[rounded corners] (op.north) -- ++(0, +0.3) -| node [pos=0.25, above] {Agree or Move} (dou.north); }
+% %
+% %    For concreteness and uniformity with prior analyses, \emph{dou} is assumed to move from the base position at the VP edge to the scope position.
+% %
+% % 
+
+\section{The problem of Maximize Presupposition}
+\label{sec:maximize_presupposition}
+
+In the analysis of the universal use of \emph{dou}, Liu crucially turns a situation in which \emph{dou} is merely \emph{licensed} into one in which \emph{dou} is obligatory, i.e., licensing the universal and the distributive, via Maximize Presupposition first proposed in \citet{heimArtikelUndDefinitheit1991}.
+In spirit, this principle makes every situation where the presupposition of \emph{dou} is satisfied a situation where the use of \emph{dou} is obligatory.
+In this section, I will show that there are several problems with the application of Maximize Presupposition in Liu's analysis, and sketch an account that avoids these problems by not appealing to Maximize Presupposition at all.
+
+First, it has been argued that the obligatory presence of elements like \emph{too} are not actually regulated by Maximize Presupposition, for example, \citet{badeCrosslinguisticViewObligatory2021}.
+\citet{badeCrosslinguisticViewObligatory2021} experimentally tests the predictions of Maximize Presupposition, and the conclusion is that it makes the wrong predictions when it comes to \emph{too}-insertion under negation.
+Although not experimentally tested, the test items with \emph{too} replaced with \emph{even} immediately shows that a presuppositional account for their obligatoriness is making rather weird predictions.
+Suppose that in the context, Mary came to the party.
+John is a shut-in who is the least likely among the salient individuals to come to the party.
+If John did come to the party, then one might say:
+\ex. Even John came to the party.
+
+However, if John did not come to the party, and if one is asked to use `it is not the case' to mark negation, then one might say
+\ex. It is not the case John came to the party.
+
+A Maximize Presupposition account of the presence of \emph{even} will predict that since the presupposition that John is the least likely to come to the party is satisfied, \emph{even} should be used, even in the scope of negation:
+\ex. It is not the case that even John came to the party.
+
+This is an odd sentence to utter, and it is reasonable to assume that if experiments are run, similar results to \Last with \emph{even} replaced with a sentence-final \emph{too} are expected.
+Therefore, Maximize Presupposition is unlikely to play a role in regulating the presence of \emph{even} in English, and by extension, the presence of \emph{dou} in Mandarin Chinese.
+
+The second problem is that Liu cites the very vaguely worded version in \cref{itm:mp} (repeated below), and no reasonably straightforward precisification of the principle can be applied to the present case.
+\ex.[\cref{itm:mp}] \emph{Maximize Presupposition} (MP)\\
+Make your contribution presuppose as much as possible. 
+
+A reasonable way to make this principle explicit could be the following:
+\ex. Given a set of formal alternatives to a lexical item equivalent in assertive content, use the one that triggers the most informative satisfied presupposition.
+
+However, MP as stated in this fashion does not work.
+\emph{Dou}'s presupposition in the universal and distributive case are tautological.
+\emph{Dou}'s presuppose that the prejacent is the strongest among the alternatives, and the prejacent is necessarily the strongest in a universal sentence among alternatives generated through subdomains.
+Thus, we can say that the sentence with \emph{dou} presupposes nothing, as a tautological presupposition is equivalent to the absence of presupposition.
+Then, \emph{dou} cannot outcompete any other alternative in terms of presupposition informativeness, whatever the other alternatives are, including Rooth's \(\sim\) proposed by \citet{singhModularityLocalityInterpretation2008} and cited by \citet{liuPragmaticExplanationMeidou2021}.
+Therefore, MP in the form cited by Liu, cannot derive the obligatoriness of \emph{dou}.
+
+There is a potential way of precisifying MP to as to make \emph{dou} outcompete its potential alternatives based on \citet{percusAntipresuppositions2006}, but I will show that this precisification naturally leads to account of the obligatoriness of \emph{dou} in the universal case that does not appeal to Maximize Presupposition.
+Instead of comparing the presuppositions of entire sentences or the local contexts, we can compare the presuppositions of the lexical alternatives.
+Percus proposes the following version of the MP (adapted slightly):
+\ex. \emph{Presuppositionally stronger}\\
+\(A\) is presuppositionally stronger than \(B\) iff the domain of \(\dom(\llbracket A \rrbracket^*) \subset \dom(\llbracket B \rrbracket^*)\), where \(\llbracket \cdot \rrbracket^*\) maps a syntactic object to its uncurried denotation (all higher-order functions become first-order functions over tuples).
+
+\ex. \emph{Maximize Presupposition}
+\a. Alternatives are only defined for lexical items. For any lexical item, the alternatives consist of all presuppositionally stronger items of the same syntactic category.
+\b. Do not use \(\varphi\) if a member of its Alternative-Family \(\psi\) is felicitous \emph{and contextually equivalent to \(\varphi\)}.\\
+\strut \hfill (\(\psi\) is contextually equivalent to \(\varphi\) iff for all \(w\) in the common ground, \(\psi(w) = \varphi(w)\).)
+
+Then, as long as we can figure out the set of alternatives to \emph{dou}, then we can get ready to examine whether \emph{dou} is the presuppositionally strongest.
+However, as soon as we set out to enumerate possible alternatives to \emph{even}, we see that independent factors rule out their use; there is no need to appeal to Maximize Presupposition.
+In the scalar and distributive uses of \emph{dou}, \emph{dou} behaves just like English \emph{even} and \emph{all} in terms of contextual distribution and the semantic contribution to the overall interpretation.
+Thus, there is no need to think of the presence of \emph{dou} as licensing the relevant structures; the exact same contextual and pragmatic principles govern \emph{dou} as those that govern \emph{even} and \emph{all} in English.
+In the FC NPI use of \emph{dou}, with NPI indefinites, my assumption of the approach to NPI licensing \citet{lahiriFocusNegativePolarity1998,crnicNonmonotonicityNPILicensing2014} already requires the presence of \emph{dou}.
+The two remaining cases are the universal use and the FC use of \emph{wh}-indefinites.
+
+It must be noted that even in the universal use, \emph{dou} is not always required; when the context allows \emph{mei} `every' to not be focused, then \emph{dou} is not required; this is an observation made in \citet{liuPragmaticExplanationMeidou2021}.
+Thus, an explanation is only needed for why \emph{dou} is obligatory in the universal use when \emph{mei} is focused.
+I assume that focused elements must be associates of focus operators, an innocent assumption by itself.
+I also assume that languages in general possess the following focus operators that are available in declaratives: \emph{only}, {\Exh}, \emph{even}, and \emph{too}/\emph{also}.
+The crucial observation is that there is one important factor that sets \emph{even} apart from the other three: \emph{even} does not presuppose the existence of non-weaker alternatives, or else the standard analysis of the following sentence will fail:
+\ex. John didn't even read one book.
+
+It has been proposed that \emph{even} moves over the entire sentence, associating with \emph{one}, whose alternatives are \(\{\text{one}, \text{two}, \text{three},\ldots\}\).
+Then, \emph{John didn't read one book} entails \emph{John didn't read two books}, \emph{John didn't read three books}, and so on.
+This entailment pattern will make the prejacent the least likely, and therefore the presupposition of \emph{even} satisfied.
+Notice that none of these alternatives are non-weaker; they are all entailed by the prejacent.
+Thus, for this analysis of \Last to go through, \emph{even} cannot have the presupposition that there is a non-weaker alternative.
+\emph{Only} and {\Exh} are characterized by their contribution to the assertive content of a sentence; however, without non-weaker alternatives, \emph{only} will give rise to a sentence that asserts nothing as its assertion is trivially satisfied; {\Exh} will be completely vacuous, in that neither the assertion nor the presupposition of the prejacent is modified in any way.
+Thus, it is reasonable to assume that \emph{only} and {\Exh} presupposition is existence of non-weaker alternatives.
+Lastly, there should be little controversy when it comes to \emph{too}/\emph{also}, whose contribution entirely consists in presupposing that a non-weaker alternative to the prejacent not only exists, but is true.
+
+Now, since all of the alternatives in the universal use of \emph{dou} are entailed by the prejacent, nothing is non-weaker; none of \emph{only}, {\Exh}, and \emph{too}/\emph{also} can be used.
+The only focus operator that can handle the focused \emph{mei} is \emph{dou} `even.'
+Therefore, there is no need at all to appeal to Maximize Presupposition in the universal case.
+
+Finally, I will account for the obligatory presence of \emph{dou} in the FC use with \emph{wh}-indefinites.
+I will argue that \emph{dou} is inserted to block the relevant structure from being interpreted as a \emph{wh}-question.
+First, I observe that when a \emph{wh}-phrase is focused (stressed), it must either be used interrogatively or as FC; the existential use disallows focus.
+\ex. \a. \gll 
+SHENME ren lai-le \\
+what person came \\
+\a. `Who came?'
+\b. *`Someone came.'
+\b. *`Everyone came.'
+\z.
+\b. \gll 
+SHENME ren dou lai-le \\
+what person \textsc{dou} came \\
+\a. *`Who came?'
+\b. *`Someone came.'
+\b. `Everyone came.'
+\z.
+\b. \gll 
+shenme ren lai-le \\
+what person came \\
+\a. *`Who came?'
+\b. `Someone came.'
+\b. *`Everyone came.'
+
+Second, the \emph{wh}-FC constructions with \emph{dou} removed is perceptively identical to \emph{wh}-questions; they share the same overall intonation and a stress on the \emph{wh}-phrase.
+Third, \emph{zhi} `only' associating with a \emph{wh}-phrase does not block an interrogative interpretation of the \emph{wh}-phrase: 
+\ex. \gll 
+Zhangsan zhi mai-le shenme? \\
+Z. only bought what? \\
+\glt `What is the thing \(x\) such that Zhangsan only bought \(x\)?'
+
+Lastly, \emph{dou}, when used in the scalar fashion, blocks the interrogative interpretation of the \emph{wh}-phrase it associates with.
+\ex. \# \gll 
+shei dou lai-le? \\
+who \textsc{dou} came \\
+\glt `Who even came?'
+
+These patterns are the opposite of English \emph{only} and \emph{even}.
+I will not aim to provide an explanation of these facts, but the crucial generalization is that \emph{zhi} `only,' and by extension, {\Exh}, associating with the \emph{wh}-phrase is compatible with a question over said \emph{wh}-phrase, but \emph{dou} `even' is incompatible with a question over its associate.
+
+Then, with the additional assumption that \emph{wh}-phrases are \([+\mathrm{wh}]\), which ideally should be agreed with an interrogative operator, say \textsc{q}, I can derive the obligatoriness of \emph{dou} in \emph{wh}-FC.
+\emph{Dou} is inserted to block the interrogative interpretation of \emph{wh}-phrases, which is the default for focused \emph{wh}-phrases.
+Because the focus operator responsible for deriving the FC interpretation is {\Exh}, which is covert, the hearer is unable to distinguish a \emph{wh}-question from a \emph{wh}-FC construction, if without \emph{dou}.
+Thus, \emph{dou}, as the only additional focus operator compatible with a \emph{wh}-FC construction (for the same reasons why \emph{dou} is the only focus operator compatible with focused \emph{mei} `every') and incompatible with a \emph{wh}-question, has to be inserted to ensure that an interrogative interpretation is not derived.
+
+In all, I have shown that Liu's application of the Maximize Presuppose is too vague to provide meaningful contribution to his analysis; that a straightforward precisification of Maximize Presupposition will in fact fail to derive the obligatoriness of \emph{dou}; and that a further attempt to save the Maximize Presupposition approach will naturally lead to an account that does not rely on it; the inherent properties of focus operators in Mandarin Chinese suffice to explain the obligatoriness.
+ % I made the observation in \cref{sub:wh_indefinites} that when the \emph{wh}-phrase is focused (stressed), then it is either used interrogatively or as generating FC; the existential use of \emph{wh}-phrases disallows focusing or stressing the \emph{wh}-phrase.
+ % I argue that \emph{dou} is inserted exactly to block the interrogative interpretation of focused \emph{wh}-phrases.
+
+ English and Mandarin Chinese behave differently in the compatibility between \emph{wh}-questions and focus operators \emph{even}/\emph{dou} and \emph{only}/{\Exh}\emph{zhi}.
+% Then, it is appropriate to claim that the use of \emph{dou} is forced by the MP since it does not seem to have propositionally stronger alternatives at all, let alone ones that are contextually equivalent.
+% Candidates to consider include {\Exh}, which does not presuppose; \emph{zhi}/\emph{zhiyou} ``only'' and {\Pex} of \citet{delpinalFreeChoicePresuppositional2023}, which presuppose but are not presuppositionally stronger.
+%
+% However, a deeper issue is why the domain variable must generate alternatives, i.e., why it must be focused in the first place.
+% If they are just not focused, then there will be no need to insert any focus-sensitive operator; Maximize Presupposition is then irrelevant.
+% For the NPI indefinite case, we can say that the NPIs inherently need licensing by \emph{even}.
+% For the distributive case, \emph{dou} is not an licensor since of course the plural can be used without \emph{dou}, and its presence could be context-dependent, similar to cases with non-monotonic quantifiers.
+% But for \emph{wh}-indefinites and universals, the answer is not as clear.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+
+In this paper, I have introduced the unified analysis of Mandarin Chinese particle \emph{dou}  in \citet{liuVarietiesAlternativesMandarin2017,liuPragmaticExplanationMeidou2021}: \emph{dou} is just like English even, and associates with the focused material, the universal, and the plural distributed over. 
+I first augmented the analysis with an extension to the use of \emph{dou} where it licenses free choice readings of NPI indefinites, utilizing the approach to FC licensing in \citet{lahiriFocusNegativePolarity1998,crnicNonmonotonicityNPILicensing2014,crnicNumberNPILicensing2022}.
+However, I pointed out that the distributive use cannot be analyzed in the way presented, since the plural is not focused and does not form the same kind of syntactic dependency with \emph{dou} as in the other uses.
+I proposed that \emph{dou} in the distributive use associates with a covert distributor \(\Delta\), or more precisely, the domain variable \(D\) on \(\Delta\).
+I provided evidence for this claim by showing the existence of an overt counterpart of \(\Delta\), i.e., \emph{quan}.
+I also developed explicit structural specifications for the syntax constraints that \emph{dou} and its associate are under and derived the relevant phenomenon.
+Finally, I explored a possibility where \(\Delta\) could just be the covert pluralizers \(\exists\)-\textsc{pl} or \(\forall\)-\textsc{pl} proposed in \citet{bar-levImplicatureAccountHomogeneity2021} to account for homogeneity and non-maximal readings of plurals, also present in Mandarin Chinese.
+Whether the theoretical accommodations that make this integration possible are acceptable (positing that formal alternatives do not just consider structural complexity but also phonetic complexity in the sense that overt material cannot be an alternative to covert material) and whether the present approach to the distributive use of \emph{dou} is compatible with other theories of plurality and distributivity remain to be examined in future research.
+
+\printbibliography
+\end{document}
+
+

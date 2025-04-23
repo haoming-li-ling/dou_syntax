@@ -1,0 +1,674 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper, margin=1in]{geometry}
+% \usepackage[skip=\baselineskip, tocskip=0pt]{parskip}
+\usepackage{amsmath, amsfonts, amssymb, amsthm, mathtools}
+\usepackage{stmaryrd}
+\usepackage{fontspec}
+\let\latextextsubscript\textsubscript
+\AtBeginDocument{
+  \let\textsubscript\latextextsubscript
+  \newcommand{\sub}[1]{\textsubscript{#1}}
+  \newcommand{\gap}[1]{\rule{1em}{0.4pt}\textsubscript{#1}}
+}
+\let\latextextsuperscript\textsuperscript
+\AtBeginDocument{
+  \let\textsuperscript\latextextsuperscript
+}
+\usepackage[largesc]{newpxtext}
+\usepackage[vvarbb]{newpxmath}
+\usepackage{csquotes}
+\usepackage{markdown}
+
+\usepackage{pifont}
+% \usepackage{txfonts}
+\let\eachwordone=\rmfamily
+\let\eachwordtwo=\rmfamily
+\let\eachwordthree=\rmfamily
+\let\rm=\relax
+% \usepackage{linguex, cgloss}
+\usepackage[linguex]{expex-glossonly}
+\lingset{everygla={\itshape}}
+\renewcommand{\firstrefdash}{}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\crefname{ExNo}{}{}
+\crefname{SubExNo}{}{}
+\renewcommand{\theExNo}{\arabic{ExNo}}
+\renewcommand{\theSubExNo}{\theExNo\alph{SubExNo}}
+\creflabelformat{SubExNo}{(#2#1#3)}
+\creflabelformat{ExNo}{(#2#1#3)}
+\crefrangelabelformat{SubExNo}{(#3#1#4--#5\crefstripprefix{#1}{#2}#6)}
+\crefrangelabelformat{ExNo}{(#3#1#4)--(#5#2#6)}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+\usepackage{xcolor}
+\setlength{\parskip}{1ex}
+\setlength{\parindent}{0pt}
+\setlist[1]{left=0pt}
+% \renewcommand\thesection{\Roman{section}.}
+% \renewcommand\thesubsection{\arabic{subsection}.}
+% \renewcommand\thesubsubsection{\Alph{subsubsection}}
+
+\usepackage[
+  backend=biber,
+  natbib=true,
+  style=unified,
+  maxcitenames=3,
+  maxbibnames=99
+]{biblatex}
+\addbibresource{../Chinese_Modals.bib}
+\AtBeginDocument{
+  % \setlength{\Extopsep}{0\baselineskip}
+  % \setlength{\Exredux}{0\baselineskip}
+  \settowidth{\Exlabelwidth}{(00)}
+  % \setlength{\Exlabelwidth}{.7\Exlabelwidth}
+  % \setlength{\Exlabelsep}{.7\Exlabelsep}
+  % \setlength{\SubExleftmargin}{\SubExleftmargin}
+  % \setlength{\SubSubExleftmargin}{\SubSubExleftmargin}
+}
+
+\newcommand{\II}{\I{[}}
+\newcommand{\A}{\(\overline{\text{A}}\)}
+\usepackage{tikz}
+\usepackage[linguistics]{forest}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{tikzmark}
+\usepackage{tikz-cd}
+\tikzcdset{
+  arrow style=math font,
+  % diagrams={>={Straight Barb[scale=0.8]}}
+}
+
+\tikzset{every label/.style={font=\footnotesize}}
+
+\forestset{
+  default preamble={
+    for tree={
+      inner sep=0pt,
+      % draw,
+    }
+  },
+  great empty nodes/.style={
+    for tree={
+      calign=fixed edge angles,
+      calign primary angle=-60,
+      calign secondary angle=60,
+    l=7mm},
+    delay={
+      where content={}{
+        shape=coordinate,
+    for current and siblings={anchor=north}}{}}
+  },
+  downroof/.style={
+    for children={
+      if n=1{
+        edge path'={
+          (.parent first) -- (!u.parent anchor) -- (!ul.parent last) -- cycle
+        }
+      }{no edge}
+    }
+  }
+}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\renewcommand\tabularxcolumn[1]{m{#1}}% for vertical centering text in X column
+
+\AtBeginDocument{% to do this after unicode-math has done its work
+  \renewcommand{\setminus}{\mathbin{\backslash}}%
+}
+\title{Arguments for a bi-clausal analysis of Mandarin root modals}
+\author{Haoming Li}
+
+\DeclareMathOperator{\atom}{\textsc{Atom}}
+\DeclareMathOperator{\alt}{\textsc{Alt}}
+\DeclareMathOperator{\xh}{\textsc{Exh}}
+\newcommand{\exh}{\ensuremath{\xh}}
+\newcommand{\Exh}{\ensuremath{\mathcal{E}\mathit{xh}}}
+\newcommand{\Pex}{\ensuremath{\mathcal{P}\mathit{ex}}}
+\newcommand{\F}{\ensuremath{_{\mathrm{F}}}}
+\DeclareMathOperator{\prt}{Part}
+\DeclareMathOperator{\dom}{dom}
+\newcommand{\opfs}{\textit{Op}\(_{\mathrm{FS}}\)}
+\newcommand{\topobj}{Topic\(_{\mathrm{obj}}\)P}
+
+\begin{document}
+\maketitle
+\section{Introduction}
+\label{sec:introduction}
+
+There has been a long debate on the nature of the clausal spine in sentences with modals in Mandarin syntax.
+
+In particular, are modal verbs clause-embedding (bi-clausal) \citep{panArchitecturePeripheryChinese2019,linFinitenessClausesRaising2011,linMultiplemodalConstructionsMandarin2012}, or are they just heads in the verbal projection of the same clause (like English) \citep{yipGeneralizedScopeEconomy2020,leeMovementQuantificationalHeads2021,erlewineLowSentencefinalParticles2017}?
+\ex.
+\a. \begingl
+\glpreamble bi-clausal //
+\gla Lisi \nogloss{\I{[}VP {} } @  \nogloss{\I{[}V {} } @ keyi @ \nogloss{]} \nogloss{\I{[}TP/CP {} } @ \nogloss{\gap{}} lai @ \nogloss{]]} //
+  \glb L. can come //
+  \glft `Lisi can come.' //
+\endgl
+\b. \begingl
+\glpreamble mono-clausal //
+\gla Lisi \nogloss{\I{[}F/ModP \I{[}F/Mod {} } @ keyi @ \nogloss{]} \nogloss{\I{[}\emph{v}P {} } @ \nogloss{\gap{}} lai @ \nogloss{]]} //
+  \glb L. can come //
+  \glft `Lisi can come.' //
+\endgl
+
+This handout provides a number of arguments in favor of the bi-clausal (clause-embedding) analysis for root modals (deontic, circumstantial, teleological, etc.).
+Whenever the word \emph{modal} is used below, it refers to a root modal.
+
+\section{Argument from locality of association with focus-sensitive operators}
+\label{sec:argument_from_locality_of_association_with_focus_sensitive_operators}
+This section will argue that locality conditions between focus-sensitive operators (below, FS operators) in the presence of modals are best explained if a bi-clausal analysis of modals are adopted.
+Specifically, modals should embed CPs.
+
+First, we establish the locality conditions of FS association without modals.
+
+In Mandarin Chinese, the scalar and additive focus-sensitive operators  \emph{ye} `also' and \emph{dou} `even' allow backwards association:
+\ex. \begingl
+\gla Lisi\F{} \textbf{ye} lai-le. //
+  \glb L. also come-\textsc{pfv} //
+  \glft `Lisi\F{} also came.' //
+\endgl
+
+\ex. \begingl
+\gla \nogloss{(} @ lian @ \nogloss{)} Lisi\F{} \textbf{dou} lai-le. //
+  \glb \textsc{foc} L. even come-\textsc{pfv} //
+  \glft `Lisi\F{} even came.' //
+\endgl
+
+Following \citep{liuVarietiesAlternativesMandarin2017,liuPragmaticExplanationMeidou2021,crnicNonmonotonicityNPILicensing2014}, I assume that these FS operators must covertly move to a propositional position c-commanding the associate.
+\ex. \tikzmarknode{target}{\textit{Op}\(_{\mathrm{FS}}\)} [ \ldots{} XP\F{} \ldots{} \tikzmarknode{base}{\gap{}} \ldots{} ]
+\begin{tikzpicture}[overlay, remember picture]
+  \draw[-Stealth] (base.south) -- ++(0, -.25) -| (target.south);
+\end{tikzpicture}
+
+Then, the following example shows that these operators can move to very high positions in the clause, at least above TopicP:
+% \ex. \label{ex:double_island}\begingl
+% \gla \nogloss{(} @ lian @ \nogloss{)} Lisi\(_{1, \mathrm{F}}\), \nogloss{\I{[}RC {} } @ xihuan \nogloss{\gap{1}} de @ \nogloss{]} ren \textbf{dou} hen duo. //
+%   \glb \textsc{foc} L. like \textsc{de} person even very many //
+%   \glft `even Lisi\(_{1, \mathrm{F}}\), the people who like \gap{1} are many.' //
+% \endgl
+%\gla xihuan Zhangsan de ren hen duo. + Lisi\F{}, \nogloss{\I{[}RC {} } @ xihuan \nogloss{\gap{}} de @ \nogloss{]} ren ye hen duo. //
+%  \glb like Z. \textsc{de} person very many L. like \textsc{de} person also very many //
+%  \glft `The people who like Zhangsan are many. Lisi\(_{1, \mathrm{F}}\), the people who like \gap{1} are also many.' //
+%\endgl
+
+\ex. \label{ex:double_island}\begingl
+\gla \nogloss{(} @ lian @ \nogloss{)} Lisi\(_{1, \mathrm{F}}\), \nogloss{\I{[}RC {} } @ xihuan \nogloss{\gap{1}} de @ \nogloss{]} ren \textbf{dou} zhan-man-le yi-ge jiaoshi. //
+  \glb \textsc{foc} L. like \textsc{de} person even stand-full-\textsc{pfv} 1-\textsc{cl} classroom //
+  \glft `even Lisi\(_{1, \mathrm{F}}\), the people who like \gap{1} filled a classroom.' //
+\endgl
+
+
+
+Crucially, in \Last, \emph{Lisi} must be a base-generated topic.
+This is because the gap that is co-indexed with it is embedded in a relative clause in the subject position, i.e., it is doubly island-restricted, a complex-NP island inside a subject island.
+\emph{Lisi} cannot have moved from the gap to its surface position.
+The gap, therefore, is also not created via movement, but an instance of null objects, which are ubiquitous in Mandarin Chinese \citep{liBornEmpty2014}.
+
+On the other hand, movement of FS operators cannot cross clausal boundaries.
+\ex. *\begingl
+\gla Zhangsan\F{} shuo \nogloss{\I{[}CP {} } @ Lisi \textbf{dou} lai-le @ \nogloss{]} //
+  \glb Z. say L. even come-\textsc{pfv} //
+  \glft Intended: `Zhangsan\F{} even said Lisi came.' //
+\endgl
+
+% \ex. *\begingl
+%   \gla Zhangsan shefa dou lai-le. //
+%   \glb Z. manage.to even come-\textsc{pfv} //
+%   \glft Intended: `Zhangsan\F{} even managed to come.' //
+% \endgl
+
+Thus, the locality upper bound smallest containing CP seems to be the upper bound for the movement of FS operators in Mandarin Chinese, as they can already move above TopicP.
+\ex. Movement of \opfs{} cannot escape the smallest containing CP. \label{ex:loc_cons}
+
+Then, how do FS operators behave when modals are present?
+
+We see from \Next[b] that FS operators are unable to associate across modals.
+From our assumption that FS operators must move to a position c-commanding the associate, this indicates that the FS operator is unable to move across the modal.
+\ex. \label{ex:fs_modal}
+\a. \begingl
+  \gla Zhangsan\F{} \textbf{ye} \textbf{keyi} lai. //
+  \glb Z. also can come. //
+  \glft `Zhangsan\F{} can also come.' //
+\endgl
+\b. *\begingl
+\gla Zhangsan\F{} \textbf{keyi} \textbf{ye} lai. //
+  \glb Z. can also come //
+  \glft Intended: `Zhangsan\F{} can also come.' //
+\endgl
+
+\Last[a] just shows us that if the FS operator and its associate are on the same side of a modal, then association is possible.
+
+Examples similar to \cref{ex:double_island} also becomes unacceptable when a modal is inserted somewhere between the topicalized associate and the FS operator:
+\ex. \label{ex:double_island_modal} 
+\a. \begingl
+\gla \nogloss{(} @ lian @ \nogloss{)} Lisi\(_{1, \mathrm{F}}\), \nogloss{\I{[}RC {} } @ xihuan \nogloss{\gap{1}} de @ \nogloss{]} ren \textbf{dou} \textbf{keyi} zhan-man yi-ge jiaoshi. //
+  \glb \textsc{foc} L. like \textsc{de} person even can stand-full 1-\textsc{cl} classroom //
+  \glft `even Lisi\(_{1, \mathrm{F}}\), the people who like \gap{1} can fill a classroom.' //
+\endgl
+\b. \begingl
+\gla \nogloss{\ljudge{*}} @ \nogloss{(} @ lian @ \nogloss{)} Lisi\(_{1, \mathrm{F}}\), \nogloss{\I{[}RC {} } @ xihuan \nogloss{\gap{1}} de @ \nogloss{]} ren \textbf{keyi} \textbf{dou} zhan-man yi-ge jiaoshi. //
+  \glb \textsc{foc} L. like \textsc{de} person can even stand-full 1-\textsc{cl} classroom //
+  \glft `even Lisi\(_{1, \mathrm{F}}\), the people who like \gap{1} can fill a classroom.' //
+\endgl
+
+% \ex. \label{ex:double_island_modal}
+%\a. \begingl
+%\gla zhichi Zhangsan de ren keyi zai zheli tou piao, //
+%  \glb support Z. \textsc{de} person can at here cast vote //
+%  \glft `People who support Zhangsan can vote here, ' //
+%\endgl
+% \a. \begingl
+% \gla \nogloss{\ldots{}} Lisi\F{}, \nogloss{\I{[}RC {} } @ zhichi \nogloss{\gap{}} de @ \nogloss{]} ren \textbf{ye} \textbf{keyi} zai zheli tou piao. //
+%   \glb L. support \textsc{de} person also can at here cast vote //
+%   \glft `Lisi\(_{1, \mathrm{F}}\), people who support \gap{1} can also vote here.' //
+% \endgl
+% \b. \begingl
+% \gla \nogloss{\ljudge{*}} @ \nogloss{\ldots{}} Lisi\F{}, \nogloss{\I{[}RC {} } @ zhichi \nogloss{\gap{}} de @ \nogloss{]} ren \textbf{keyi} \textbf{ye} zai zheli tou piao. //
+%   \glb L. support \textsc{de} person also can at here cast vote //
+%   \glft Intended: `Lisi\(_{1, \mathrm{F}}\), people who support \gap{1} can also vote here.' //
+% \endgl
+
+Modals clearly pattern with verbs taking clausal complements in forbidding the movement of FS operators out of them.
+
+Without adding ad hoc locality constraints specifically targeting modals, the simplest and most straightforward way to account for the observations is that modals are also clause-embedding verbs.
+
+
+Because we know from \cref{ex:double_island} that FS operator movement is not confined to within TP, the complement clauses of modals must be CPs.
+
+This way, \cref{ex:loc_cons} can directly apply to derive the contrasts in \cref{ex:fs_modal} and \cref{ex:double_island_modal}.
+
+% Modals pattern with clause-embedding verbs in forbidding the movement of FS operators across them.
+%
+% If we do not want to introduce new ad hoc constraints on the movement of FS operators, the only option is to assume that modals also embed clauses.
+
+\section{Argument from domains of ordering constraints}
+\label{sec:argument_from_domains_of_ordering_constraints}
+
+
+The second argument involving the ``resetting'' of ordering constraints between FS operators and fronted objects by modals.
+
+Observe that \emph{ye} `also,' \emph{dou} `even,' and \emph{zhi} `only,' which always appear in pre-verbal positions, cannot appear to the left of certain elements, like fronted objects:
+% \ex. Pre-verbal adverbials
+% \a. \begingl
+% \gla Zhangsan\F{} zuotian ye lai-le. //
+%   \glb Z. yesterday also come-\textsc{pfv} //
+% \glft `Zhangsan\F{} also came yesterday.' //
+% \endgl
+% \b. *\begingl
+%   \gla  Zhangsan\F{} ye zuotian lai-le. //
+%   \glb Z. also yesterday come-\textsc{pfv} //
+%   \glft Intended: `Zhangsan\F{} also came yesterday.' //
+% \endgl
+%
+\ex.
+\a. \begingl
+\gla Zhangsan\F{} \textbf{zuoye}\(_1\) \textbf{ye} xie-wan-le \nogloss{\gap{1}}. //
+  \glb Z. assignment also write-finish-\textsc{pfv} //
+  \glft `Zhangsan\F{} also finished his assignment.' //
+\endgl
+\b. * \begingl
+\gla Zhangsan\F{} \textbf{ye} \textbf{zuoye}\(_1\) xie-wan-le \nogloss{\gap{1}}. //
+  \glb Z. also assignment write-finish-\textsc{pfv} //
+  \glft Intended: `Zhangsan\F{} also finished his assignment' //
+\endgl
+
+
+
+One can reasonably infer that the landing site of fronted object, say, Spec, \topobj{} must be at a higher position than the designated base (overt) position of these FS operators, say, XP.
+This is represented in the following schema:
+\ex. \label{ex:order_top_fs} \topobj{} \(>\) \opfs{} \(>\) V
+
+When modals are involved, however, the FS operators can directly attach to the immediate left of the modals, even above positions originally impossible for attachment.
+% \ex.
+% \begingl
+% \glpreamble Pre-verbal adverbials //
+% \gla Zhangsan\F{} ye keyi mingtian lai. //
+%   \glb Z. also can tomorrow come //
+% \glft `Zhangsan\F{} can also come tomorrow.' //
+% \endgl
+%
+\ex.
+\begingl
+\glpreamble Fronted objects //
+\gla Zhangsan\F{} \textbf{ye} \textbf{keyi} \textbf{zuoye}\(_1\) mingtian xie \nogloss{\gap{1}}. //
+  \glb Z. also can assignment tomorrow write //
+  \glft `Zhangsan\F{} can also do his assignment tomorrow.' //
+\endgl
+
+If we ignore the modal, \Last has the following ordering:
+\ex. \opfs{} \(>\) \topobj{} \(>\) V  \label{ex:paradox}
+
+\Last is clearly in conflict with \cref{ex:order_top_fs}.
+
+This situation can be easily explained if we assume that modals are also lexical verbs, that they take CPs as complements, and that \cref{ex:order_top_fs} applies within every CP but not across CPs.
+
+\Last can be rewritten:
+\ex. \I{[}CP \opfs{} \(>\) V \(>\) \I{[}CP \topobj{} \(>\) V  ]]
+
+In each CP in \Last, \cref{ex:order_top_fs} is not violated.
+
+Immediate predictions are that as long as the \opfs{} and \topobj{} are in the same smallest CP in the presence of a modal, they must still obey \cref{ex:order_top_fs}.
+
+This prediction is borne out.
+
+First, if the object is fronted across the modal, its ordering with the FS operators obey \cref{ex:order_top_fs} again:
+% Expectedly, matrix fronted objected must still precede matrix FS operators:
+% \ex. Pre-verbal adverbials
+% \a. \begingl
+% \gla Zhangsan\F{} mingtian ye keyi lai. //
+%   \glb Z. tomorrow also can come //
+% \glft `Zhangsan\F{} can also come tomorrow.' //
+% \endgl
+% \b. *\begingl
+% \gla Zhangsan\F{} ye mingtian keyi lai. //
+%   \glb Z. also tomorrow can come //
+% \glft `Zhangsan\F{} can also come tomorrow.' //
+% \endgl
+%
+\ex.
+\a. \begingl
+\gla Zhangsan\F{} \textbf{zuoye}\(_1\) \textbf{ye} keyi mingtian xie \nogloss{\gap{1}}. //
+  \glb Z. assignment also can tomorrow write //
+  \glft `Zhangsan\F{} can also finishe his assignment tomorrow.' //
+\endgl
+\b. \begingl
+\gla \nogloss{\ljudge{*}} @ Zhangsan\F{} \textbf{ye} \textbf{zuoye}\(_1\) keyi mingtian xie \nogloss{\gap{1}}. //
+  \glb Z. also assignment can tomorrow write //
+  \glft `Zhangsan\F{} can also finishe his assignment tomorrow.' //
+\endgl
+
+\Last illustrates the ordering:
+\ex. \I{[}CP \topobj{} \(>\) \opfs{} \(>\) V \(>\) \I{[}CP V  ]] \label{ex:order_matrix}
+
+Second, if the fronted object and the FS operator are both in the syntactic scope of the modal, \cref{ex:order_top_fs} is also followed:
+\ex.
+\a. \begingl
+\gla Zhangsan keyi \nogloss{[} @  zhe-fen zuoye @ \nogloss{]\(_{1, \mathrm{F}}\)} ye mingtian xie \nogloss{\gap{1}}. //
+  \glb Z. can this-\textsc{cl} assignment also tomorrow write //
+  \glft `Zhangsan can also do this assignment\F{} tomorrow.' //
+\endgl
+\b. \begingl
+\gla \nogloss{\ljudge{*}} @ Zhangsan keyi ye \nogloss{[} @  zhe-fen zuoye @ \nogloss{]\(_{1, \mathrm{F}}\)} mingtian xie \nogloss{\gap{1}}. //
+  \glb Z. can also this-\textsc{cl} assignment tomorrow write //
+  \glft Intended: `Zhangsan can also do this assignment\F{} tomorrow.' //
+\endgl
+
+\Last illustrates the following ordering:
+\ex. \I{[}CP V \(>\) \I{[}CP \topobj{} \(>\) \opfs{} \(>\) V  ]] \label{ex:order_embedded}
+
+Clearly both \cref{ex:order_embedded} and \cref{ex:order_matrix} follow \cref{ex:order_top_fs}.
+
+This means that modals essentially `reset' the clausal projections and therefore the ordering constraints with FS operators.
+
+% Thus, we can summarize the ordering constraints with modals into the following:
+% \ex. \topobj{} \(>\) \opfs{} \(>\) modal \(>\) \topobj{}  \(>\) \opfs{}
+%
+% But crucially, without the modal, only the relationship \Next holds.
+% \ex.  \topobj{} \(>\) \opfs{}
+%
+% This can be easily explained by the bi-clausal analysis of modals.
+%
+% The ordering constraint \cref{ex:order_top_fs} applies in every clause.
+%
+% But modal constructions involve two clauses, one embedded, and one matrix.
+%
+% In each of them, \cref{ex:order_top_fs} must hold.
+%
+% But if we choose to have \opfs{} in the matrix clause, and \topobj{} in the embedded clause, we can derive the seemingly paradoxical \cref{ex:paradox}.
+%
+% This means that modals essentially `reset' the clausal projections and therefore the ordering constraints with FS operators.
+
+
+
+
+
+\section{Implications}
+\label{sec:implications}
+
+\subsection{CP-embedding}
+\label{sub:cp_embedding}
+
+
+\emph{shuo}, an element that has been claimed by some \citep{chappellVariationGrammaticalizationComplementizers2008,huang2003doubts,huangControlComplementsMandarin2018a} to be potentially a complementizer.
+
+It does seem possible with root modals, but judgements are fuzzy for me personally.
+\ex. ?\begingl
+  \gla Zhangsan yinggai \textbf{shuo} xian shi-yi-shi zai zuo jueding. //
+  \glb Z. should \textsc{comp} first try then make decision //
+  \glft `Zhangsan should first try it and then make a decision.' //
+\endgl
+
+That root modals embed CPs make the relevant sentences hyperraising, and a \citet{leeHyperraisingEvidentialityPhase2024}-style phase deactivation analysis has been applied to hyperraising in Cantonese, though not with modals, but attitude verbs.
+
+\subsection{Modal movement}
+\label{sub:modal_movement}
+
+\citet{yipGeneralizedScopeEconomy2020,leeMovementQuantificationalHeads2021,laiMovingHeadsSpecifiers2024} propose that Cantonese and Mandarin sentences starting with modals (when the modals precedes the subject) are derived through the movement of the modal(s) across the subject.
+\ex. \tikzmarknode{mod}{Mod} \ldots{} \I{[}TP Subj \tikzmarknode{base}{\(\langle \text{Mod} \rangle\)} \I{[}\emph{v}P \ldots{} ]
+\begin{tikzpicture}[overlay, remember picture]
+  \draw[Stealth-] (mod.south) -- ++(0, -.5) -| (base.south);
+\end{tikzpicture}
+
+But if modals are raising verbs, then modal-initial sentences are much more likely to be just constructions where the subject does not raise.
+\ex. V\(_{\mathrm{Mod}}\) \I{[}CP \ldots{} Subj \I{[}T\('\) \ldots{} ]]
+
+% This is then the analysis of \citet{linFinitenessClausesRaising2011} for such sentences, but he
+
+\subsection{Interpretation of embedded FS operators}
+\label{sub:interpretation_of_embedded_fs_operators}
+
+When FS operators do appear in the syntactic scope of modals, they get interpreted in the semantic scope of modals as well, because they are unable to escape the embedded CP that is the complement of the modal.
+
+And because they must c-command their associate, they can then only associate with elements also in the syntactic scope of the modals.
+
+We have already seen examples where the FS operators in the scope of modals fail to associate with elements outside it.
+
+Now we look at an example where there is a clause-mate associate for an embedded FS operator.
+\ex. \begingl
+\gla Zhangsan keyi \nogloss{[} @ zhe-fen zuoye @ \nogloss{]\F{}} ye mingtian xie. //
+  \glb Z. can this-\textsc{cl} assignment also tomorrow write //
+  \glft `Zhangsan can do this assignment\F{} tomorrow, in addition to others.' //
+\endgl
+
+\Last presupposes the epistemic statement that Zhangsan is \emph{going} to do at least one other assignment tomorrow.
+
+The additivity is clearly interpreted inside \emph{keyi}.
+The presupposition is derived if we assume universal epistemic projection of presupposition in the scope of root modals in the manner of \citet{heimPresuppositionProjectionSemantics1992}.
+
+\Last contrast with a sentence where both the FS operator and the associate are outside the scope of the modal:
+\ex. \begingl
+\gla Zhangsan \nogloss{[} @ zhe-fen zuoye @ \nogloss{]\F{}} ye keyi mingtian xie. //
+  \glb Z. this-\textsc{cl} assignment also can tomorrow write //
+  \glft `Zhangsan can also do this assignment\F{} tomorrow.' //
+\endgl
+
+\Last presupposes the deontic statement that Zhangsan is \emph{allowed} to do at least one other assignment tomorrow.
+
+This is derived by calculating the semantic contribution of \emph{ye} outside the scope of the modal.
+
+In a context where Zhangsan is allowed to do another assignment tomorrow, but doesn't plan to do so, and so no one in the context expects him to actually do so, \LLast is infelicitous, while \Last is felicitous.
+
+
+
+
+% \subsection{Pre-subject}
+% \label{sub:pre_subject}
+%
+% If modals are Vs embedding clauses, then they are either raising or control verbs, due to the possibility of a matrix subject co-indexed with the embedded null subject position.
+%
+% That almost every modal allows for the subject to stay in the embedded position in an A-not-A configuration and that fact that these modals do not seem to assign any meaningful \(\theta\)-roles mean that the control analysis is a non-starter.
+
+
+
+% \subsection{Deriving the syntactic behavior of \emph{dou} across the uses}
+% \label{sub:deriving_the_syntactic_behavior_of_dou_across_the_uses}
+%
+% Recall that I provided the DLC in \cref{itm:dlc}, repeated in \Next:
+% \ex. \emph{\emph{Dou} Locality Constraint} (DLC)\\
+% \emph{Dou} and its associate cannot be linearly intervened by a scope-taking element, such as a modal or negative marker.
+%
+% This is used as evidence against Liu's analysis of the distributive use of \emph{dou} where \emph{dou} associates with the plural.
+% I will show that my re-analysis does indeed make it possible for the distributive use to still conform to this constraint.
+% Besides, there should be ways to state the DLC in more explicitly structural and derivational terms, perhaps even dissolving its stipulative nature through appropriate structural assumptions.
+%
+% The ingredients to the structural analysis of \emph{dou} are as follows.
+% \ex. \label{itm:dou_struct}
+% \a. \emph{Dou} moves from its overt position in the lower verbal domain to a high CP-adjoined. \label{itm:vp}
+% \b. The movement of \emph{dou} cannot cross CP boundaries. \label{itm:cp}
+% \b. \emph{Dou} and its the associate must be clausemates at surface. \label{itm:mate}
+% \b. Scope-taking elements such as modals and negation are verbal and take CPs as complements. \label{itm:v}
+% \b. The movement of \emph{dou} must cross its associate except in the scalar use. \label{itm:cross}
+%
+% I will then motivate these structural specifications one by one.
+%
+% \Last[a] is based on the fact that \emph{dou} can associate with elements base-generated high in the clause.
+% For example, \emph{dou} can associate with a base-generated topic, which corresponds with a gap that is inside an island, for example, a relative class in the subject position:
+% \ex. \gll
+% \textbf{dou} \I[TopP zhe-ge ban de mei-ge\(_{D_F}\) ren \I[Top\('\) \I[RC xihuan \gap{1} de ren ] \textbf{\sout{dou}} hen duo ]].\\
+% \textsc{dou} {} this-\textsc{cl} class \textsc{de} every-\textsc{cl} person {} {} like {} \textsc{de} person {} \textsc{dou} very many\\
+% \glt `Everyone \(x\) in this class is such that there are many people who like \(x\).' \label{itm:no-movement}
+%
+% Since this gap cannot be derived through movement as it is embedded inside two islands, the topic that seems dislocated is base-generated and the gap should be a case of object-drop, ubiquitous in Mandarin Chinese, anaphoric to the topic.
+% Therefore, \emph{dou} is at least able to move as high as just above TopP.
+%
+% \cref{itm:cp} and \cref{itm:mate} are expected of the \emph{even}-like elements, with evidence from both Mandarin Chinese and English.
+% \ex. *\gll
+% mei-ge\(_{D_F}\) ren shuo \I[CP Lisi dou xie-le zuoye ]. \\
+% every-\textsc{cl} person say {} L. \textsc{dou} wrote homework \\
+% \glt Intended: `Everyone said that Lisi did his homework.'
+%
+% If \emph{dou} were allowed to move into the matrix CP, or if \emph{dou} were allowed to associate with an element outside the smallest containing CP, then nothing prevents \emph{dou} from associating with \(D_F\) on \emph{mei} in the matrix, failing to predict the ungrammaticality of \Last.
+% The same kind of example can be readily replicated in English:
+% \ex. *John\(_F\) said Bill \textbf{even} did his homework.
+%
+% \cref{itm:cross} is needed simply to encode the fact that \emph{dou} obligatorily associates to the left except in the scalar use.
+% When the focus associate is in the lower verbal domain at surface, then a covert counterpart of \emph{dou} is used.
+% We will nevertheless focus on cases where overt \emph{dou} is involved.
+%
+%
+% \cref{itm:v} is a natural consequence of \cref{itm:cp} and \cref{itm:mate} and the fact that \emph{even}-type elements are cross-linguistically able to move out of the scope of negation and modals.
+% Take English for example:
+% \ex. \textbf{even} John didn't \textbf{\sout{even}} read any book.
+%
+% \emph{Even} needs to move out of the scope of negation for its presupposition that the prejacent is the strongest to be true.
+% In \Next, \emph{even} also seems to associate with an element across the modal \emph{can}, indicating that it is able to move across it.
+% \ex. John\(_F\) can \textbf{even} swim.
+%
+%
+% I have shown that \emph{dou} should be able to move as high as the edge of a CP in \cref{itm:cp}.
+% If there is no other principle that prohibits the movement of \emph{dou} across modals and negation, it must be \cref{itm:cp} that is at work.
+% Then, it must be the case that negation and modals in Mandarin Chinese take CPs as complements; then, \emph{dou} will not be able to move across them.
+% This also means that negation and modals are verbal and are located in the lower verbal domain; the subject of the complement clause is raised across them into the matrix clause.
+% This is evidenced by the very fact that \emph{dou} can appear above them in the same clause:
+% \ex. \gll
+% mei-ge\(_{D_F}\) ren\(_1\) \textbf{dou} \I[VP keyi \I[CP \gap{1} lai ]]. \\
+% every-\textsc{cl} person \textsc{dou} {} can {} {} come \\
+% \glt `They all can come.'
+%
+% These observed and deduced syntactic constraints on \emph{dou} and its associate depart from those reported in \citet{erlewineMovementOutFocus2014a} for English \emph{even}.
+% First, we have \cref{itm:no-movement} which is evidence for \emph{dou} associating with an element that is never in the scope of the surface position of \emph{dou}.
+% Having a copy inside the surface scope of \emph{dou} is not a \emph{necessary} condition for the association.
+% Second, we have already seen that the Chinese counterparts to \Last and \LLast with negation and the modal intervening between the subject associate and \emph{dou} are ungrammatical.
+% Having a copy inside the surface scope of \emph{dou} is not a \emph{sufficient} condition for the association.
+% Therefore, we can conclude that the Chinese data motivates a syntactic theory of association with focus that involves either movement of \emph{even}/\emph{dou} to a high position in the clause (at least above TopP), becoming a scope-taker with the enlarged scope, or is a reflex of such a scope-taker that is base-generated in a high position.
+% For concreteness and familiarity, I have assumed that \emph{dou} itself moves.
+% I leave to future research the reconciliation between the Chinese data and the theory of focus association in \citet{erlewineMovementOutFocus2014a}.
+% % \Last[b] is a natural consequence of \Last[a].
+% % \Last[c] and \Last[e] will conspire to derive the DLC.
+% % \Last[d] derives \emph{dou}'s leftward association except in the scalar use, where the association can be either leftward or rightward.
+% Then, we see that we can derive the DLC from \crefrange{itm:vp}{itm:cross}: \emph{dou} cannot escape its own minimal CP, and cannot associate across CP boundaries; modals and negation take CPs as complements, so whenever a modal or negation intervenes between \emph{dou}'s supposed associate and \emph{dou}, they will be separated by a CP boundary and association cannot be established between them.
+%
+% Thus, I can provide more detailed structures for the various uses of \emph{dou}, deriving the relevant grammaticality judgements.
+% I will start with the distributive use.
+% Because \emph{dou} now associates with the domain variable \(D\) on \(\Delta\) and the association is always leftward, we can put \(\Delta\) in an appropriate clausemate position:
+% \ex. \gll
+% dou tamen\(_1\) \(\Delta_{D_F}\) \sout{dou} \I[VP keyi \I[CP \gap{1} \I[VP lai ]]]. \\
+% \textsc{dou} they {} {} {} can {} {} {} come \\
+% \glt `They are all allowed to come.'\\
+% \(\forall > \Diamond\)
+%
+% \ex. \gll
+% tamen\(_1\) \I[VP keyi \I[CP dou \gap{1} \(\Delta_{D_F}\) \sout{dou} \I[VP lai ]]]. \\
+% they {} can {} \textsc{dou} {} {} {}  {} come \\
+% \glt `They are allowed to all come.'\\
+% \(\Diamond > \forall\)
+%
+% When \emph{dou} is to the left of a modal or negation, it must be in a higher clause; by \cref{itm:mate}, \(\Delta\) will also be in the higher clause, making \(\Delta\) scope above said modal or negation.
+% When \emph{dou} is to the right of a modal or negation, it must be in the complement clause of said modal or negation; by \cref{itm:mate}, \(\Delta\) will also be in the complement clause, making \(\Delta\) scope below said modal or negation.
+% Thus, the two scope relations in \LLast and \Last are derived.
+%
+%
+% % Modals and negation(!) are verbal and take clausal complements.
+% %
+% % Some modals are obligatorily raising, others optionally.
+% % Negation (\emph{bu} and \emph{mei}, not \emph{bushi}) is obligatory raising, can never precede the subject.
+% % Also necessitated by the assumption that \emph{dou} can only occupy a position on the left edge of VP or \emph{v}P
+%
+% % \emph{Dou} and its associate must be clausemates overtly; traces of the associates don't count for this purpose.
+% % Movement of \emph{dou} cannot across any CP boundaries.
+% % Movement of \emph{dou} must across its associate in all but the scalar use; this derives the leftward association requirement.
+% % This is perhaps related to (Generalized) Scope Economy.
+% % Distributive use: even though the  plural can be separated from \emph{dou} by negation or modals, the true associate, \(\Delta\), can always be situated in the same clause as \emph{dou}.
+% % \ex. \gll
+% % dou tamen\(_1\) \(\Delta_F\) \sout{dou} \I[VP keyi \I[CP \gap{1} \I[VP lai ]]]. \\
+% % {} they {} \textsc{dou} {} can {} {} {} come \\
+% % \glt `They all can come.'\\
+% % \(\forall > \Diamond\)
+% %
+% % \ex. \gll
+% % tamen\(_1\) \I[VP keyi \I[CP dou \gap{1} \(\Delta_F\) \sout{dou} \I[VP lai ]]]. \\
+% % they {} can {} {} {} {} \textsc{dou} {} come \\
+% % \glt `They are allowed to all come.'\\
+% % \(\Diamond > \forall\)
+%
+% % \ex. \gll
+% % tamen\(_1\) dou \I[VP mei \I[CP \gap{1} \I[VP lai ]]]. \\
+% % they \textsc{dou} {} \textsc{neg} {} {} {} come \\
+% % \glt `They all didn't come.'\\
+% % \(\forall > \neg\)
+% %
+% % \ex. \gll
+% % tamen\(_1\) \I[VP mei \I[CP \gap{1} dou \I[VP lai ]]]. \\
+% % they {} \textsc{neg} {} {} \textsc{dou} {} come \\
+% % \glt `They haven't all come.'\\
+% % \(\neg > \forall\)
+% %
+% In the other uses, \emph{dou}'s associate can be an overt clausemate of \emph{dou} when no modals or negation intervenes; however,
+% \emph{dou}'s associate cannot be an overt clausemate of \emph{dou} when \emph{dou} and the associate are separated by negation or modals because the associate must have moved out of the clause where \emph{dou} is located due to raising \NNext.
+% Thus the sentence is ungrammatical.
+% \ex. \gll
+% dou renhe ren\(_{1, F}\) \sout{dou} keyi \I[CP \gap{1} lai ]. \\
+% {} any person \textsc{dou} can {} {} come \\
+% \glt `Any person can come.'
+%
+% \ex. * \gll
+% renhe ren\(_{1, F}\) keyi \I[CP dou \gap{1} \sout{dou} lai ]. \\
+% any person can {} {} {} \textsc{dou} come \\
+% \glt Intended: `Any person can come.'
+%
+% % \ex. \gll
+% % dou (lian) Zhangsan\(_{1, F}\) \sout{dou} keyi \I[CP \gap{1} lai]. \\
+% % {} \phantom{(}\textsc{lian} Z. \textsc{dou} can {} {}  come \\
+% % \glt `Even Zhangsan can come.'
+% %
+% % \ex. * \gll
+% % (lian) Zhangsan\(_{1, F}\) keyi \I[CP dou \gap{1} \sout{dou} lai]. \\
+% % \phantom{(}\textsc{lian} Z. can {} {} {} \textsc{dou} come \\
+% % \glt Intended: `Even Zhangsan can come.'
+% %
+%
+% Thus, whether the associate of \emph{dou} is realized as an overt element separate from \emph{dou} becomes the main factor determining the syntactic behavior of \emph{dou} with respect to modals and negation.
+% \(\Delta_D\) is covert and the stress is realized on \emph{dou}; therefore, it can be situated in whichever clause \emph{dou} is situated in.
+% Thus, its scope is indicated by the position of \emph{dou}.
+% Wherever the modal or negation is, \(\Delta_D\) can always be placed right next to \emph{dou}, avoiding any violation of the DLC.
+% But the focus associate of the scalar use of \emph{dou}, \emph{mei}\(_D\), and \emph{renhe}\(_D\) are overt and independent from \emph{dou}, so in some configurations there is no way to put them in the same clause as \emph{dou}, making association with \emph{dou} impossible because of the DLC.
+%
+%
+
+\printbibliography
+
+
+\end{document}
