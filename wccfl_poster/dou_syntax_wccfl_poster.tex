@@ -64,7 +64,7 @@ UprightFont={* Regular},
 \AtEveryBibitem{%
   \clearfield{pages}%
 }
-\renewcommand{\bibfont}{\normalfont\tiny}
+\renewcommand{\bibfont}{\normalfont\footnotesize}
 
 % \defbibenvironment{bibliography}
 %   {}
@@ -206,7 +206,7 @@ UprightFont={* Regular},
 
 \footercontent{
   \href{https://haoming-li-ling.github.io}{haoming-li-ling.github.io} \hfill
-  Sinn und Bedeutung 29 \hfill
+  WCCFL 43 \hfill
   % LING 24.970 Introduction to Semantics \hfill
   \href{mailto:haomingl@mit.edu}{haomingl@mit.edu}
 }
@@ -236,7 +236,7 @@ UprightFont={* Regular},
 \newcommand{\opfs}{Op\(_{\mathrm{FS}}\)}
 \newcommand{\topobj}{Topic\(_{\mathrm{int}}\)P}
 \newcommand{\vmod}{V\(_{\mathrm{Mod}}\)}
-\newcommand{\gap}[1]{\rule{1em}{0.4pt}\hspace{.1em}\textsubscript{#1}}
+\newcommand{\gap}[1]{\rule{1em}{2pt}\hspace{.1em}\textsubscript{#1}}
 
 \begin{document}
 \tcbset{
@@ -252,15 +252,15 @@ UprightFont={* Regular},
   bottomrule=-1pt,
   opacityfill=0,
   colframe=black,
-  % titlerule=1pt, 
+  titlerule=-2pt, 
   toptitle=3pt,
-  titlerule style={black},
+  % titlerule style={black},
   % colbacktitle=lightgray, 
   % colback=lightgray,
   colbacktitle=white, 
   colback=white,
   % colbacklower=red!10!white,
-  colbacklower=lightgray,
+  colbacklower=white,
   coltitle=mitred, 
   fonttitle=\bfseries, 
   raster column skip=10pt
@@ -289,8 +289,9 @@ UprightFont={* Regular},
 \addtobeamertemplate{headline}{}
 {
   \begin{tikzpicture}[remember picture,overlay]
-    \node [anchor=north west, inner sep=3cm] at ([xshift=-1.2cm,yshift=-2.0cm]current page.north west)
-      {\includegraphics[height=3.0cm]{mitlogos/MIT-logo-with-spelling-print-red-gray-design1.eps}}; % also try shield-white.eps
+    % \node [anchor=north west, inner sep=3cm] at ([xshift=-1.2cm,yshift=-2.0cm]current page.north west)
+    \node [anchor=north west, inner sep=2cm] at (current page.north west)
+      {\includegraphics[height=3.0cm]{mitlogos/mit_logo_std_rgb_mit-red.eps}}; % also try shield-white.eps
     % \node [anchor=north east, inner sep=3cm] at ([xshift=0.0cm,yshift=2.5cm]current page.north east)
     % {\includegraphics[height=8.0cm]{logos/cs-logo-white.png}};
   \end{tikzpicture}
@@ -309,16 +310,16 @@ UprightFont={* Regular},
 
           \item \textbf{Modals pattern with CP-embedding verbs in blocking association with \opfs}.
           \item \opfs{} \emph{ye} `also' and \emph{dou} `even' allow backwards association:
-            % \begin{tcolorbox}
+            \begin{tcolorbox}
               \ex. \begingl
                 \gla  Lisi\F{} \textbf{dou} \nogloss{/} \textbf{ye} lai-le. //
                 \glb  L. even also come-\textsc{pfv} //
                 \glft `Lisi\F{} even/also came.' //
               \endgl
 
-            % \end{tcolorbox}
+            \end{tcolorbox}
           \item Assumption: \opfs{} covertly move to c-commanding the associate \cref{ex:foc_assoc}:
-            \begin{tcolorbox}
+            \begin{tcolorbox}[title=\opfs{} movement,colback=red!10!white,opacityfill=1]
               \ex. \label{ex:foc_assoc} \tikzmarknode{target}{\opfs} \ldots{} [ \ldots{} XP\F{} \ldots{} \tikzmarknode{base}{\gap{}} \ldots{} ] \hfill {\scriptsize \citep{lahiriFocusNegativePolarity1998,crnicNonmonotonicityNPILicensing2014,liuVarietiesAlternativesMandarin2017}}
               \begin{tikzpicture}[overlay, remember picture]
                 \draw[-Stealth, line width=1mm] (base.south) -- ++(0, -.8) -| (target.south);
@@ -329,13 +330,13 @@ UprightFont={* Regular},
           \item \opfs{} can move to very high positions in the clause, at least above TopicP:
             \begin{tcolorbox}
               \ex. \label{ex:base_topic} \begingl
-                \gla Haixian\(_{\mathrm{F}}\), wo           \textbf{dou} zhi  xihuan chi zhu  shu    de          cai. //
-                \glb fish                      \textsc{1sg} even         only like   eat cook cooked \textsc{de} dish //
+                \gla \nogloss{(} @ lian @ \nogloss{)} haixian\(_{\mathrm{F}}\), wo           \textbf{dou} zhi  xihuan chi zhu  shu    de          cai. //
+                \glb \textsc{lian} seafood                      \textsc{1sg} even         only like   eat cook cooked \textsc{de} dish //
                 \glft `Even for seafood\F{}, I only like to eat cooked dishes.' //
               \endgl
 
             \end{tcolorbox}
-          \item \emph{Yu} `fish' is a base-generated topic: no gap further down in the sentence.
+          \item \emph{haixian} `seafood' is a base-generated topic: no gap further down in the sentence.
 
 
           \item \opfs{} is unable to associate, and therefore by \cref{ex:foc_assoc}, move, across CP boundaries. 
@@ -349,7 +350,7 @@ UprightFont={* Regular},
             \end{tcolorbox}
 
           \item Then, \LLast and \Last jointly show that \opfs{} movement is subject to \Next:
-            \begin{tcolorbox}[title={\opfs{} can freely move within a CP, but not out of it},colback=red!10!white]
+            \begin{tcolorbox}[title={\opfs{} can freely move within a CP, but not out of it},colback=red!10!white,opacityfill=1]
               % \ex. \opfs{} movement is basically unrestricted by height in the smallest containing CP, but cannot escape it. \label{ex:loc_cons}
 
               \ex.  \tikzmarknode{target1}{\phantom{xxx}} \ldots{} \I{[}\textbf{CP} \tikzmarknode{target2}{\phantom{xxx}} \ldots{} \tikzmarknode{base1}{\opfs} \ldots{} ] 
@@ -384,7 +385,7 @@ UprightFont={* Regular},
           \item From the assumption in \cref{ex:foc_assoc}, this indicates that \opfs{} is unable to move across the modal.
           % \item Thus, deontic modals pattern with CP-embedding verbs in forbidding \opfs{} movement out of them.
           \item Without adding ad hoc modal-specific constraints, the simplest explanation is that modals are also CP-embedding verbs.
-            \begin{tcolorbox}[colback=red!10!white]
+            \begin{tcolorbox}[title={Modals enforce CP boundaries, blocking \opfs{} movement},colback=red!10!white,opacityfill=1]
               \ex.  \tikzmarknode{targett}{\opfs} \ldots{} [ \ldots{} XP\F{} \ldots{} \I{[}V Mod] \I{[}\textbf{CP} \ldots{} \tikzmarknode{basee}{\gap{}} \ldots{} ]] 
               \begin{tikzpicture}[overlay, remember picture]
                 \draw[-Stealth, line width=1mm] (basee.south) -- ++(0, -.8)  -|  (targett.south) node[pos=.25,circle,fill=red!10!white,inner sep=0pt]{\ding{55}};
@@ -395,11 +396,11 @@ UprightFont={* Regular},
           % \item This way, \cref{ex:loc_cons} can directly apply to derive the contrast in \LLast and \Last.
         \end{itemize}
       \end{block}
-      \begin{block}{References}
-        \setstretch{0.1}
-        \printbibliography
+      % \begin{block}{References}
+      %   \setstretch{0.1}
+      %   \printbibliography
 
-      \end{block}
+      % \end{block}
 
 
     \end{column}
@@ -428,7 +429,7 @@ UprightFont={* Regular},
 
             \end{tcolorbox}
 
-          \item \citet{chappellVariationGrammaticalizationComplementizers2008,huangControlComplementsMandarin2018}: \emph{shuo} is a complementizer, strong evidence that deontic modals are clause(CP)-embedding:
+          \item \citet{chappellVariationGrammaticalizationComplementizers2008,huangControlComplementsMandarin2018}: \emph{shuo} is a complementizer, strong evidence that deontic modals are clause/CP-embedding:
             \begin{tcolorbox}
               \ex. \begingl
                 \gla Lisi keyi \textbf{shuo} xian shi-le zai zuo jueding. //
@@ -438,7 +439,7 @@ UprightFont={* Regular},
 
             \end{tcolorbox}
 
-           \begin{tcolorbox}[title=The main takeaway,colback=orange!20!white]
+           \begin{tcolorbox}[title=The  takeaway,colback=red!15!white,colbacktitle=red!15!white,opacityfill=1]
               \textbf{Three diagnostic tests based on focus-sensitive operators} (\opfs{}) \emph{dou} and \emph{ye} that further show that \textbf{deontic modals are clause/CP-embedding} even in the absence of \emph{shuo}.
             \end{tcolorbox}
 
@@ -475,8 +476,8 @@ UprightFont={* Regular},
 
             \end{tcolorbox}
           % \item Example \LLast necessarily presupposes the epistemic statement that Lisi is \emph{expected} to write something else tomorrow.
-          \item The presupposition is derived if we assume that 1) \emph{ye} is interpreted in an embedded position below \emph{keyi}, and that 2) presuppositions project universally and epistemically from under deontic modals à la \citet{heimPresuppositionProjectionSemantics1992}.
-          \item \LLast is unlike the English mono-clausal modal construction
+          \item The presupposition is derived if we assume that 1) \textbf{\emph{ye} is interpreted in an embedded position below \emph{keyi}}, and that 2) \textbf{presuppositions project universally and epistemically} from under deontic modals à la \citet{heimPresuppositionProjectionSemantics1992}.
+          \item \LLast is unlike the English mono-clausal modal construction:
             \begin{tcolorbox}
               \ex. Lisi can also write their paper\F{} tomorrow.
 
@@ -504,15 +505,13 @@ UprightFont={* Regular},
           \item \textbf{Modals allow \opfs{} to precede items that they otherwise cannot in the same clause.}
           \item \emph{Ye} `also' and \emph{dou} `even,'  always pre-verbal, cannot precede fronted objects (TP-internal topics in Spec,\topobj,  \citealt{chenObscuredUniversalityMandarin2023}).
           % \item Both \Next and \NNext mean `Lisi\F{} also wrote the paper.'
-            \begin{tcolorbox}
+            \begin{tcolorbox}[title={\topobj{} must precede \opfs{} without modals}]
               \ex. \begingl
                 \gla Lisi\F{} \nogloss{\{} @ \textbf{lunwen}\(_1\) \textbf{ye} @ \nogloss{/} \nogloss{*} @ \textbf{ye} \textbf{lunwen}\(_1\) @ \nogloss{\}}  xie-le \nogloss{\gap{1}}. //
                 \glb L. paper also also paper write-\textsc{pfv} //
                 \glft `Lisi\F{} also wrote the paper.' //
               \endgl
 
-              \tcblower
-              \ex. \label{ex:order_top_fs} \topobj{} \(\prec\) \opfs{} \(\prec\) V
               % \ex. \begingl
               %   \gla \ljudge{*}Lisi\F{} \textbf{ye} \textbf{lunwen}\(_1\) xie-le \nogloss{\gap{1}}. //
               %   \glb L. also paper write-\textsc{pfv} //
@@ -520,6 +519,9 @@ UprightFont={* Regular},
               % \endgl
               %
 
+            \tcblower
+              \ex. \label{ex:order_top_fs} \topobj{} \(\prec\) \opfs{} \(\prec\) V
+              
             \end{tcolorbox}
           % \item Spec,\topobj{} must be higher than \opfs{} at base:
           %   \begin{tcolorbox}[colback=red!10!white]
@@ -528,7 +530,7 @@ UprightFont={* Regular},
           %   \end{tcolorbox}
           \item When there are modals, \opfs{} can precede fronted objects:
           % \item Ignoring the modal, \Next has the sequence in \NNext:
-            \begin{tcolorbox}
+            \begin{tcolorbox}[title={\topobj{} can follow \opfs{} with modals}]
               \ex.
               \begingl
 % \glpreamble Fronted objects //
@@ -546,7 +548,7 @@ UprightFont={* Regular},
           \item \textbf{Explanation}: modals embed clauses at least \topobj{}, or for simplicity, CPs:
 
           % \item The sequence in \Last can then be rewritten as \Next:
-            \begin{tcolorbox}[title=\cref{ex:order_top_fs} and \cref{ex:paradox} reconciled via two separate clausal ordering domains,colback=red!10!white]
+            \begin{tcolorbox}[title=\cref{ex:order_top_fs} and \cref{ex:paradox} reconciled via two separate clausal ordering domains,colback=red!10!white,opacityfill=1]
               \ex. \I{[}CP \opfs{} \(\prec\) \vmod{} \(\prec\) \I{[}CP \topobj{} \(\prec\) V  ]]
 
             \end{tcolorbox}
@@ -588,6 +590,16 @@ UprightFont={* Regular},
       \end{column}
       \separatorcolumn
     \end{columns}
+    \vspace{1cm} 
+    {
+        \setstretch{.1}
+        \footnotesize
+        \textbf{References:}
+        \printbibliography
+        % \vspace{-.1cm} 
+    
+        \textbf{Acknowledgments:} I thank David Pesetsky and Danny Fox for helpful feedback on this work. I also thank Yizhen Jiang and Zhouyi Sun for judgments on the data. All errors are mine.
+    }
 \end{frame}
 
 
