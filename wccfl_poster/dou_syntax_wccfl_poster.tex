@@ -24,7 +24,7 @@
 
 % \usepackage{cleveref}
 \usepackage{unicode-math}
-\AtBeginDocument{\lingset{glstyle=wrap}}
+\AtBeginDocument{\lingset{glstyle=wrap,everygla=\itshape}}
 \setmainfont{Fira Sans}
 \setmathfont{Fira Math}
 % \setmathfont{TeX Gyre DejaVu Math}[range=\bigoplus]
@@ -148,8 +148,8 @@ UprightFont={* Regular},
 
 \AtBeginDocument{
   \setlength{\Exindent}{1ex}
-  % \setlength{\Extopsep}{0\baselineskip}
-  % \setlength{\Exredux}{0\baselineskip}
+  \setlength{\Extopsep}{0.5\baselineskip}
+  \setlength{\Exredux}{0.5\baselineskip}
   % \setlength{\Exlabelwidth}{.4\Exlabelwidth}
   % \setlength{\Exlabelsep}{.4\Exlabelsep}
   % \setlength{\SubExleftmargin}{\SubExleftmargin}
@@ -233,13 +233,15 @@ UprightFont={* Regular},
 
 
 \newcommand{\F}{\ensuremath{_{\mathrm{F}}}}
-\newcommand{\opfs}{Op\(_{\mathrm{FS}}\)}
-\newcommand{\topobj}{Topic\(_{\mathrm{int}}\)P}
-\newcommand{\vmod}{V\(_{\mathrm{Mod}}\)}
+\newcommand{\opfs}{Op\textsubscript{fs}}
+\newcommand{\topobj}{Topic\textsubscript{int}P}
+\newcommand{\vmod}{V\textsubscript{Mod}}
 \newcommand{\gap}[1]{\rule{1em}{2pt}\hspace{.1em}\textsubscript{#1}}
 
 \begin{document}
 \tcbset{
+  before skip=.3\baselineskip,
+  after skip=.3\baselineskip,
   % beamer, 
   enhanced, 
   % tile,
@@ -291,123 +293,19 @@ UprightFont={* Regular},
   \begin{tikzpicture}[remember picture,overlay]
     % \node [anchor=north west, inner sep=3cm] at ([xshift=-1.2cm,yshift=-2.0cm]current page.north west)
     \node [anchor=north west, inner sep=2cm] at (current page.north west)
-      {\includegraphics[height=3.0cm]{mitlogos/mit_logo_std_rgb_mit-red.eps}}; % also try shield-white.eps
+      {\includegraphics[height=4.0cm]{mitlogos/mit_logo_std_rgb_mit-red.eps}}; % also try shield-white.eps
+    \node [anchor=north east, inner sep=2cm] at (current page.north east)
+      {\includegraphics[height=5cm]{qr-haoming-li-ling-eps-converted-to.pdf}}; % also try shield-white.eps
     % \node [anchor=north east, inner sep=3cm] at ([xshift=0.0cm,yshift=2.5cm]current page.north east)
     % {\includegraphics[height=8.0cm]{logos/cs-logo-white.png}};
   \end{tikzpicture}
 }
 
+
 \begin{frame}[t]
   \begin{columns}[t]
     \separatorcolumn
-
-    \begin{column}{\colwidth}
-
-
-
-      \begin{block}{Test 1: Locality of association with focus}
-        \begin{itemize}
-
-          \item \textbf{Modals pattern with CP-embedding verbs in blocking association with \opfs}.
-          \item \opfs{} \emph{ye} `also' and \emph{dou} `even' allow backwards association:
-            \begin{tcolorbox}
-              \ex. \begingl
-                \gla  Lisi\F{} \textbf{dou} \nogloss{/} \textbf{ye} lai-le. //
-                \glb  L. even also come-\textsc{pfv} //
-                \glft `Lisi\F{} even/also came.' //
-              \endgl
-
-            \end{tcolorbox}
-          \item Assumption: \opfs{} covertly move to c-commanding the associate \cref{ex:foc_assoc}:
-            \begin{tcolorbox}[title=\opfs{} movement,colback=red!10!white,opacityfill=1]
-              \ex. \label{ex:foc_assoc} \tikzmarknode{target}{\opfs} \ldots{} [ \ldots{} XP\F{} \ldots{} \tikzmarknode{base}{\gap{}} \ldots{} ] \hfill {\scriptsize \citep{lahiriFocusNegativePolarity1998,crnicNonmonotonicityNPILicensing2014,liuVarietiesAlternativesMandarin2017}}
-              \begin{tikzpicture}[overlay, remember picture]
-                \draw[-Stealth, line width=1mm] (base.south) -- ++(0, -.8) -| (target.south);
-              \end{tikzpicture}
-              \vspace{2ex}
-
-            \end{tcolorbox}
-          \item \opfs{} can move to very high positions in the clause, at least above TopicP:
-            \begin{tcolorbox}
-              \ex. \label{ex:base_topic} \begingl
-                \gla \nogloss{(} @ lian @ \nogloss{)} haixian\(_{\mathrm{F}}\), wo           \textbf{dou} zhi  xihuan chi zhu  shu    de          cai. //
-                \glb \textsc{lian} seafood                      \textsc{1sg} even         only like   eat cook cooked \textsc{de} dish //
-                \glft `Even for seafood\F{}, I only like to eat cooked dishes.' //
-              \endgl
-
-            \end{tcolorbox}
-          \item \emph{haixian} `seafood' is a base-generated topic: no gap further down in the sentence.
-
-
-          \item \opfs{} is unable to associate, and therefore by \cref{ex:foc_assoc}, move, across CP boundaries. 
-            \begin{tcolorbox}
-              \ex. \begingl
-                \gla \ljudge{*}Lisi\F{} shuo \nogloss{\I{[}CP {} } @ Zhangsan \textbf{dou} lai-le @ \nogloss{]} //
-                \glb L. say Z. even come-\textsc{pfv} //
-                \glft Intended: `Lisi\F{} even said Zhangsan came.' //
-              \endgl
-
-            \end{tcolorbox}
-
-          \item Then, \LLast and \Last jointly show that \opfs{} movement is subject to \Next:
-            \begin{tcolorbox}[title={\opfs{} can freely move within a CP, but not out of it},colback=red!10!white,opacityfill=1]
-              % \ex. \opfs{} movement is basically unrestricted by height in the smallest containing CP, but cannot escape it. \label{ex:loc_cons}
-
-              \ex.  \tikzmarknode{target1}{\phantom{xxx}} \ldots{} \I{[}\textbf{CP} \tikzmarknode{target2}{\phantom{xxx}} \ldots{} \tikzmarknode{base1}{\opfs} \ldots{} ] 
-              \begin{tikzpicture}[overlay, remember picture]
-                \draw[-Stealth, line width=1mm] (base1.south) -- ++(0, -1.2)  -|  (target1.south) node[pos=.25,circle,fill=red!10!white,inner sep=-1pt]{\ding{55}};
-                \draw[-Stealth, line width=1mm] (base1.south) -- ++(0, -.6)  -|  (target2.south) node[pos=.25,circle,fill=red!10!white,inner sep=-1pt]{\ding{51}};
-              \end{tikzpicture}
-              \vspace{3ex}
-
-
-
-            \end{tcolorbox}
-          \item \opfs{} are unable to associate across deontic modals:
-            \begin{tcolorbox}[sidebyside, lefthand ratio=.42]
-              \ex. \label{ex:fs_root}
-              \begingl
-                \gla Lisi\F{} \textbf{dou} \textbf{keyi} lai. //
-                \glb L. even can come. //
-                \glft `Lisi\F{} can also come.' //
-              \endgl
-
-
-              \tcblower
-              \ex. \begingl
-                \gla \ljudge{*}Lisi\F{} \textbf{keyi} \textbf{dou} lai. //
-                \glb L. can even come //
-                \glft Intended: `Lisi\F{} can also come.' //
-              \endgl
-
-
-            \end{tcolorbox}
-          \item From the assumption in \cref{ex:foc_assoc}, this indicates that \opfs{} is unable to move across the modal.
-          % \item Thus, deontic modals pattern with CP-embedding verbs in forbidding \opfs{} movement out of them.
-          \item Without adding ad hoc modal-specific constraints, the simplest explanation is that modals are also CP-embedding verbs.
-            \begin{tcolorbox}[title={Modals enforce CP boundaries, blocking \opfs{} movement},colback=red!10!white,opacityfill=1]
-              \ex.  \tikzmarknode{targett}{\opfs} \ldots{} [ \ldots{} XP\F{} \ldots{} \I{[}V Mod] \I{[}\textbf{CP} \ldots{} \tikzmarknode{basee}{\gap{}} \ldots{} ]] 
-              \begin{tikzpicture}[overlay, remember picture]
-                \draw[-Stealth, line width=1mm] (basee.south) -- ++(0, -.8)  -|  (targett.south) node[pos=.25,circle,fill=red!10!white,inner sep=0pt]{\ding{55}};
-              \end{tikzpicture}
-              \vspace{2ex}
-
-            \end{tcolorbox}
-          % \item This way, \cref{ex:loc_cons} can directly apply to derive the contrast in \LLast and \Last.
-        \end{itemize}
-      \end{block}
-      % \begin{block}{References}
-      %   \setstretch{0.1}
-      %   \printbibliography
-
-      % \end{block}
-
-
-    \end{column}
-
-    \separatorcolumn
-
-    \begin{column}{\colwidth}
+\begin{column}{\colwidth}
       \begin{alertblock}{Introduction}
         \begin{itemize}
           \item Long-standing debate in Mandarin: 
@@ -417,35 +315,38 @@ UprightFont={* Regular},
             \begin{tcolorbox}
               \ex. \begingl
                 % \glpreamble  //
-                \gla \rightcomment{\scriptsize \citet{linFinitenessClausesRaising2011,linMultiplemodalConstructionsMandarin2012,zhangSentencefinalAspectParticles2019}}Lisi \nogloss{\I{[}VP {} } @  \nogloss{\I{[}V {} } @ keyi @ \nogloss{]} \nogloss{\I{[}TP/CP {} } @ \nogloss{\gap{}} lai @ \nogloss{]]} //
+                \gla \rightcomment{\scriptsize \citet{linFinitenessClausesRaising2011,linMultiplemodalConstructionsMandarin2012,zhangSentencefinalAspectParticles2019}}Lisi \nogloss{\I{[}VP {} } @  \nogloss{\I{[}\vmod{} {} } @ keyi @ \nogloss{]} \nogloss{\I{[}TP/CP {} } @ \nogloss{\gap{}} lai @ \nogloss{]].} //
                 \glb L. can come //
               \endgl
 
               \ex.  \begingl
                 % \glpreamble  //
-                \gla \rightcomment{\scriptsize \citet{tsaiTopographyChineseModals2015,yipModalMovementLicensed2022,erlewineLowSentencefinalParticles2017}}Lisi \nogloss{\I{[}ModP \I{[}Mod {} } @ keyi @ \nogloss{]} \nogloss{\I{[}\emph{v}P {} } @ \nogloss{\gap{}} lai @ \nogloss{]]} //
+                \gla \rightcomment{\scriptsize \citet{tsaiTopographyChineseModals2015,yipModalMovementLicensed2022,erlewineLowSentencefinalParticles2017}}Lisi \nogloss{\I{[}ModP \I{[}Mod {} } @ keyi @ \nogloss{]} \nogloss{\I{[}\emph{v}P {} } @ \nogloss{\gap{}} lai @ \nogloss{]].} //
                 \glb L. can come //
               \endgl
 
             \end{tcolorbox}
 
-          \item \citet{chappellVariationGrammaticalizationComplementizers2008,huangControlComplementsMandarin2018}: \emph{shuo} is a complementizer, strong evidence that deontic modals are clause/CP-embedding:
+          \item There is evidence for the clause-embedding view drawing on \citet{chappellVariationGrammaticalizationComplementizers2008,huangControlComplementsMandarin2018}, who analyze \emph{shuo} as a complementizer:
             \begin{tcolorbox}
               \ex. \begingl
-                \gla Lisi keyi \textbf{shuo} xian shi-le zai zuo jueding. //
+                \gla Lisi keyi \nogloss{\I{[}CP \I{[}C } @ \textbf{shuo} @ \nogloss{]} xian shi-le zai zuo jueding @ \nogloss{]}. //
                 \glb L. can \textsc{comp} first try-\textsc{pfv} then make decision //
                 \glft `Lisi can first try it and then make a decision.' //
               \endgl
 
             \end{tcolorbox}
 
-           \begin{tcolorbox}[title=The  takeaway,colback=red!15!white,colbacktitle=red!15!white,opacityfill=1]
-              \textbf{Three diagnostic tests based on focus-sensitive operators} (\opfs{}) \emph{dou} and \emph{ye} that further show that \textbf{deontic modals are clause/CP-embedding} even in the absence of \emph{shuo}.
+            \begin{tcolorbox}[
+                title=This poster,
+                colback=red!15!white,
+                colbacktitle=red!5!white,
+                opacityfill=1
+              ]
+              \textbf{Three arguments based on focus-sensitive operators} (\opfs{}) \emph{dou} and \emph{ye} that further show that \textbf{deontic modals are clause/CP-embedding} even without \emph{shuo}.
             \end{tcolorbox}
 
-            \begin{tcolorbox}[title=Theoretical implication: Implicational Complementation Hierarchy]
-            \citet{wurmbrandImplicationalUniversalComplementation2020}: semantic clause-types (\emph{Event}, \emph{Situation}, \emph{Proposition}) have increasing \emph{minimum sizes} (\emph{v}P, TP, CP), but not size \emph{upper bounds}.
-            \end{tcolorbox}
+
 
         \end{itemize}
 
@@ -454,35 +355,175 @@ UprightFont={* Regular},
       \end{alertblock}
       % \tcbset{colback=red!10!white,colbacklower=lightorange}
 
-      \begin{block}{Test 2: Scope of focus-sensitive operators}
+      \begin{block}{Argument 1: Locality of association with focus-sensitive operators}
         \begin{itemize}
-          \item \textbf{Presuppositions of \opfs{} project universally and epistemically from the scope of modals, like CP-taking verbs.}
-          \item \Next presupposes the epistemic statement that Lisi is \textbf{expected} to write something else tomorrow; it is infelicitous where Lisi is only \textbf{allowed} to write something else.
-            % which is correctly predicted to be grammatical by Test 1 (both the \opfs{} and its associate are on the same side of the modal; \cref{ex:loc_cons} is not violated).
-            \begin{tcolorbox}\ex. \begingl
-                \gla Lisi keyi lunwen\F{} \textbf{ye} mingtian xie. //
-                \glb L. can paper also tomorrow write //
-                \glft `Lisi is allowed to also write the paper\F{} tomorrow.' //
-              \endgl
 
-            \end{tcolorbox}
-          \item \ldots just like \Next,  where it is presupposed that Lisi \textbf{believes} someone other than Zhangsan will come; it is infelicitous where Lisi only \textbf{hopes} someone other than Zhangsan will come.
+          \item \textbf{Modals pattern with CP-embedding verbs in blocking association with \opfs}.
+          \item \opfs{} \emph{ye} `also' and \emph{dou} `even' allow backward association:
             \begin{tcolorbox}
               \ex. \begingl
-                \gla Lisi xiwang Zhangsan\F{} \textbf{ye} lai. //
-                \glb L. hope Z. also come //
-                \glft `Lisi hopes that Zhangsan\F{} will also come.' //
+                \gla  Lisi\F{} \textbf{dou} \nogloss{/} \textbf{ye} lai-le. //
+                \glb  L. even also come-\textsc{pfv} //
+                \glft `Lisi\F{} even/also came.' //
               \endgl
 
             \end{tcolorbox}
-          % \item Example \LLast necessarily presupposes the epistemic statement that Lisi is \emph{expected} to write something else tomorrow.
-          \item The presupposition is derived if we assume that 1) \textbf{\emph{ye} is interpreted in an embedded position below \emph{keyi}}, and that 2) \textbf{presuppositions project universally and epistemically} from under deontic modals à la \citet{heimPresuppositionProjectionSemantics1992}.
-          \item \LLast is unlike the English mono-clausal modal construction:
+
+          \item \opfs{} can associate with very high positions in the clause, at least TopicP:
             \begin{tcolorbox}
-              \ex. Lisi can also write their paper\F{} tomorrow.
+              \ex. \label{ex:base_topic} \begingl
+                \gla \nogloss{(} @ lian @ \nogloss{)} haixian\(_{\mathrm{F}}\), wo           \textbf{dou} zhi  xihuan chi zhu  shu    de          cai. //
+                \glb \textsc{lian} seafood                      \textsc{1sg} even         only like   eat cook cooked \textsc{de} dish //
+                \glft `Even for seafood\F{}, I only like to eat cooked dishes.' //
+              \endgl
 
             \end{tcolorbox}
-          \item \Last only has the deontic presupposition that Lisi is \textbf{allowed} to write something else tomorrow, not that Lisi is \textbf{expected} to do so.
+          \item \textbf{Proposal:} \opfs{} covertly move to c-command the associate, contra \citet{erlewineMovementOutFocus2014a}. 
+            \begin{tcolorbox}[title=\opfs{} movement,colback=red!10!white,opacityfill=1]
+              \ex. \label{ex:foc_assoc} \tikzmarknode{target}{\opfs} \ldots{} [ \ldots{} XP\F{} \ldots{} \tikzmarknode{base}{\gap{}} \ldots{} ] \hfill {\scriptsize \citep{lahiriFocusNegativePolarity1998,crnicNonmonotonicityNPILicensing2014,liuVarietiesAlternativesMandarin2017}}
+              \begin{tikzpicture}[overlay, remember picture]
+                \draw[-Stealth, line width=1mm] (base.south) -- ++(0, -.8) -| (target.south);
+              \end{tikzpicture}
+              \vspace{2ex}
+
+            \end{tcolorbox}
+          % \item \emph{haixian} `seafood' is a base-generated topic: no gap further down in the sentence.
+          % \item Therefore, \Last is also evidence that \opfs{} moves to take scope, contra \citet{erlewineMovementOutFocus2014a}. 
+
+          \item \opfs{} cannot associate, and therefore by \cref{ex:foc_assoc}, \textbf{move}, across CP boundaries:
+            \begin{tcolorbox}
+              \ex. \begingl
+                \gla \ljudge{*}Lisi\F{} shuo \nogloss{\I{[}CP {} } @ Zhangsan \textbf{dou} lai-le @ \nogloss{].} //
+                \glb L. say Z. even come-\textsc{pfv} //
+                \glft Intended: `Lisi\F{} even said Zhangsan came.' //
+              \endgl
+
+            \end{tcolorbox}
+
+          \item Then, \cref{ex:base_topic} and \Last jointly show that \opfs{} movement is subject to \Next:
+            \begin{tcolorbox}[title={\opfs{} can freely move within a CP, but not out of it},colback=red!10!white,opacityfill=1]
+              \ex.  \tikzmarknode{target1}{\phantom{xxx}} \ldots{} \I{[}\textbf{CP} \tikzmarknode{target2}{\phantom{xxx}} \ldots{} \tikzmarknode{base1}{\opfs} \ldots{} ] 
+              \begin{tikzpicture}[overlay, remember picture]
+                \draw[-Stealth, line width=1mm] (base1.south) -- ++(0, -1.2)  -|  (target1.south) node[pos=.25,circle,fill=red!10!white,inner sep=-1pt]{\ding{55}};
+                \draw[-Stealth, line width=1mm] (base1.south) -- ++(0, -.6)  -|  (target2.south) node[pos=.25,circle,fill=red!10!white,inner sep=-1pt]{\ding{51}};
+              \end{tikzpicture}
+              \vspace{3ex}
+
+            \end{tcolorbox}
+          % \item \opfs{} cannot associate, and therefore by \cref{ex:foc_assoc}, \textbf{move}, across deontic modals:
+          %   \begin{tcolorbox}[sidebyside, lefthand ratio=.42]
+          %     \ex. \label{ex:fs_root}
+          %     \begingl
+          %       \gla Lisi\F{} \textbf{dou} \textbf{keyi} lai. //
+          %       \glb L. even can come. //
+          %       \glft `Lisi\F{} can even come.' //
+          %     \endgl
+          %
+          %     \tcblower
+          %     \ex. \begingl
+          %       \gla \ljudge{*}Lisi\F{} \textbf{keyi} \textbf{dou} lai. //
+          %       \glb L. can even come //
+          %       \glft Intended: `Lisi\F{} can even come.' //
+          %     \endgl
+          %
+          %
+          %   \end{tcolorbox}
+          % % \item From the assumption in \cref{ex:foc_assoc}, this indicates that \opfs{} cannot \emph{move} across the modal.
+          % % \item Thus, deontic modals pattern with CP-embedding verbs in forbidding \opfs{} movement out of them.
+          % \item Without ad hoc modal-specific locality constraints on \opfs{}-movement, the simplest explanation is that modals are CP-embedding.
+          %   \begin{tcolorbox}[title={Modals enforce CP boundaries, blocking \opfs{} movement},colback=red!10!white,opacityfill=1]
+          %     \ex.  \tikzmarknode{targett}{\phantom{xxx}} \ldots{} [ \ldots{} XP\F{} \ldots{} \vmod{} \I{[}\textbf{CP} \ldots{} \tikzmarknode{basee}{\opfs} \ldots{} ]] 
+          %     \begin{tikzpicture}[overlay, remember picture]
+          %       \draw[-Stealth, line width=1mm] (basee.south) -- ++(0, -.8)  -|  (targett.south) node[pos=.25,circle,fill=red!10!white,inner sep=0pt]{\ding{55}};
+          %     \end{tikzpicture}
+          %     \vspace{2ex}
+          %
+          %   \end{tcolorbox}
+        \end{itemize}
+      \end{block}
+
+    \end{column}
+    \separatorcolumn
+
+    \begin{column}{\colwidth}
+
+      \begin{block}{Argument 1 continued}
+     \begin{itemize}
+          \item \opfs{} cannot associate, and therefore by \cref{ex:foc_assoc}, \textbf{move}, across deontic modals:
+            \begin{tcolorbox}[sidebyside, lefthand ratio=.42]
+              \ex. \label{ex:fs_root}
+              \begingl
+                \gla Lisi\F{} \textbf{dou} \textbf{keyi} lai. //
+                \glb L. even can come. //
+                \glft `Lisi\F{} can even come.' //
+              \endgl
+
+              \tcblower
+              \ex. \begingl
+                \gla \ljudge{*}Lisi\F{} \textbf{keyi} \textbf{dou} lai. //
+                \glb L. can even come //
+                \glft Intended: `Lisi\F{} can even come.' //
+              \endgl
+
+
+            \end{tcolorbox}
+          % \item From the assumption in \cref{ex:foc_assoc}, this indicates that \opfs{} cannot \emph{move} across the modal.
+          % \item Thus, deontic modals pattern with CP-embedding verbs in forbidding \opfs{} movement out of them.
+          \item Without ad hoc modal-specific locality constraints, the simplest explanation is that\ldots
+            \begin{tcolorbox}[title={Modals embed CPs, blocking \opfs{} movement},colback=red!10!white,opacityfill=1,after skip=0pt]
+              \ex.  \tikzmarknode{targett}{\phantom{xxx}} \ldots{} [ \ldots{} XP\F{} \ldots{} \vmod{} \I{[}\textbf{CP} \ldots{} \tikzmarknode{basee}{\opfs} \ldots{} ]] 
+              \begin{tikzpicture}[overlay, remember picture]
+                \draw[-Stealth, line width=1mm] (basee.south) -- ++(0, -.8)  -|  (targett.south) node[pos=.25,circle,fill=red!10!white,inner sep=0pt]{\ding{55}};
+              \end{tikzpicture}
+              \vspace{2ex}
+
+            \end{tcolorbox}
+     \end{itemize} 
+      \end{block}
+
+\begin{block}{Argument 2: Scope of focus-sensitive operators}
+        \begin{itemize}
+          \item \textbf{Presuppositions of \opfs{} project universally and epistemically from the scope of modals, like CP-embedding verbs.}
+          % \item \Next presupposes the epistemic statement that Lisi is \textbf{expected} to write something else tomorrow; it is infelicitous where Lisi is only \textbf{allowed} to write something else.
+            % which is correctly predicted to be grammatical by Test 1 (both the \opfs{} and its associate are on the same side of the modal; \cref{ex:loc_cons} is not violated).
+           \begin{tcolorbox}[title={Universal epistemic presupposition projected from under \emph{xiwang} `hope'}]
+              \ex. \begingl
+                \gla Lisi xiwang \nogloss{\I{[}CP } @  Zhangsan\F{} \textbf{ye} lai @ \nogloss{].} //
+                \glb L. hope Z. also come //
+                \glft `Lisi hopes that Zhangsan\F{} will also come.' //
+              \endgl % \\
+              \eqmakebox[presup]{Presupposes: \ding{51}}Lisi \textbf{believes} someone else will come. \\
+              \eqmakebox[presup][r]{\ding{55}}Lisi \textbf{hopes} someone else will come.
+
+            \end{tcolorbox} 
+            \begin{tcolorbox}[title={Universal epistemic presupposition projected from under \emph{keyi} `can'}]
+              \ex. \begingl
+                \gla Lisi keyi \nogloss{[} @ lunwen\F{} \textbf{ye} mingtian xie @ \nogloss{]}. //
+                \glb L. can paper also tomorrow write //
+                \glft `Lisi is allowed to also write the paper\F{} tomorrow.' //
+              \endgl % \\
+              \eqmakebox[presup]{Presupposes: \ding{51}}Lisi is \textbf{expected} to write something else tomorrow.\\
+              \eqmakebox[presup][r]{\ding{55}}Lisi is \textbf{allowed} to write something else tomorrow.
+
+            \end{tcolorbox}
+          % \item \Last is just like \Next, which uncontroversially involves CP-embedding
+            
+          % \item Example \LLast necessarily presupposes the epistemic statement that Lisi is \emph{expected} to write something else tomorrow.
+          \item \textbf{Explanation for \Last}: 1. \textbf{\emph{ye} is interpreted below \emph{keyi}}, and 2. \textbf{presuppositions project universally and epistemically} à la \citet{heimPresuppositionProjectionSemantics1992}.
+          \item \Last is unlike the English mono-clausal \emph{can} construction \Next, and like the bi-clausal \emph{allow} construction \NNext with embedded \emph{also}:
+            \begin{tcolorbox}[title={Existential deontic presupposition for English \emph{can}}]
+              \ex. Lisi can \textbf{also} write their paper\F{} tomorrow.\\
+              \eqmakebox[presup]{Presupposes: \ding{51}}Lisi is \textbf{allowed} to write something else tomorrow. \\
+              \eqmakebox[presup][r]{\ding{55}}Lisi is \textbf{expected} to write something else tomorrow.
+
+            \end{tcolorbox}
+            \begin{tcolorbox}[title={Universal epistemic presupposition projected from under English \emph{allow}},after skip=0pt,bottom=0pt]
+              \ex. Lisi is allowed to \textbf{also} write their paper\F{} tomorrow.\\
+              \eqmakebox[presup]{Presupposes: \ding{51}}Lisi is \textbf{expected} to write something else tomorrow. \\
+              \eqmakebox[presup][r]{\ding{55}}Lisi is \textbf{allowed} to write something else tomorrow.
+
+            \end{tcolorbox}
+          % \item \Last only has the deontic presupposition that Lisi is \textbf{allowed} to write something else tomorrow, not that Lisi is \textbf{expected} to do so.
           % \item The reading where \emph{ye} outscopes \emph{keyi}, merely presupposing that Lisi is \emph{allowed} to write something else tomorrow, is unavailable.
           % \item \LLast is infelicitous where only the deontic presupposition is met.
             % \item Again, modalized sentences pattern with clause-embedding verbs \Last.
@@ -492,20 +533,43 @@ UprightFont={* Regular},
 
       \end{block}
 
+      
+
+      % \vspace{4.7ex}
+
+      \begin{exampleblock}{Consequence: Modal movement}
+          \begin{itemize}
+            \item If modals embed CPs, then subjects \textbf{raise} across them.
+            \item Modal-initialness is the \textbf{base} form, casting doubt on modal movement analyses of modal-initialness \citep{laiMovingHeadsSpecifiers2024,yipModalMovementLicensed2022}.
+              \begin{tcolorbox}[after skip=0pt,bottom=0pt]
+                \ex. \begingl
+                  \gla keyi Zhangsan qu canjia bisai. //
+                  \glb can Z. go take.part contest //
+                  \glft `It is allowed that Zhangsan takes part in the contest.' //
+                \endgl
+
+              \end{tcolorbox}
+          \end{itemize} 
+        \end{exampleblock}
+
+
     \end{column}
 
     \separatorcolumn
+
+    
+
 
     \begin{column}{\colwidth}
 
       \tcbset{colbacklower=red!10!white}
 
-      \begin{block}{Test 3: Distribution of focus-sensitive operators}
+      \begin{block}{Argument 3: Distribution of focus-sensitive operators}
         \begin{itemize}
           \item \textbf{Modals allow \opfs{} to precede items that they otherwise cannot in the same clause.}
-          \item \emph{Ye} `also' and \emph{dou} `even,'  always pre-verbal, cannot precede fronted objects (TP-internal topics in Spec,\topobj,  \citealt{chenObscuredUniversalityMandarin2023}).
+          \item \opfs{} \emph{ye} `also' and \emph{dou} `even' cannot precede fronted objects (TP-internal topics in Spec,\topobj,  \citealt{chenObscuredUniversalityMandarin2023}).
           % \item Both \Next and \NNext mean `Lisi\F{} also wrote the paper.'
-            \begin{tcolorbox}[title={\topobj{} must precede \opfs{} without modals}]
+            \begin{tcolorbox}[title={Spec,\topobj{} must precede \opfs{}}]
               \ex. \begingl
                 \gla Lisi\F{} \nogloss{\{} @ \textbf{lunwen}\(_1\) \textbf{ye} @ \nogloss{/} \nogloss{*} @ \textbf{ye} \textbf{lunwen}\(_1\) @ \nogloss{\}}  xie-le \nogloss{\gap{1}}. //
                 \glb L. paper also also paper write-\textsc{pfv} //
@@ -519,18 +583,31 @@ UprightFont={* Regular},
               % \endgl
               %
 
-            \tcblower
+              \tcblower
               \ex. \label{ex:order_top_fs} \topobj{} \(\prec\) \opfs{} \(\prec\) V
-              
+
             \end{tcolorbox}
           % \item Spec,\topobj{} must be higher than \opfs{} at base:
           %   \begin{tcolorbox}[colback=red!10!white]
           %     \ex. \label{ex:order_top_fs} \topobj{} \(\prec\) \opfs{} \(\prec\) V
           %
           %   \end{tcolorbox}
-          \item When there are modals, \opfs{} can precede fronted objects:
+          \item This is a \textbf{clause-internal} ordering constraint; \opfs{} in the matrix can precede Spec,\topobj{} in the embedded CP:
+            \begin{tcolorbox}[title={Ordering constraint \cref{ex:order_top_fs} holds within the same CP}]
+           \ex. \begingl
+             \gla Zhangsan\F{} \textbf{ye} xiwang \nogloss{\I{[}\textbf{CP} } @ Lisi \textbf{lunwen}\(_1\) mingtian xie \nogloss{\gap{1}} @ \nogloss{].} //
+             \glb Z. also hope L. paper tomorrow write //
+             \glft `Zhangsan\F{} also hopes that Lisi will write the paper tomorrow.' //
+           \endgl 
+
+           \tcblower
+           \ex. \label{ex:hope_order}\I{[}\textbf{CP} \opfs{} \(\prec\) V\textsubscript{CP} \(\prec\) \I{[}\textbf{CP} \topobj{} \(\prec\) V  ]]
+
+            \end{tcolorbox}
+          % \item When there are modals, \opfs{} can precede fronted objects:
           % \item Ignoring the modal, \Next has the sequence in \NNext:
-            \begin{tcolorbox}[title={\topobj{} can follow \opfs{} with modals}]
+          \item Modals also allow \opfs{} above them to precede Spec,\topobj{} below them.
+            \begin{tcolorbox}[title={Spec,\topobj{} can follow \opfs{} with modals}]
               \ex.
               \begingl
 % \glpreamble Fronted objects //
@@ -540,67 +617,79 @@ UprightFont={* Regular},
               \endgl
 
               \tcblower
-              \ex. \opfs{} \(\prec\) \topobj{} \(\prec\) V  \label{ex:paradox}
+              \ex. \opfs{} \(\prec\) \vmod{} \(\prec\) \topobj{} \(\prec\) V 
 
             \end{tcolorbox}
 
-          \item The sequence in \Last is in conflict with \cref{ex:order_top_fs}.
-          \item \textbf{Explanation}: modals embed clauses at least \topobj{}, or for simplicity, CPs:
+          % \item The sequence in \Last is in conflict with \cref{ex:order_top_fs}.
+          \item \textbf{Explanation:} Modals also embed CPs.
+            \begin{tcolorbox}[title={Modals embed CPs, generating \Last, just like \cref{ex:hope_order} },colback=red!10!white,opacityfill=1]
+              \ex. \I{[}\textbf{CP} \opfs{} \(\prec\) \vmod{} \(\prec\) \I{[}\textbf{CP} \topobj{} \(\prec\) V  ]]
+
+            \end{tcolorbox}
 
           % \item The sequence in \Last can then be rewritten as \Next:
-            \begin{tcolorbox}[title=\cref{ex:order_top_fs} and \cref{ex:paradox} reconciled via two separate clausal ordering domains,colback=red!10!white,opacityfill=1]
-              \ex. \I{[}CP \opfs{} \(\prec\) \vmod{} \(\prec\) \I{[}CP \topobj{} \(\prec\) V  ]]
+            % \begin{tcolorbox}[title=\cref{ex:order_top_fs} and \cref{ex:paradox} reconciled via two separate clausal ordering domains,colback=red!10!white,opacityfill=1]
+            %   \ex. \I{[}CP \opfs{} \(\prec\) \vmod{} \(\prec\) \I{[}CP \topobj{} \(\prec\) V  ]]
+            %
+            % \end{tcolorbox}
 
-            \end{tcolorbox}
-
-          \item In each CP in \Last, \cref{ex:order_top_fs} is not violated.
-          \item \textbf{Correct prediction}: when \opfs{} and \topobj{} are not separated by modal-induced clausal boundaries, they obey \cref{ex:order_top_fs}.
+          % \item In each CP in \Last, \cref{ex:order_top_fs} is not violated.
+          \item \textbf{Correct prediction:} If \opfs{} and Spec,\topobj{} on the same side of modal, \cref{ex:order_top_fs} holds.
           % \item If the object is fronted across the modal, it precedes \opfs{}:
-            \begin{tcolorbox}[title=Both \topobj{} and \opfs{} outside modal scope]
+            \begin{tcolorbox}[title={Both Spec,\topobj{} and \opfs{} outside modal scope},colbacklower=white]
               \ex. \begingl
-                \gla Lisi\F{} \nogloss{\{} @  \textbf{lunwen}\(_1\) \textbf{ye} \nogloss{/} \nogloss{*} @ \textbf{ye} \textbf{lunwen}\(_1\)  @ \nogloss{\}} keyi mingtian xie \nogloss{\gap{1}}. //
+                \gla Lisi\F{} \nogloss{\{} @  \textbf{lunwen}\(_1\) \textbf{ye} \nogloss{/} \nogloss{*} @ \textbf{ye} \textbf{lunwen}\(_1\)  @ \nogloss{\}} \textbf{keyi} mingtian xie \nogloss{\gap{1}}. //
                 \glb L. paper also also paper can tomorrow write //
                 \glft `Lisi\F{} is also allowed write the paper tomorrow.' //
               \endgl
 
               \tcblower
 
-              \ex. \I{[}CP \topobj{} \(\prec\) \opfs{} \(\prec\) \vmod{} \(\prec\) \I{[}CP V  ]] \label{ex:order_matrix}
+              \ex. \I{[}\textbf{CP} \topobj{} \(\prec\) \opfs{} \(\prec\) \vmod{} \(\prec\) \I{[}\textbf{CP} V  ]] \label{ex:order_matrix}
 
             \end{tcolorbox}
 
           % \item Second, if \topobj{} and \opfs{} are both in the scope of the modal, the object also precedes \opfs{}:
-            \begin{tcolorbox}[title=Both \topobj{} and \opfs{} inside modal scope]
+            \begin{tcolorbox}[title={Both Spec,\topobj{} and \opfs{} inside modal scope},colbacklower=white,after skip=0pt,bottom=0pt]
               \ex.
               \begingl
-                \gla Lisi keyi \nogloss{\{} @  \textbf{lunwen}\(_{1, \mathrm{F}}\) \textbf{ye} @ \nogloss{/} \nogloss{*} @ \textbf{ye} \textbf{lunwen}\(_{1, \mathrm{F}}\) @ \nogloss{\}} mingtian xie \nogloss{\gap{1}}. //
+                \gla Lisi \textbf{keyi} \nogloss{\{} @  \textbf{lunwen}\(_{1, \mathrm{F}}\) \textbf{ye} @ \nogloss{/} \nogloss{*} @ \textbf{ye} \textbf{lunwen}\(_{1, \mathrm{F}}\) @ \nogloss{\}} mingtian xie \nogloss{\gap{1}}. //
                 \glb L. can  paper also also  paper tomorrow write //
                 \glft `Lisi is allowed to also write the paper\F{} tomorrow.' //
               \endgl
 
               \tcblower
-              \ex. \I{[}CP \vmod{} \(\prec\) \I{[}CP \topobj{} \(\prec\) \opfs{} \(\prec\) V  ]] \label{ex:order_embedded}
+              \ex. \I{[}\textbf{CP} \vmod{} \(\prec\) \I{[}\textbf{CP} \topobj{} \(\prec\) \opfs{} \(\prec\) V  ]] \label{ex:order_embedded}
 
             \end{tcolorbox}
 
           % \item Clearly, both \cref{ex:order_matrix} and \cref{ex:order_embedded} follow \cref{ex:order_top_fs}.
-        \item This means that modals essentially `reset' the clausal projections and therefore the sequence that \opfs{} and \topobj{} follow.\end{itemize}
+          % \item This means that modals essentially `reset' the clausal projections and therefore the sequence that \opfs{} and \topobj{} follow.
+        \end{itemize}
         \end{block}
+\begin{exampleblock}{Consequence: Implicational Complementation Hierarchy}
+        \begin{itemize}
+            \item \textbf{ICH} \citep{wurmbrandImplicationalUniversalComplementation2020}: semantic clause-types (\emph{Event}, \emph{Situation}, \emph{Proposition}) have increasing \emph{minimum sizes} (\emph{v}P, TP, CP), but not \emph{upper bound sizes}.
+              \item Deontic modals take complements of semantic type \emph{Event}, but nevertheless employ CPs, constituting evidence for the ICH.
+        \end{itemize}
+      
+      \end{exampleblock}
         
+
       \end{column}
       \separatorcolumn
     \end{columns}
-    \vspace{1cm} 
     {
-        \setstretch{.1}
-        \footnotesize
-        \textbf{References:}
-        \printbibliography
+      \setstretch{.1}
+      \footnotesize
+      \textbf{References:}
+      \printbibliography
         % \vspace{-.1cm} 
-    
-        \textbf{Acknowledgments:} I thank David Pesetsky and Danny Fox for helpful feedback on this work. I also thank Yizhen Jiang and Zhouyi Sun for judgments on the data. All errors are mine.
+
+      \textbf{Acknowledgments:} I thank David Pesetsky and Danny Fox for helpful feedback on this work. I also thank Yizhen Jiang and Zhouyi Sun for judgments on the data. All errors are mine.
     }
-\end{frame}
+  \end{frame}
 
 
 
